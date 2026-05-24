@@ -184,6 +184,44 @@ The serialization methods in `StringUtil` are **for internal use only**:
 - These methods are used internally for session caching
 - **ObjectInputFilter** protection added in v1.30 to restrict deserialization to trusted packages
 
+## Deprecation Notice
+
+Several methods are **deprecated** and scheduled for removal in **version 2.0**:
+
+### StringUtil Serialization Methods (Deprecated since v1.22)
+- `toString(Serializable)` - Use JSON libraries (Jackson, Gson) instead
+- `fromString(String)` - Use JSON libraries (Jackson, Gson) instead
+- `toCompressedString(Serializable)` - Use JSON with compression instead
+- `fromCompressedString(String)` - Use JSON with decompression instead
+
+**Migration Example:**
+```java
+// Old (deprecated)
+String serialized = StringUtil.toString(myObject);
+MyClass obj = StringUtil.fromString(serialized);
+
+// New (recommended)
+ObjectMapper mapper = new ObjectMapper();
+String json = mapper.writeValueAsString(myObject);
+MyClass obj = mapper.readValue(json, MyClass.class);
+```
+
+### FileUtil Methods (Check JavaDoc for deprecation status)
+- `getFileInputStream(File)` - Use `Files.newInputStream(Path)` instead
+- `getFileInputStream(String)` - Use `Files.newInputStream(Path)` instead  
+- `ensureFileExists(File)` - Use `Files.exists(Path)` with proper exception handling
+- `ensureFileExists(String)` - Use `Files.exists(Path)` with proper exception handling
+
+### StringUtil Validation Methods
+- `ensureString(String)` - Use `requireNonBlank(String)` instead
+- `ensureString(String, String)` - Use `requireNonBlank(String, String)` instead
+
+**Timeline:**
+- v1.x: Current stable branch (security fixes and critical bugs only)
+- v2.0: Planned removal of all deprecated methods
+
+See [CHANGELOG.md](CHANGELOG.md) for detailed migration guide.
+
 ## Contributing
 
 1. Ensure all tests pass: `mvn test`

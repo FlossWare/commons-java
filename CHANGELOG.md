@@ -5,6 +5,76 @@ All notable changes to the jcommons library will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased] - v2.0 Planning
+
+### Breaking Changes Planned
+Version 2.0 will remove methods deprecated since v1.22. This is a **major version** bump due to breaking API changes.
+
+### Methods Scheduled for Removal
+
+#### StringUtil Serialization Methods
+- `toString(Serializable)` → Use JSON libraries (Jackson, Gson)
+- `fromString(String)` → Use JSON libraries (Jackson, Gson)
+- `toCompressedString(Serializable)` → Use JSON with compression
+- `fromCompressedString(String)` → Use JSON with decompression
+
+**Reason for Removal:**
+- Java serialization has security vulnerabilities (RCE risks)
+- JSON is more portable, human-readable, and secure
+- Industry best practice is to avoid Java serialization for data exchange
+
+**Migration Example:**
+```java
+// Old (v1.x - deprecated)
+String serialized = StringUtil.toString(myObject);
+MyClass obj = StringUtil.fromString(serialized);
+
+// New (v2.0+)
+ObjectMapper mapper = new ObjectMapper();
+String json = mapper.writeValueAsString(myObject);
+MyClass obj = mapper.readValue(json, MyClass.class);
+```
+
+#### FileUtil Methods
+- `getFileInputStream(File)` → Use `Files.newInputStream(Path)`
+- `getFileInputStream(String)` → Use `Files.newInputStream(Path)`
+- `ensureFileExists(File)` → Use `Files.exists(Path)` with exception handling
+- `ensureFileExists(String)` → Use `Files.exists(Path)` with exception handling
+
+**Reason for Removal:**
+- Java NIO.2 Path API (Java 7+) is more modern and flexible
+- Better exception handling and resource management
+- More comprehensive file system operations
+
+**Migration Example:**
+```java
+// Old (v1.x - deprecated)
+FileInputStream fis = FileUtil.getFileInputStream("/path/to/file");
+
+// New (v2.0+)
+Path path = Paths.get("/path/to/file");
+InputStream is = Files.newInputStream(path);
+```
+
+#### StringUtil Validation Methods
+- `ensureString(String)` → Use `requireNonBlank(String)`
+- `ensureString(String, String)` → Use `requireNonBlank(String, String)`
+
+**Reason for Removal:**
+- Naming consistency (Java uses `require` pattern since Java 7)
+- Better aligns with `Objects.requireNonNull()` conventions
+
+### Timeline
+- **Now - 3 months**: Final 1.x releases (security fixes and critical bugs only)
+- **+3 months**: v1.x enters LTS mode (security fixes only)
+- **+6 months**: v2.0 release with deprecated methods removed
+
+### Preparation Steps
+1. Review your code for usage of deprecated methods
+2. Update to use recommended alternatives
+3. Test thoroughly with latest 1.x version
+4. Plan migration to v2.0 when released
+
 ## [1.29] - 2026-05-24
 
 ### Achievement
