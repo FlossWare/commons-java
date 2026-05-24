@@ -149,4 +149,12 @@ class PropertyUtilTest {
         constructor.setAccessible(true);
         constructor.newInstance();
     }
+
+    @Test
+    void testPrivateGetLogger() throws Exception {
+        java.lang.reflect.Method method = PropertyUtil.class.getDeclaredMethod("getLogger");
+        method.setAccessible(true);
+        Object logger = method.invoke(null);
+        assertNotNull(logger);
+    }
 }

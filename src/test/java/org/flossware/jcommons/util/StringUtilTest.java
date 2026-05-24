@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -187,6 +188,96 @@ class StringUtilTest {
     @Test
     void testIsContained_withNullString() {
         assertFalse(StringUtil.isContained(null, "test"));
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
+    void testToString_withNullSerializable() {
+        assertThrows(IllegalArgumentException.class, () ->
+            StringUtil.toString((java.io.Serializable) null));
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
+    void testToCompressedString_withNullSerializable() {
+        assertThrows(IllegalArgumentException.class, () ->
+            StringUtil.toCompressedString((java.io.Serializable) null));
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
+    void testFromString_withNullResult() {
+        // Create an invalid base64 string that will decode but fail deserialization
+        String invalidData = java.util.Base64.getEncoder().encodeToString(new byte[]{1, 2, 3});
+        assertThrows(RuntimeException.class, () ->
+            StringUtil.fromString(invalidData));
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
+    void testFromCompressedString_withNullResult() {
+        // Create an invalid compressed base64 string
+        String invalidData = java.util.Base64.getEncoder().encodeToString(new byte[]{1, 2, 3});
+        assertThrows(RuntimeException.class, () ->
+            StringUtil.fromCompressedString(invalidData));
+    }
+
+    @Test
+    void testIsSeparatorAppendable_withNullObjs() throws Exception {
+        // Test the private static method isSeparatorAppendable with null
+        java.lang.reflect.Method method = StringUtil.class.getDeclaredMethod(
+            "isSeparatorAppendable", String.class, int.class, Object[].class);
+        method.setAccessible(true);
+        Boolean result = (Boolean) method.invoke(null, "-", 0, (Object[]) null);
+        assertFalse(result);
+    }
+
+    @Test
+    void testToStream_withNullSerializable() throws Exception {
+        // Test package-private toStream method with null
+        java.lang.reflect.Method method = StringUtil.class.getDeclaredMethod(
+            "toStream", java.io.OutputStream.class, java.io.Serializable.class);
+        method.setAccessible(true);
+
+        java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+        method.invoke(null, baos, null);
+        // Should log warning and return without writing
+        assertEquals(0, baos.size());
+    }
+
+    @Test
+    void testToCompressedStream_withNullSerializable() throws Exception {
+        // Test package-private toCompressedStream method with null
+        java.lang.reflect.Method method = StringUtil.class.getDeclaredMethod(
+            "toCompressedStream", java.io.ByteArrayOutputStream.class, java.io.Serializable.class);
+        method.setAccessible(true);
+
+        java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+        method.invoke(null, baos, null);
+        // Should log warning and return without writing
+        assertEquals(0, baos.size());
+    }
+
+    @Test
+    void testFromStream_withNullInputStream() throws Exception {
+        // Test package-private fromStream method with null
+        java.lang.reflect.Method method = StringUtil.class.getDeclaredMethod(
+            "fromStream", java.io.InputStream.class);
+        method.setAccessible(true);
+
+        Object result = method.invoke(null, (java.io.InputStream) null);
+        assertNull(result);
+    }
+
+    @Test
+    void testFromCompressedStream_withNullInputStream() throws Exception {
+        // Test package-private fromCompressedStream method with null ByteArrayInputStream
+        java.lang.reflect.Method method = StringUtil.class.getDeclaredMethod(
+            "fromCompressedString", java.io.ByteArrayInputStream.class);
+        method.setAccessible(true);
+
+        Object result = method.invoke(null, (java.io.ByteArrayInputStream) null);
+        assertNull(result);
     }
 
     @Test

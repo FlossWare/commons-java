@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.lang.reflect.Constructor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -86,5 +87,13 @@ class ArrayUtilTest {
         assertTrue(java.lang.reflect.Modifier.isPrivate(constructor.getModifiers()));
         constructor.setAccessible(true);
         constructor.newInstance();
+    }
+
+    @Test
+    void testPrivateGetLogger() throws Exception {
+        java.lang.reflect.Method method = ArrayUtil.class.getDeclaredMethod("getLogger");
+        method.setAccessible(true);
+        Object logger = method.invoke(null);
+        assertNotNull(logger);
     }
 }
