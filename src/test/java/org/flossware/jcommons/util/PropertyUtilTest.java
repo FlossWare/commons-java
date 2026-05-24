@@ -117,6 +117,12 @@ class PropertyUtilTest {
     }
 
     @Test
+    void testFromResource() {
+        Properties properties = PropertyUtil.fromResource("test.properties");
+        assertEquals("test.value", properties.getProperty("test.key"));
+    }
+
+    @Test
     void testFromResource_withNonExistentResource() {
         assertThrows(JCommonsIOException.class, () ->
             PropertyUtil.fromResource("non-existent-resource.properties"));

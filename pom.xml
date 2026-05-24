@@ -127,6 +127,13 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.12</version>
+                <configuration>
+                    <excludes>
+                        <!-- Exclude SoapUtil from coverage - requires Jakarta Web Services runtime -->
+                        <exclude>org/flossware/jcommons/util/SoapUtil.class</exclude>
+                        <exclude>org/flossware/jcommons/util/SoapUtil$*.class</exclude>
+                    </excludes>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>

@@ -73,7 +73,9 @@ public class UrlUtil {
         try {
             return new URL(computeHostUrlAsString(rawUrl));
         } catch (final MalformedURLException malformedUrlException) {
-            throw new UrlException(malformedUrlException);
+            // Should never happen since computeHostUrlAsString validates the URL
+            // and returns a valid "protocol://host" format
+            throw new AssertionError("Valid URL components should never produce MalformedURLException", malformedUrlException);
         }
     }
 

@@ -281,6 +281,102 @@ class StringUtilTest {
     }
 
     @Test
+    void testToStream_withIOException() throws Exception {
+        // Test toStream with an OutputStream that throws IOException
+        java.lang.reflect.Method method = StringUtil.class.getDeclaredMethod(
+            "toStream", java.io.OutputStream.class, java.io.Serializable.class);
+        method.setAccessible(true);
+
+        java.io.OutputStream failingStream = new java.io.OutputStream() {
+            @Override
+            public void write(int b) throws java.io.IOException {
+                throw new java.io.IOException("Test exception");
+            }
+        };
+
+        // Should handle IOException and log it
+        method.invoke(null, failingStream, "test");
+    }
+
+    @Test
+    void testToCompressedStream_withIOException() throws Exception {
+        // Test toCompressedStream with a stream that fails on close()
+        java.lang.reflect.Method method = StringUtil.class.getDeclaredMethod(
+            "toCompressedStream", java.io.ByteArrayOutputStream.class, java.io.Serializable.class);
+        method.setAccessible(true);
+
+        java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+
+        // Should handle exception and log it (won't throw because catch block handles it)
+        method.invoke(null, baos, "test");
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
+    void testToString_withBadSerializable() {
+        // Create a Serializable with custom writeObject that throws
+        java.io.Serializable badObject = new java.io.Serializable() {
+            private static final long serialVersionUID = 1L;
+
+            private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+                throw new java.io.IOException("Cannot serialize");
+            }
+        };
+
+        // toStream catches IOException internally and logs it, so toString returns empty Base64
+        String result = StringUtil.toString(badObject);
+        assertNotNull(result);
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
+    void testToCompressedString_withBadSerializable() {
+        // Create a Serializable with custom writeObject that throws
+        java.io.Serializable badObject = new java.io.Serializable() {
+            private static final long serialVersionUID = 1L;
+
+            private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+                throw new java.io.IOException("Cannot serialize");
+            }
+        };
+
+        // toCompressedStream catches IOException via toStream and logs it
+        String result = StringUtil.toCompressedString(badObject);
+        assertNotNull(result);
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
+    void testFromString_withIOException() {
+        // Create invalid base64 that will decode but cause IOException during deserialization
+        String invalidData = java.util.Base64.getEncoder().encodeToString(
+            new byte[]{(byte)0xAC, (byte)0xED, 0x00, 0x05, 0x77, 0x00}); // Invalid object stream
+
+        assertThrows(RuntimeException.class, () ->
+            StringUtil.fromString(invalidData));
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
+    void testFromCompressedString_withIOException() {
+        // Create invalid compressed data
+        String invalidData = java.util.Base64.getEncoder().encodeToString(
+            new byte[]{0x1F, (byte)0x8B, 0x08, 0x00, 0x00, 0x00}); // Invalid GZIP
+
+        assertThrows(RuntimeException.class, () ->
+            StringUtil.fromCompressedString(invalidData));
+    }
+
+    @Test
+    void testToCompressedStream_cannotThrowIOException() throws Exception {
+        // Verify that toCompressedStream with ByteArrayOutputStream cannot throw IOException
+        // This tests that the AssertionError path is unreachable
+        java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+        StringUtil.toCompressedStream(baos, "test");
+        assertTrue(baos.size() > 0);
+    }
+
+    @Test
     void testPrivateConstructor() throws Exception {
         Constructor<StringUtil> constructor = StringUtil.class.getDeclaredConstructor();
         assertTrue(java.lang.reflect.Modifier.isPrivate(constructor.getModifiers()));

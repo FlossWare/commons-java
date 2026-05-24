@@ -8,7 +8,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -63,13 +62,7 @@ public class StringUtil {
      * URL encodes <code>str</code>.
      */
     public static String asUrlEncoded(final String str) {
-        try {
-            return URLEncoder.encode(str, StandardCharsets.UTF_8.toString());
-        } catch (UnsupportedEncodingException ex) {
-            LoggerUtil.log(getLogger(), Level.SEVERE, ex, "Trouble encoding [", str, "]");
-
-            throw new IllegalArgumentException("Trouble URL encoding [" + str + "]", ex);
-        }
+        return URLEncoder.encode(str, StandardCharsets.UTF_8);
     }
 
 
@@ -264,10 +257,14 @@ public class StringUtil {
             return;
         }
 
-        try (final GZIPOutputStream gos = new GZIPOutputStream(baos)) {
-            toStream(gos, serializable);
+        try {
+            try (final GZIPOutputStream gos = new GZIPOutputStream(baos)) {
+                toStream(gos, serializable);
+            }
         } catch (final IOException ioException) {
-            LoggerUtil.log(getLogger(), Level.SEVERE, ioException, "Trouble serializing object as a string!");
+            // GZIPOutputStream backed by ByteArrayOutputStream never throws IOException
+            // This catch is unreachable but required for compilation
+            throw new AssertionError("ByteArrayOutputStream should never throw IOException", ioException);
         }
     }
 
@@ -298,14 +295,10 @@ public class StringUtil {
             throw new IllegalArgumentException("Cannot serialize a null object!");
         }
 
-        try (final ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            toCompressedStream(baos, serializable);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        toCompressedStream(baos, serializable);
 
-            return Base64.getEncoder().encodeToString(baos.toByteArray());
-        } catch (final IOException ioException) {
-            LoggerUtil.log(getLogger(), Level.SEVERE, ioException, "Trouble serializing object!");
-            throw new RuntimeException("Failed to serialize and compress object", ioException);
-        }
+        return Base64.getEncoder().encodeToString(baos.toByteArray());
     }
 
     /**
@@ -335,14 +328,10 @@ public class StringUtil {
             throw new IllegalArgumentException("Cannot serialize a null object!");
         }
 
-        try (final ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            toStream(baos, serializable);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        toStream(baos, serializable);
 
-            return Base64.getEncoder().encodeToString(baos.toByteArray());
-        } catch (final IOException ioException) {
-            LoggerUtil.log(getLogger(), Level.SEVERE, ioException, "Trouble serializing object as a string!");
-            throw new RuntimeException("Failed to serialize object", ioException);
-        }
+        return Base64.getEncoder().encodeToString(baos.toByteArray());
     }
 
     static <T extends Serializable> T fromStream(final InputStream is) {
@@ -412,19 +401,13 @@ public class StringUtil {
             throw new IllegalArgumentException("Cannot deserialize from an empty string!");
         }
 
-        try {
-            byte[] decodedBytes = Base64.getDecoder().decode(str);
-            try (final ByteArrayInputStream bais = new ByteArrayInputStream(decodedBytes)) {
-                T result = fromCompressedString(bais);
-                if (result == null) {
-                    throw new RuntimeException("Failed to deserialize compressed string");
-                }
-                return result;
-            }
-        } catch (final IOException ioException) {
-            LoggerUtil.log(getLogger(), Level.SEVERE, ioException, "Trouble deserializing object from string!");
-            throw new RuntimeException("Failed to deserialize compressed string", ioException);
+        byte[] decodedBytes = Base64.getDecoder().decode(str);
+        final ByteArrayInputStream bais = new ByteArrayInputStream(decodedBytes);
+        T result = fromCompressedString(bais);
+        if (result == null) {
+            throw new RuntimeException("Failed to deserialize compressed string");
         }
+        return result;
     }
 
     /**
@@ -462,19 +445,13 @@ public class StringUtil {
             throw new IllegalArgumentException("Cannot deserialize from an empty string!");
         }
 
-        try {
-            byte[] decodedBytes = Base64.getDecoder().decode(str);
-            try (final ByteArrayInputStream bais = new ByteArrayInputStream(decodedBytes)) {
-                T result = fromStream(bais);
-                if (result == null) {
-                    throw new RuntimeException("Failed to deserialize string");
-                }
-                return result;
-            }
-        } catch (final IOException ioException) {
-            LoggerUtil.log(getLogger(), Level.SEVERE, ioException, "Trouble deserializing object from string!");
-            throw new RuntimeException("Failed to deserialize string", ioException);
+        byte[] decodedBytes = Base64.getDecoder().decode(str);
+        final ByteArrayInputStream bais = new ByteArrayInputStream(decodedBytes);
+        T result = fromStream(bais);
+        if (result == null) {
+            throw new RuntimeException("Failed to deserialize string");
         }
+        return result;
     }
 
     /**
