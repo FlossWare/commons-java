@@ -263,12 +263,24 @@ public class StringUtil {
     /**
      * Serializes and compresses a Serializable object to a Base64-encoded string.
      *
+     * <p><strong>SECURITY WARNING:</strong> Java serialization is inherently insecure when
+     * deserializing untrusted data. This method should ONLY be used for trusted, internal data.
+     * For external data or cross-system communication, use JSON (Jackson, Gson) or Protocol Buffers instead.</p>
+     *
+     * <p><strong>DEPRECATED:</strong> This method will be removed in a future version.
+     * Migrate to JSON-based serialization for better security and interoperability.</p>
+     *
      * @param serializable the object to serialize and compress
      * @return the compressed, Base64-encoded string representation
      *
      * @throws IllegalArgumentException if serializable is null
      * @throws RuntimeException if serialization fails
+     *
+     * @deprecated Use JSON libraries (Jackson, Gson) for safer serialization. This method
+     *             relies on Java native serialization which has known security vulnerabilities.
+     *             Scheduled for removal in version 2.0.
      */
+    @Deprecated(since = "1.22", forRemoval = true)
     public static String toCompressedString(final Serializable serializable) {
         if (null == serializable) {
             LoggerUtil.log(getLogger(), Level.SEVERE, "Cannot serialize a null object!");
@@ -288,12 +300,24 @@ public class StringUtil {
     /**
      * Serializes a Serializable object to a Base64-encoded string.
      *
+     * <p><strong>SECURITY WARNING:</strong> Java serialization is inherently insecure when
+     * deserializing untrusted data. This method should ONLY be used for trusted, internal data.
+     * For external data or cross-system communication, use JSON (Jackson, Gson) or Protocol Buffers instead.</p>
+     *
+     * <p><strong>DEPRECATED:</strong> This method will be removed in a future version.
+     * Migrate to JSON-based serialization for better security and interoperability.</p>
+     *
      * @param serializable the object to serialize
      * @return the Base64-encoded string representation
      *
      * @throws IllegalArgumentException if serializable is null
      * @throws RuntimeException if serialization fails
+     *
+     * @deprecated Use JSON libraries (Jackson, Gson) for safer serialization. This method
+     *             relies on Java native serialization which has known security vulnerabilities.
+     *             Scheduled for removal in version 2.0.
      */
+    @Deprecated(since = "1.22", forRemoval = true)
     public static String toString(final Serializable serializable) {
         if (null == serializable) {
             LoggerUtil.log(getLogger(), Level.SEVERE, "Cannot serialize a null object!");
@@ -345,9 +369,20 @@ public class StringUtil {
     /**
      * Deserializes and decompresses an object from a Base64-encoded compressed string.
      *
-     * WARNING: Java deserialization of untrusted data is a security risk.
-     * Only deserialize data from trusted sources. Consider using JSON or XML
-     * for data from untrusted sources.
+     * <p><strong>CRITICAL SECURITY WARNING:</strong> Java deserialization of untrusted data
+     * is a critical security vulnerability that can lead to Remote Code Execution (RCE).
+     * NEVER deserialize data from untrusted sources, user input, or external systems.</p>
+     *
+     * <p><strong>DEPRECATED:</strong> This method will be removed in a future version.
+     * Use JSON libraries (Jackson, Gson) for safer deserialization with proper validation.</p>
+     *
+     * <p>If you must use this method:
+     * <ul>
+     *   <li>Only deserialize data you serialized yourself</li>
+     *   <li>Only from trusted, authenticated sources</li>
+     *   <li>Never from user input, network requests, or external files</li>
+     *   <li>Consider implementing ObjectInputFilter for additional protection</li>
+     * </ul></p>
      *
      * @param <T> the type of the object to deserialize
      * @param str the Base64-encoded compressed string to deserialize
@@ -355,7 +390,11 @@ public class StringUtil {
      *
      * @throws IllegalArgumentException if str is blank
      * @throws RuntimeException if deserialization fails
+     *
+     * @deprecated Use JSON libraries (Jackson, Gson) for safer deserialization. This method
+     *             has critical security vulnerabilities. Scheduled for removal in version 2.0.
      */
+    @Deprecated(since = "1.22", forRemoval = true)
     public static <T extends Serializable> T fromCompressedString(final String str) {
         if (StringUtils.isBlank(str)) {
             LoggerUtil.log(getLogger(), Level.SEVERE, "Cannot deserialize from an empty string!");
@@ -380,9 +419,20 @@ public class StringUtil {
     /**
      * Deserializes an object from a Base64-encoded string.
      *
-     * WARNING: Java deserialization of untrusted data is a security risk.
-     * Only deserialize data from trusted sources. Consider using JSON or XML
-     * for data from untrusted sources.
+     * <p><strong>CRITICAL SECURITY WARNING:</strong> Java deserialization of untrusted data
+     * is a critical security vulnerability that can lead to Remote Code Execution (RCE).
+     * NEVER deserialize data from untrusted sources, user input, or external systems.</p>
+     *
+     * <p><strong>DEPRECATED:</strong> This method will be removed in a future version.
+     * Use JSON libraries (Jackson, Gson) for safer deserialization with proper validation.</p>
+     *
+     * <p>If you must use this method:
+     * <ul>
+     *   <li>Only deserialize data you serialized yourself</li>
+     *   <li>Only from trusted, authenticated sources</li>
+     *   <li>Never from user input, network requests, or external files</li>
+     *   <li>Consider implementing ObjectInputFilter for additional protection</li>
+     * </ul></p>
      *
      * @param <T> the type of the object to deserialize
      * @param str the Base64-encoded string to deserialize
@@ -390,7 +440,11 @@ public class StringUtil {
      *
      * @throws IllegalArgumentException if str is blank
      * @throws RuntimeException if deserialization fails
+     *
+     * @deprecated Use JSON libraries (Jackson, Gson) for safer deserialization. This method
+     *             has critical security vulnerabilities. Scheduled for removal in version 2.0.
      */
+    @Deprecated(since = "1.22", forRemoval = true)
     public static <T extends Serializable> T fromString(final String str) {
         if (StringUtils.isBlank(str)) {
             LoggerUtil.log(getLogger(), Level.SEVERE, "Cannot deserialize from an empty string!");
