@@ -2,6 +2,8 @@
 package org.flossware.jcommons.util;
 
 /**
+ * Exception thrown when SOAP operations fail.
+ * Used for SOAP service configuration, header manipulation, and endpoint errors.
  *
  * @author sfloess
  */

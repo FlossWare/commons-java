@@ -34,6 +34,7 @@
         <maven-deploy-plugin>3.1.1</maven-deploy-plugin>
         <maven-site-plugin>3.12.1</maven-site-plugin>
         <maven-project-info-reports-plugin>3.4.5</maven-project-info-reports-plugin>
+        <maven-javadoc-plugin>3.11.2</maven-javadoc-plugin>
 
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
@@ -105,6 +106,11 @@
                 <plugin>
                     <artifactId>maven-project-info-reports-plugin</artifactId>
                     <version>${maven-project-info-reports-plugin}</version>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${maven-javadoc-plugin}</version>
                 </plugin>
             </plugins>
         </pluginManagement>

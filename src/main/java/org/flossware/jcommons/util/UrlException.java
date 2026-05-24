@@ -2,6 +2,8 @@
 package org.flossware.jcommons.util;
 
 /**
+ * Exception thrown when URL operations fail.
+ * Used for URL parsing, creation, and manipulation errors.
  *
  * @author sfloess
  */

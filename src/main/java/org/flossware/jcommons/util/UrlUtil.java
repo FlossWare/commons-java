@@ -4,6 +4,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
+ * Utility class for URL parsing, creation, and manipulation.
+ * Provides methods for extracting protocol and host information from URLs.
  *
  * @author sfloess
  */

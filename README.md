@@ -46,7 +46,7 @@ Core utilities for Apache CXF SOAP clients:
 <dependency>
     <groupId>org.flossware</groupId>
     <artifactId>jcommons</artifactId>
-    <version>1.20</version>
+    <version>1.21</version>
 </dependency>
 
 <repositories>

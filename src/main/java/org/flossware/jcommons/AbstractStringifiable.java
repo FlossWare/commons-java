@@ -16,6 +16,13 @@ public abstract class AbstractStringifiable extends AbstractBase implements Stri
     protected AbstractStringifiable() {
     }
 
+    /**
+     * Appends a line to the StringBuilder by concatenating all line parts and adding a line separator.
+     *
+     * @param stringBuilder the StringBuilder to append to
+     * @param line the line parts to concatenate and append
+     * @return the StringBuilder with the appended line
+     */
     protected StringBuilder appendLine(final StringBuilder stringBuilder, final String... line) {
         return StringUtil.concat(stringBuilder, line).append(LINE_SEPARATOR_STRING);
     }

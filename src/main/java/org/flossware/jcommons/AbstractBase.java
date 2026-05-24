@@ -127,4 +127,56 @@ public abstract class AbstractBase {
     protected <V> V logAndReturn(final Level level, final String str, final Object... objs) {
         return LoggerUtil.logAndReturn(getLogger(), level, str, objs);
     }
+
+    /**
+     * Convenience method to log at INFO level.
+     *
+     * @param str the format string
+     * @param objs a var arg converted to an object array for logging
+     */
+    protected void logInfo(final String str, final Object... objs) {
+        log(Level.INFO, str, objs);
+    }
+
+    /**
+     * Convenience method to log at WARNING level.
+     *
+     * @param str the format string
+     * @param objs a var arg converted to an object array for logging
+     */
+    protected void logWarning(final String str, final Object... objs) {
+        log(Level.WARNING, str, objs);
+    }
+
+    /**
+     * Convenience method to log at WARNING level with a throwable.
+     *
+     * @param throwable the throwable to log
+     * @param str the format string
+     * @param objs a var arg converted to an object array for logging
+     */
+    protected void logWarning(final Throwable throwable, final String str, final Object... objs) {
+        log(Level.WARNING, throwable, str, objs);
+    }
+
+    /**
+     * Convenience method to log at SEVERE level.
+     *
+     * @param str the format string
+     * @param objs a var arg converted to an object array for logging
+     */
+    protected void logError(final String str, final Object... objs) {
+        log(Level.SEVERE, str, objs);
+    }
+
+    /**
+     * Convenience method to log at SEVERE level with a throwable.
+     *
+     * @param throwable the throwable to log
+     * @param str the format string
+     * @param objs a var arg converted to an object array for logging
+     */
+    protected void logError(final Throwable throwable, final String str, final Object... objs) {
+        log(Level.SEVERE, throwable, str, objs);
+    }
 }
