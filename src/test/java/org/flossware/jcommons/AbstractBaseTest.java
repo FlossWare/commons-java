@@ -39,6 +39,46 @@ class AbstractBaseTest {
         public String testLogAndReturnByIndex() {
             return logAndReturnByIndex(Level.INFO, "Values", 1, "first", "second", "third");
         }
+
+        public void testLogInfoMethod() {
+            logInfo("Info message");
+        }
+
+        public void testLogInfoWithArgs() {
+            logInfo("Info {0}", "message");
+        }
+
+        public void testLogWarningMethod() {
+            logWarning("Warning message");
+        }
+
+        public void testLogWarningWithArgs() {
+            logWarning("Warning {0}", "message");
+        }
+
+        public void testLogWarningWithThrowable() {
+            logWarning(new RuntimeException("test"), "Warning with exception");
+        }
+
+        public void testLogWarningWithThrowableAndArgs() {
+            logWarning(new RuntimeException("test"), "Warning {0}", "with exception");
+        }
+
+        public void testLogErrorMethod() {
+            logError("Error message");
+        }
+
+        public void testLogErrorWithArgs() {
+            logError("Error {0}", "message");
+        }
+
+        public void testLogErrorWithThrowable() {
+            logError(new RuntimeException("test"), "Error with exception");
+        }
+
+        public void testLogErrorWithThrowableAndArgs() {
+            logError(new RuntimeException("test"), "Error {0}", "with exception");
+        }
     }
 
     @Test
@@ -96,5 +136,65 @@ class AbstractBaseTest {
     void testLogger_hasCorrectName() {
         TestAbstractBase instance = new TestAbstractBase();
         assertTrue(instance.getLogger().getName().contains("TestAbstractBase"));
+    }
+
+    @Test
+    void testLogInfo() {
+        TestAbstractBase instance = new TestAbstractBase();
+        assertDoesNotThrow(instance::testLogInfoMethod);
+    }
+
+    @Test
+    void testLogInfo_withArgs() {
+        TestAbstractBase instance = new TestAbstractBase();
+        assertDoesNotThrow(instance::testLogInfoWithArgs);
+    }
+
+    @Test
+    void testLogWarning() {
+        TestAbstractBase instance = new TestAbstractBase();
+        assertDoesNotThrow(instance::testLogWarningMethod);
+    }
+
+    @Test
+    void testLogWarning_withArgs() {
+        TestAbstractBase instance = new TestAbstractBase();
+        assertDoesNotThrow(instance::testLogWarningWithArgs);
+    }
+
+    @Test
+    void testLogWarning_withThrowable() {
+        TestAbstractBase instance = new TestAbstractBase();
+        assertDoesNotThrow(instance::testLogWarningWithThrowable);
+    }
+
+    @Test
+    void testLogWarning_withThrowableAndArgs() {
+        TestAbstractBase instance = new TestAbstractBase();
+        assertDoesNotThrow(instance::testLogWarningWithThrowableAndArgs);
+    }
+
+    @Test
+    void testLogError() {
+        TestAbstractBase instance = new TestAbstractBase();
+        assertDoesNotThrow(instance::testLogErrorMethod);
+    }
+
+    @Test
+    void testLogError_withArgs() {
+        TestAbstractBase instance = new TestAbstractBase();
+        assertDoesNotThrow(instance::testLogErrorWithArgs);
+    }
+
+    @Test
+    void testLogError_withThrowable() {
+        TestAbstractBase instance = new TestAbstractBase();
+        assertDoesNotThrow(instance::testLogErrorWithThrowable);
+    }
+
+    @Test
+    void testLogError_withThrowableAndArgs() {
+        TestAbstractBase instance = new TestAbstractBase();
+        assertDoesNotThrow(instance::testLogErrorWithThrowableAndArgs);
     }
 }

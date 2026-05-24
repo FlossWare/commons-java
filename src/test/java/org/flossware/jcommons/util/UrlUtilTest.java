@@ -2,11 +2,14 @@ package org.flossware.jcommons.util;
 
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class UrlUtilTest {
 
@@ -74,5 +77,13 @@ class UrlUtilTest {
     @Test
     void testProtocolSeparatorConstant() {
         assertEquals("://", UrlUtil.PROTOCOL_SEPARATOR);
+    }
+
+    @Test
+    void testPrivateConstructor() throws Exception {
+        Constructor<UrlUtil> constructor = UrlUtil.class.getDeclaredConstructor();
+        assertTrue(java.lang.reflect.Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+        constructor.newInstance();
     }
 }

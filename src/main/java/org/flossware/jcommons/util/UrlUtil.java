@@ -17,6 +17,12 @@ public class UrlUtil {
     public static final String PROTOCOL_SEPARATOR = "://";
 
     /**
+     * Private constructor to prevent instantiation.
+     */
+    private UrlUtil() {
+    }
+
+    /**
      * Converts <code>rawURL</code> to a URL.
      *
      * @param rawUrl the complete raw URL (including any additional paths).

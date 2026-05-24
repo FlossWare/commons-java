@@ -1,6 +1,9 @@
 package org.flossware.jcommons.util;
 
 import org.junit.jupiter.api.Test;
+
+import java.lang.reflect.Constructor;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -179,5 +182,18 @@ class StringUtilTest {
     void testFromCompressedString_throwsOnEmpty() {
         assertThrows(IllegalArgumentException.class, () ->
             StringUtil.fromCompressedString(""));
+    }
+
+    @Test
+    void testIsContained_withNullString() {
+        assertFalse(StringUtil.isContained(null, "test"));
+    }
+
+    @Test
+    void testPrivateConstructor() throws Exception {
+        Constructor<StringUtil> constructor = StringUtil.class.getDeclaredConstructor();
+        assertTrue(java.lang.reflect.Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+        constructor.newInstance();
     }
 }

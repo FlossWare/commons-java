@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.*;
+import java.lang.reflect.Constructor;
 import java.nio.file.Path;
 import java.util.Properties;
 
@@ -119,5 +120,33 @@ class PropertyUtilTest {
     void testFromResource_withNonExistentResource() {
         assertThrows(JCommonsIOException.class, () ->
             PropertyUtil.fromResource("non-existent-resource.properties"));
+    }
+
+    @Test
+    void testFromInputStream_defaultCloseStream() {
+        String propertiesContent = "key1=value1\n";
+        InputStream inputStream = new ByteArrayInputStream(propertiesContent.getBytes());
+
+        Properties properties = PropertyUtil.fromInputStream(inputStream);
+
+        assertEquals("value1", properties.getProperty("key1"));
+    }
+
+    @Test
+    void testFromReader_defaultCloseReader() {
+        String propertiesContent = "key1=value1\n";
+        Reader reader = new StringReader(propertiesContent);
+
+        Properties properties = PropertyUtil.fromReader(reader);
+
+        assertEquals("value1", properties.getProperty("key1"));
+    }
+
+    @Test
+    void testPrivateConstructor() throws Exception {
+        Constructor<PropertyUtil> constructor = PropertyUtil.class.getDeclaredConstructor();
+        assertTrue(java.lang.reflect.Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+        constructor.newInstance();
     }
 }

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -121,5 +122,13 @@ class MethodUtilTest {
     void testFindAnnotationOnMethodsWithInstance_withNullAnnotation() {
         assertThrows(NullPointerException.class, () ->
             MethodUtil.findAnnotationOnMethods(TestClass.class, (TestAnnotation) null));
+    }
+
+    @Test
+    void testPrivateConstructor() throws Exception {
+        Constructor<MethodUtil> constructor = MethodUtil.class.getDeclaredConstructor();
+        assertTrue(java.lang.reflect.Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+        constructor.newInstance();
     }
 }

@@ -277,4 +277,38 @@ class FileUtilTest {
         assertThrows(IllegalArgumentException.class, () ->
             FileUtil.requireWritable(nonExistent));
     }
+
+    @Test
+    void testRequireReadable_withNonReadableFile() throws IOException {
+        Path testFile = tempDir.resolve("nonreadable.txt");
+        Files.writeString(testFile, "content");
+        File file = testFile.toFile();
+
+        // Make file non-readable
+        file.setReadable(false);
+        try {
+            assertThrows(IllegalArgumentException.class, () ->
+                FileUtil.requireReadable(testFile));
+        } finally {
+            // Restore permissions for cleanup
+            file.setReadable(true);
+        }
+    }
+
+    @Test
+    void testRequireWritable_withNonWritableFile() throws IOException {
+        Path testFile = tempDir.resolve("nonwritable.txt");
+        Files.writeString(testFile, "content");
+        File file = testFile.toFile();
+
+        // Make file non-writable
+        file.setWritable(false);
+        try {
+            assertThrows(IllegalArgumentException.class, () ->
+                FileUtil.requireWritable(testFile));
+        } finally {
+            // Restore permissions for cleanup
+            file.setWritable(true);
+        }
+    }
 }

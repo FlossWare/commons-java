@@ -1,9 +1,13 @@
 package org.flossware.jcommons.util;
 
 import org.junit.jupiter.api.Test;
+
+import java.lang.reflect.Constructor;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ArrayUtilTest {
 
@@ -74,5 +78,13 @@ class ArrayUtilTest {
     @Test
     void testDefaultMinArrayLength() {
         assertEquals(1, ArrayUtil.DEFAULT_MIN_ARRAY_LENGTH);
+    }
+
+    @Test
+    void testPrivateConstructor() throws Exception {
+        Constructor<ArrayUtil> constructor = ArrayUtil.class.getDeclaredConstructor();
+        assertTrue(java.lang.reflect.Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+        constructor.newInstance();
     }
 }
