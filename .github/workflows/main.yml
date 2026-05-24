@@ -36,7 +36,7 @@ jobs:
           cache: 'maven'
 
       - name: Preparing settings.xml
-        uses: s4u/maven-settings-action@v3.0.0
+        uses: s4u/maven-settings-action@v3.1.0
         with:
           githubServer: false
           servers: |
@@ -55,7 +55,7 @@ jobs:
             ]
 
       - name: Setup .gitconfig for version bumps
-        uses: oleksiyrudenko/gha-git-credentials@v2.1
+        uses: oleksiyrudenko/gha-git-credentials@v2.1.2
         with:
           global: true
           name: 'Version Bump'
@@ -73,7 +73,7 @@ jobs:
         run: "mvn -U clean install"
 
       - name: Publish Test Report
-        uses: mikepenz/action-junit-report@v4
+        uses: mikepenz/action-junit-report@v4.3.1
         if: always()
         with:
           report_paths: '**/target/surefire-reports/TEST-*.xml'
@@ -83,12 +83,20 @@ jobs:
         run: "mvn jacoco:report"
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v4.6.0
         with:
           files: ./target/site/jacoco/jacoco.xml
           flags: unittests
           name: codecov-flossware-jcommons
           fail_ci_if_error: false
+
+      - name: Cache OWASP Dependency Check Database
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository/org/owasp/dependency-check-data
+          key: ${{ runner.os }}-owasp-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-owasp-
 
       - name: OWASP Dependency Check
         run: "mvn dependency-check:check -DfailBuildOnCVSS=7"
