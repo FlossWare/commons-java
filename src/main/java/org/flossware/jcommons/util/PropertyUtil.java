@@ -88,26 +88,70 @@ public final class PropertyUtil {
         }
     }
 
+    /**
+     * Load properties from an input stream.
+     *
+     * @param inputStream the input stream to read from
+     * @param closeStream whether to close the stream after reading
+     * @return Properties object loaded from the stream
+     * @throws JCommonsIOException if reading fails
+     */
     public static Properties fromInputStream(final InputStream inputStream, final boolean closeStream) {
         return populateFromInputStream(new Properties(), inputStream, closeStream);
     }
 
+    /**
+     * Load properties from an input stream without closing it.
+     *
+     * @param inputStream the input stream to read from
+     * @return Properties object loaded from the stream
+     * @throws JCommonsIOException if reading fails
+     */
     public static Properties fromInputStream(final InputStream inputStream) {
         return fromInputStream(inputStream, false);
     }
 
+    /**
+     * Load properties from a classpath resource.
+     *
+     * @param resource the resource path to load from
+     * @return Properties object loaded from the resource
+     * @throws JCommonsIOException if resource cannot be read
+     */
     public static Properties fromResource(final String resource) {
         return fromInputStream(PropertyUtil.class.getClassLoader().getResourceAsStream(resource), true);
     }
 
+    /**
+     * Load properties from a reader.
+     *
+     * @param reader the reader to read from
+     * @param closeReader whether to close the reader after reading
+     * @return Properties object loaded from the reader
+     * @throws JCommonsIOException if reading fails
+     */
     public static Properties fromReader(final Reader reader, final boolean closeReader) {
         return populateFromReader(new Properties(), reader, closeReader);
     }
 
+    /**
+     * Load properties from a reader without closing it.
+     *
+     * @param reader the reader to read from
+     * @return Properties object loaded from the reader
+     * @throws JCommonsIOException if reading fails
+     */
     public static Properties fromReader(final Reader reader) {
         return fromReader(reader, false);
     }
 
+    /**
+     * Load properties from a file.
+     *
+     * @param file the file to load properties from
+     * @return Properties object loaded from the file
+     * @throws FileException if the file cannot be read
+     */
     public static Properties fromFile(final File file) {
         try {
             return populateFromInputStream(new Properties(), new FileInputStream(file), true);
@@ -116,6 +160,13 @@ public final class PropertyUtil {
         }
     }
 
+    /**
+     * Load properties from a file specified by path.
+     *
+     * @param filename the path to the properties file
+     * @return Properties object loaded from the file
+     * @throws FileException if the file cannot be read
+     */
     public static Properties fromFile(final String filename) {
         return fromFile(new File(filename));
     }

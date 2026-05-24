@@ -33,6 +33,12 @@ public class UrlUtil {
         }
     }
 
+    /**
+     * Extract protocol and host from a URL.
+     *
+     * @param url the URL to extract from
+     * @return string in format "protocol://host"
+     */
     public static String asProtocolAndHost(final URL url) {
         return StringUtil.concat(url.getProtocol(), PROTOCOL_SEPARATOR, url.getHost());
     }

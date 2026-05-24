@@ -24,6 +24,8 @@ package org.flossware.jcommons.io;
  */
 public class JCommonsIOException extends RuntimeException {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * Default constructor.
      */

@@ -8,6 +8,9 @@ package org.flossware.jcommons.util;
  * @author sfloess
  */
 public class UrlException extends RuntimeException {
+
+    private static final long serialVersionUID = 1L;
+
     /**
      * Default constructor.
      */
