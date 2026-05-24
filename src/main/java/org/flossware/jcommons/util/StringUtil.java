@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputFilter;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
@@ -367,6 +368,24 @@ public class StringUtil {
         }
 
         try (final ObjectInputStream ois = new ObjectInputStream(is)) {
+            // Add security filter to restrict deserialization to trusted packages only
+            ois.setObjectInputFilter(filterInfo -> {
+                if (filterInfo.serialClass() != null) {
+                    String className = filterInfo.serialClass().getName();
+                    // Allow only trusted packages
+                    if (className.startsWith("org.flossware.") ||
+                        className.startsWith("java.lang.") ||
+                        className.startsWith("java.util.") ||
+                        className.startsWith("[L")) {  // Array types
+                        return ObjectInputFilter.Status.ALLOWED;
+                    }
+                    LoggerUtil.log(getLogger(), Level.WARNING,
+                        "Blocked deserialization of untrusted class: " + className);
+                    return ObjectInputFilter.Status.REJECTED;
+                }
+                return ObjectInputFilter.Status.UNDECIDED;
+            });
+
             return (T) ois.readObject();
         } catch (final IOException | ClassNotFoundException exception) {
             LoggerUtil.log(getLogger(), Level.SEVERE, exception, "Trouble serializing object as a string!");
