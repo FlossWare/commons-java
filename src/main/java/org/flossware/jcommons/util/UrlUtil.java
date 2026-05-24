@@ -29,8 +29,6 @@ public class UrlUtil {
         try {
             return new URL(rawUrl);
         } catch (final MalformedURLException exception) {
-//            getLogger().log(Level.SEVERE, "Trouble getting protocol and host [{0}]", exception.getMessage());
-
             throw new IllegalArgumentException("Trouble getting protocol and host!", exception);
         }
     }

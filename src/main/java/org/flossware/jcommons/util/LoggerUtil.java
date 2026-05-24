@@ -144,9 +144,13 @@ public final class LoggerUtil {
      *
      * @return the value found at index <code>index</code> in the var args <code>objs</code>.
      */
+    @SuppressWarnings("unchecked")
     public static <V> V logAndReturnByIndex(final Logger logger, final Level level, final String str, int index, final Object... objs) {
         log(logger, level, str, objs);
 
+        // Unchecked cast is unavoidable: objs is Object[], but caller expects type V.
+        // This method cannot verify type safety at runtime; caller must ensure the object
+        // at the specified index is actually of type V to avoid ClassCastException.
         return (V) objs[index];
     }
 

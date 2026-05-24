@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -37,7 +38,8 @@ public class MethodUtil {
      * @return a list of methods that have the specified annotation
      */
     public static List<Method> findMethodsForAnnotationClass(final Class<?> klass, final Class<? extends Annotation> annotationClass) {
-        // To do:  param validation
+        Objects.requireNonNull(klass, "Class must not be null");
+        Objects.requireNonNull(annotationClass, "Annotation class must not be null");
         return Arrays.stream(klass.getMethods()).filter(t -> t.isAnnotationPresent(annotationClass)).collect(Collectors.toCollection(ArrayList::new));
     }
 
@@ -49,7 +51,8 @@ public class MethodUtil {
      * @return a list of methods that have the specified annotation
      */
     public static List<Method> findMethodsForAnnotation(final Class<?> klass, final Annotation annotation) {
-        // To do:  param valdation
+        Objects.requireNonNull(klass, "Class must not be null");
+        Objects.requireNonNull(annotation, "Annotation must not be null");
         return findMethodsForAnnotationClass(klass, annotation.annotationType());
     }
 
@@ -62,7 +65,8 @@ public class MethodUtil {
      * @return the first annotation found on any method, or null if not found
      */
     public static <T extends Annotation> T findAnnotationOnMethods(final Class<?> klass, final Class<T> annotationClass) {
-        // To do:  param validation
+        Objects.requireNonNull(klass, "Class must not be null");
+        Objects.requireNonNull(annotationClass, "Annotation class must not be null");
 
         for (final Method method : klass.getMethods()) {
             T annotation = method.getAnnotation(annotationClass);
@@ -71,11 +75,7 @@ public class MethodUtil {
             }
         }
 
-        // TO DO:  Use streams
-        //return Arrays.stream(klass.getMethods()).filter(t -> t.isAnnotationPresent(annotationClass)).collect(Collectors.toCollection(ArrayList::new));
-
         return null;
-
     }
 
     /**
@@ -88,7 +88,8 @@ public class MethodUtil {
      */
     @SuppressWarnings("unchecked")
     public static <T extends Annotation> T findAnnotationOnMethods(final Class<?> klass, final T annotation) {
-        // To do:  param validation
+        Objects.requireNonNull(klass, "Class must not be null");
+        Objects.requireNonNull(annotation, "Annotation must not be null");
         return (T) findAnnotationOnMethods(klass, annotation.annotationType());
     }
 }

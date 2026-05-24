@@ -54,7 +54,11 @@ public final class ClassUtil {
      *
      * @return the class for object.
      */
+    @SuppressWarnings("unchecked")
     public static <T> Class<T> getClass(final Object object) {
+        // Unchecked cast is unavoidable: getClass() returns Class<?>, but we parameterize
+        // the return type based on caller's context. Safe in practice as the cast matches
+        // the actual runtime type, though type parameter T cannot be verified at compile time.
         return (Class<T>) Objects.requireNonNull(object, "Must have an object!").getClass();
     }
 
