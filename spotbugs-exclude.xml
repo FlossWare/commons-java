@@ -12,4 +12,14 @@
             <Bug pattern="EI_EXPOSE_REP2" />
         </Or>
     </Match>
+
+    <!--
+        Exclude THROWS_METHOD_THROWS_RUNTIMEEXCEPTION for deprecated serialization methods.
+        These methods intentionally throw RuntimeException on deserialization/compression failures.
+        They are deprecated and scheduled for removal in v2.0.
+    -->
+    <Match>
+        <Class name="org.flossware.jcommons.util.StringUtil" />
+        <Bug pattern="THROWS_METHOD_THROWS_RUNTIMEEXCEPTION" />
+    </Match>
 </FindBugsFilter>
