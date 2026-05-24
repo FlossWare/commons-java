@@ -5,7 +5,7 @@
 
     <groupId>org.flossware</groupId>
     <artifactId>jcommons</artifactId>
-    <version>1.28</version>
+    <version>1.29</version>
 
     <name>jcommons</name>
     <description>This project is a collection of shareable Java related functionality.</description>
