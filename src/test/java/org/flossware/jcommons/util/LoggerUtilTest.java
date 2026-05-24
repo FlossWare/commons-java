@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class LoggerUtilTest {
 
@@ -77,5 +78,23 @@ class LoggerUtilTest {
     void testLogAndReturn_withNullValue() {
         String result = LoggerUtil.logAndReturn(logger, Level.INFO, "Null value", (String) null);
         assertNull(result);
+    }
+
+    @Test
+    void testLogAndReturnByIndex_negativeIndex() {
+        assertThrows(IllegalArgumentException.class, () ->
+            LoggerUtil.logAndReturnByIndex(logger, Level.INFO, "Test", -1, "value1", "value2"));
+    }
+
+    @Test
+    void testLogAndReturnByIndex_indexTooLarge() {
+        assertThrows(IllegalArgumentException.class, () ->
+            LoggerUtil.logAndReturnByIndex(logger, Level.INFO, "Test", 5, "value1", "value2"));
+    }
+
+    @Test
+    void testLogAndReturnByIndex_indexEqualsLength() {
+        assertThrows(IllegalArgumentException.class, () ->
+            LoggerUtil.logAndReturnByIndex(logger, Level.INFO, "Test", 2, "value1", "value2"));
     }
 }

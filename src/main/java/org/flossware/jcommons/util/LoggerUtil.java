@@ -143,9 +143,17 @@ public final class LoggerUtil {
      * @param objs   a var arg thats converted to an object array for logging.
      *
      * @return the value found at index <code>index</code> in the var args <code>objs</code>.
+     * @throws IllegalArgumentException if index is negative or >= objs.length
      */
     @SuppressWarnings("unchecked")
     public static <V> V logAndReturnByIndex(final Logger logger, final Level level, final String str, int index, final Object... objs) {
+        if (index < 0) {
+            throw new IllegalArgumentException("Index cannot be negative: " + index);
+        }
+        if (index >= objs.length) {
+            throw new IllegalArgumentException("Index " + index + " is out of bounds for array of length " + objs.length);
+        }
+
         log(logger, level, str, objs);
 
         // Unchecked cast is unavoidable: objs is Object[], but caller expects type V.

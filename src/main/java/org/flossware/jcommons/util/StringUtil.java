@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -156,8 +157,10 @@ public class StringUtil {
      * @param objs the objects to concatenate.
      *
      * @return the string builder with concatendated data.
+     * @throws NullPointerException if separator is null
      */
     public static StringBuilder concatWithSeparator(final StringBuilder stringBuilder, final boolean isSeparatorAtEnd, final String separator, Object... objs) {
+        Objects.requireNonNull(separator, "Separator cannot be null");
         ArrayUtil.ensureArray(objs, "Must have a list of objects to concat!");
 
         for (int index = 0; index < objs.length; index++) {
@@ -252,7 +255,7 @@ public class StringUtil {
     public static boolean isContained(final String str, final String contains) {
         final boolean retVal = (null == str) ? false : str.contains(contains);
 
-        LoggerUtil.log(getLogger(), Level.FINEST, "Exception messsage contained result [{0}] for [{1}] message [{2}]", retVal, contains, str);
+        LoggerUtil.log(getLogger(), Level.FINEST, "Exception message contained result [{0}] for [{1}] message [{2}]", retVal, contains, str);
 
         return retVal;
     }
@@ -283,9 +286,10 @@ public class StringUtil {
                 toStream(gos, serializable);
             }
         } catch (final IOException ioException) {
-            // GZIPOutputStream backed by ByteArrayOutputStream never throws IOException
-            // This catch is unreachable but required for compilation
-            throw new AssertionError("ByteArrayOutputStream should never throw IOException", ioException);
+            // This should never occur with ByteArrayOutputStream, but if it does
+            // (e.g., due to GZIP stream errors), it represents a serious problem
+            LoggerUtil.log(getLogger(), Level.SEVERE, ioException, "Unexpected IOException during compression!");
+            throw new RuntimeException("Failed to compress serialized object", ioException);
         }
     }
 

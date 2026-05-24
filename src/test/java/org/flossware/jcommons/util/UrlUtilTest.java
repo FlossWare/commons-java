@@ -85,7 +85,7 @@ class UrlUtilTest {
 
     @Test
     void testComputeHostUrl_withMalformedURLException() {
-        // Use MockedStatic to force MalformedURLException and trigger AssertionError
+        // Use MockedStatic to force MalformedURLException and trigger UrlException
         try (MockedStatic<UrlUtil> mockedUtil = mockStatic(UrlUtil.class)) {
             // Mock computeHostUrlAsString to return an invalid URL string
             mockedUtil.when(() -> UrlUtil.computeHostUrlAsString(anyString()))
@@ -95,10 +95,34 @@ class UrlUtilTest {
             mockedUtil.when(() -> UrlUtil.computeHostUrl(anyString()))
                       .thenCallRealMethod();
 
-            // This should trigger the MalformedURLException catch block -> AssertionError
-            assertThrows(AssertionError.class, () ->
+            // This should trigger the MalformedURLException catch block -> UrlException
+            assertThrows(UrlException.class, () ->
                 UrlUtil.computeHostUrl("http://example.com"));
         }
+    }
+
+    @Test
+    void testCreateUrl_withNull() {
+        assertThrows(NullPointerException.class, () ->
+            UrlUtil.createUrl(null));
+    }
+
+    @Test
+    void testAsProtocolAndHost_withNull() {
+        assertThrows(NullPointerException.class, () ->
+            UrlUtil.asProtocolAndHost(null));
+    }
+
+    @Test
+    void testComputeHostUrlAsString_withNull() {
+        assertThrows(NullPointerException.class, () ->
+            UrlUtil.computeHostUrlAsString(null));
+    }
+
+    @Test
+    void testComputeHostUrl_withNull() {
+        assertThrows(NullPointerException.class, () ->
+            UrlUtil.computeHostUrl(null));
     }
 
     @Test

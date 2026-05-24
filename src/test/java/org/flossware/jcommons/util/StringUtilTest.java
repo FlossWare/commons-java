@@ -92,6 +92,12 @@ class StringUtilTest {
     }
 
     @Test
+    void testConcatWithSeparator_nullSeparator() {
+        assertThrows(NullPointerException.class, () ->
+            StringUtil.concatWithSeparator((String) null, "apple", "banana"));
+    }
+
+    @Test
     void testIsContained_true() {
         assertTrue(StringUtil.isContained("hello world", "world"));
     }
@@ -395,7 +401,7 @@ class StringUtilTest {
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-            assertThrows(AssertionError.class, () ->
+            assertThrows(RuntimeException.class, () ->
                 StringUtil.toCompressedStream(baos, "test"));
         }
     }

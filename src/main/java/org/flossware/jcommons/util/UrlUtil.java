@@ -2,6 +2,7 @@ package org.flossware.jcommons.util;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Objects;
 
 /**
  * Utility class for URL parsing, creation, and manipulation.
@@ -29,9 +30,12 @@ public class UrlUtil {
      *
      * @return a URL.
      *
+     * @throws NullPointerException if rawUrl is null
      * @throws IllegalArgumentException if computing the URL fails.
      */
     public static URL createUrl(final String rawUrl) {
+        Objects.requireNonNull(rawUrl, "URL cannot be null");
+
         try {
             return new URL(rawUrl);
         } catch (final MalformedURLException exception) {
@@ -44,8 +48,11 @@ public class UrlUtil {
      *
      * @param url the URL to extract from
      * @return string in format "protocol://host"
+     * @throws NullPointerException if url is null
      */
     public static String asProtocolAndHost(final URL url) {
+        Objects.requireNonNull(url, "URL cannot be null");
+
         return StringUtil.concat(url.getProtocol(), PROTOCOL_SEPARATOR, url.getHost());
     }
 
@@ -56,10 +63,13 @@ public class UrlUtil {
      *
      * @return the server's URL including protocol.
      *
+     * @throws NullPointerException if rawUrl is null
      * @throws IllegalArgumentException if computing the URL fails.
      */
     public static String computeHostUrlAsString(final String rawUrl) {
-        return asProtocolAndHost (createUrl(rawUrl));
+        Objects.requireNonNull(rawUrl, "URL cannot be null");
+
+        return asProtocolAndHost(createUrl(rawUrl));
     }
 
     /**
@@ -68,14 +78,17 @@ public class UrlUtil {
      * @param rawUrl the raw URL to convert.
      *
      * @return a URL representation of only protocol and host.
+     * @throws NullPointerException if rawUrl is null
+     * @throws UrlException if the URL protocol does not support standard host extraction (e.g., jar:, file:)
      */
     public static URL computeHostUrl(final String rawUrl) {
+        Objects.requireNonNull(rawUrl, "URL cannot be null");
+
         try {
             return new URL(computeHostUrlAsString(rawUrl));
         } catch (final MalformedURLException malformedUrlException) {
-            // Should never happen since computeHostUrlAsString validates the URL
-            // and returns a valid "protocol://host" format
-            throw new AssertionError("Valid URL components should never produce MalformedURLException", malformedUrlException);
+            // Some protocols like jar: have complex syntax that doesn't fit "protocol://host" format
+            throw new UrlException("Unable to compute host URL for: " + rawUrl + ". Protocol may not support standard host extraction.", malformedUrlException);
         }
     }
 

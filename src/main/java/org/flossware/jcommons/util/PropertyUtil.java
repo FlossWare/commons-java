@@ -116,10 +116,18 @@ public final class PropertyUtil {
      *
      * @param resource the resource path to load from
      * @return Properties object loaded from the resource
-     * @throws JCommonsIOException if resource cannot be read
+     * @throws IllegalArgumentException if resource parameter is null
+     * @throws JCommonsIOException if resource cannot be found or read
      */
     public static Properties fromResource(final String resource) {
-        return fromInputStream(PropertyUtil.class.getClassLoader().getResourceAsStream(resource), true);
+        Objects.requireNonNull(resource, "Resource path cannot be null");
+
+        InputStream inputStream = PropertyUtil.class.getClassLoader().getResourceAsStream(resource);
+        if (inputStream == null) {
+            throw new JCommonsIOException("Resource not found on classpath: " + resource);
+        }
+
+        return fromInputStream(inputStream, true);
     }
 
     /**

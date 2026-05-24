@@ -129,6 +129,12 @@ class PropertyUtilTest {
     }
 
     @Test
+    void testFromResource_withNull() {
+        assertThrows(NullPointerException.class, () ->
+            PropertyUtil.fromResource(null));
+    }
+
+    @Test
     void testFromInputStream_defaultCloseStream() {
         String propertiesContent = "key1=value1\n";
         InputStream inputStream = new ByteArrayInputStream(propertiesContent.getBytes());
