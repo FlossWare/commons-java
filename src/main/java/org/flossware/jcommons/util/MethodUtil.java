@@ -36,7 +36,7 @@ public class MethodUtil {
      * @param annotationClass the annotation class to search for
      * @return a list of methods that have the specified annotation
      */
-    public static List<Method> findMethodsForAnnotationClass(final Class klass, final Class annotationClass) {
+    public static List<Method> findMethodsForAnnotationClass(final Class<?> klass, final Class<? extends Annotation> annotationClass) {
         // To do:  param validation
         return Arrays.stream(klass.getMethods()).filter(t -> t.isAnnotationPresent(annotationClass)).collect(Collectors.toCollection(ArrayList::new));
     }
@@ -48,9 +48,9 @@ public class MethodUtil {
      * @param annotation the annotation instance to search for
      * @return a list of methods that have the specified annotation
      */
-    public static List<Method> findMethodsForAnnotation(final Class klass, final Annotation annotation) {
+    public static List<Method> findMethodsForAnnotation(final Class<?> klass, final Annotation annotation) {
         // To do:  param valdation
-        return findMethodsForAnnotationClass(klass, annotation.getClass());
+        return findMethodsForAnnotationClass(klass, annotation.annotationType());
     }
 
     /**
@@ -61,12 +61,13 @@ public class MethodUtil {
      * @param annotationClass the annotation class to search for
      * @return the first annotation found on any method, or null if not found
      */
-    public static <T extends Annotation> T findAnnotationOnMethods(final Class klass, final Class annotationClass) {
+    public static <T extends Annotation> T findAnnotationOnMethods(final Class<?> klass, final Class<T> annotationClass) {
         // To do:  param validation
 
         for (final Method method : klass.getMethods()) {
-            if (null != method.getAnnotation(annotationClass)) {
-                return (T) method.getAnnotation(annotationClass);
+            T annotation = method.getAnnotation(annotationClass);
+            if (annotation != null) {
+                return annotation;
             }
         }
 
@@ -85,8 +86,9 @@ public class MethodUtil {
      * @param annotation the annotation instance to search for
      * @return the first matching annotation found on any method, or null if not found
      */
-    public static <T extends Annotation> T findAnnotationOnMethods(final Class klass, final T annotation) {
+    @SuppressWarnings("unchecked")
+    public static <T extends Annotation> T findAnnotationOnMethods(final Class<?> klass, final T annotation) {
         // To do:  param validation
-        return findAnnotationOnMethods(klass, annotation.getClass());
+        return (T) findAnnotationOnMethods(klass, annotation.annotationType());
     }
 }

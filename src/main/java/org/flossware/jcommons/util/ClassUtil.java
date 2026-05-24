@@ -42,7 +42,7 @@ public final class ClassUtil {
      *
      * @return the package for klass.
      */
-    public static String getPackageName(final Class klass) {
+    public static String getPackageName(final Class<?> klass) {
         return Objects.requireNonNull(klass, "Must have a class!").getPackage().getName();
     }
 
