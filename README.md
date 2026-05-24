@@ -174,12 +174,15 @@ This library sits at the foundation of the Solenopsis stack:
 
 ## Security Considerations
 
+**For security vulnerability reporting, see [SECURITY.md](SECURITY.md).**
+
 ### Java Serialization
 The serialization methods in `StringUtil` are **for internal use only**:
 - **WARNING**: Java deserialization of untrusted data is a security risk
 - Only deserialize data from trusted sources
 - Consider using JSON or XML for external data
 - These methods are used internally for session caching
+- **ObjectInputFilter** protection added in v1.30 to restrict deserialization to trusted packages
 
 ## Contributing
 

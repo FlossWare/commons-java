@@ -1,0 +1,38 @@
+version: 2
+updates:
+  # Maven dependencies
+  - package-ecosystem: "maven"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    groups:
+      # Group Apache CXF updates together
+      apache-cxf:
+        patterns:
+          - "org.apache.cxf:*"
+      # Group test dependencies together
+      test-dependencies:
+        patterns:
+          - "org.junit.jupiter:*"
+          - "org.mockito:*"
+      # Group logging dependencies together
+      logging:
+        patterns:
+          - "org.slf4j:*"
+          - "ch.qos.logback:*"
+    labels:
+      - "dependencies"
+      - "automated"
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "ci/cd"
