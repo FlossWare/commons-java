@@ -1,15 +1,19 @@
 package org.flossware.jcommons.util;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mockStatic;
 
 class UrlUtilTest {
 
@@ -77,6 +81,24 @@ class UrlUtilTest {
     @Test
     void testProtocolSeparatorConstant() {
         assertEquals("://", UrlUtil.PROTOCOL_SEPARATOR);
+    }
+
+    @Test
+    void testComputeHostUrl_withMalformedURLException() {
+        // Use MockedStatic to force MalformedURLException and trigger AssertionError
+        try (MockedStatic<UrlUtil> mockedUtil = mockStatic(UrlUtil.class)) {
+            // Mock computeHostUrlAsString to return an invalid URL string
+            mockedUtil.when(() -> UrlUtil.computeHostUrlAsString(anyString()))
+                      .thenReturn(":::invalid:::");
+
+            // Keep the real implementation for computeHostUrl
+            mockedUtil.when(() -> UrlUtil.computeHostUrl(anyString()))
+                      .thenCallRealMethod();
+
+            // This should trigger the MalformedURLException catch block -> AssertionError
+            assertThrows(AssertionError.class, () ->
+                UrlUtil.computeHostUrl("http://example.com"));
+        }
     }
 
     @Test

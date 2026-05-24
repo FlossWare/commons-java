@@ -1,7 +1,11 @@
 package org.flossware.jcommons.util;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -11,6 +15,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.spy;
 
 class StringUtilTest {
 
@@ -374,6 +380,24 @@ class StringUtilTest {
         java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
         StringUtil.toCompressedStream(baos, "test");
         assertTrue(baos.size() > 0);
+    }
+
+    @Test
+    void testToCompressedStream_forcedIOException() throws Exception {
+        // Force IOException to trigger the AssertionError defensive path
+        // Use MockedConstruction to make GZIPOutputStream throw IOException
+        try (var mockedGZIP = org.mockito.Mockito.mockConstruction(
+                java.util.zip.GZIPOutputStream.class,
+                (mock, context) -> {
+                    doThrow(new IOException("Forced failure for coverage"))
+                        .when(mock).close();
+                })) {
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+            assertThrows(AssertionError.class, () ->
+                StringUtil.toCompressedStream(baos, "test"));
+        }
     }
 
     @Test
