@@ -17,7 +17,6 @@
 package org.flossware.jcommons.util;
 
 import java.util.Objects;
-import java.util.logging.Logger;
 
 /**
  * Utility class for class functionality.
@@ -25,25 +24,17 @@ import java.util.logging.Logger;
  * @author sfloess
  */
 public final class ClassUtil {
-    /**
-     * Default minimum size for an array.
-     */
-    public static final int DEFAULT_MIN_ARRAY_LENGTH = 1;
-
-    /**
-     * Our logger.
-     */
-    private static final Logger logger = Logger.getLogger(ClassUtil.class.getName());
 
     /**
      * Compute the package for klass.
      *
      * @param klass the class for whom we desire a package.
      *
-     * @return the package for klass.
+     * @return the package name for klass, or empty string if the class is in the default package,
+     *         is a primitive type, or is an array type with component type in the default package.
      */
     public static String getPackageName(final Class<?> klass) {
-        return Objects.requireNonNull(klass, "Must have a class!").getPackage().getName();
+        return Objects.requireNonNull(klass, "Must have a class!").getPackageName();
     }
 
     /**

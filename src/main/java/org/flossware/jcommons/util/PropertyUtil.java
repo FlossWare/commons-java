@@ -19,6 +19,7 @@ package org.flossware.jcommons.util;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.util.Objects;
@@ -61,10 +62,10 @@ public final class PropertyUtil {
             retVal.load(Objects.requireNonNull(inputStream, "Must provide an input stream!"));
 
             return retVal;
-        } catch (final Exception exception) {
-            LoggerUtil.log(getLogger(), Level.WARNING, "Trouble reading input stream!", exception);
+        } catch (final IOException ioException) {
+            LoggerUtil.log(getLogger(), Level.WARNING, "Trouble reading input stream!", ioException);
 
-            throw new JCommonsIOException(exception);
+            throw new JCommonsIOException(ioException);
         } finally {
             if (closeStream) {
                 IOUtils.close(inputStream);
@@ -77,10 +78,10 @@ public final class PropertyUtil {
             retVal.load(Objects.requireNonNull(reader, "Must provide a reader!"));
 
             return retVal;
-        } catch (final Exception exception) {
-            LoggerUtil.log(getLogger(), Level.WARNING, "Trouble reading input stream!", exception);
+        } catch (final IOException ioException) {
+            LoggerUtil.log(getLogger(), Level.WARNING, "Trouble reading from reader!", ioException);
 
-            throw new JCommonsIOException(exception);
+            throw new JCommonsIOException(ioException);
         } finally {
             if (closeReader) {
                 IOUtils.close(reader);

@@ -1,7 +1,6 @@
 package org.flossware.jcommons.util;
 
 import java.util.Objects;
-import java.util.logging.Logger;
 
 /**
  *
@@ -11,18 +10,6 @@ import java.util.logging.Logger;
  *
  */
 public final class ObjectUtil {
-    /**
-     * Our logger.
-     */
-    private static final Logger logger = Logger.getLogger(ObjectUtil.class.getName());
-
-    /**
-     * Return the logger.
-     */
-    private static Logger getLogger() {
-        return logger;
-    }
-
     /**
      * Default error message when a parameter is bad.
      */

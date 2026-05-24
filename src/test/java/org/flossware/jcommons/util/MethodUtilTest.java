@@ -132,11 +132,4 @@ class MethodUtilTest {
         constructor.newInstance();
     }
 
-    @Test
-    void testPrivateGetLogger() throws Exception {
-        java.lang.reflect.Method method = MethodUtil.class.getDeclaredMethod("getLogger");
-        method.setAccessible(true);
-        Object logger = method.invoke(null);
-        assertNotNull(logger);
-    }
 }

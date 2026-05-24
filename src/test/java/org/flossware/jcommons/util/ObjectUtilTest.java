@@ -44,11 +44,4 @@ class ObjectUtilTest {
         constructor.newInstance();
     }
 
-    @Test
-    void testPrivateGetLogger() throws Exception {
-        java.lang.reflect.Method method = ObjectUtil.class.getDeclaredMethod("getLogger");
-        method.setAccessible(true);
-        Object logger = method.invoke(null);
-        assertNotNull(logger);
-    }
 }

@@ -44,8 +44,4 @@ class ClassUtilTest {
         assertEquals(Integer.class, clazz);
     }
 
-    @Test
-    void testDefaultMinArrayLength() {
-        assertEquals(1, ClassUtil.DEFAULT_MIN_ARRAY_LENGTH);
-    }
 }

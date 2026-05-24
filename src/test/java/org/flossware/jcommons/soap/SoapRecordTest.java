@@ -65,19 +65,17 @@ class SoapRecordTest {
     void testSoapRecordWithNullService() {
         Class<TestPort> portType = TestPort.class;
 
-        SoapRecord<TestPort> record = new SoapRecord<>(null, portType);
-
-        assertNull(record.service());
-        assertEquals(portType, record.portType());
+        assertThrows(NullPointerException.class, () -> {
+            new SoapRecord<>(null, portType);
+        });
     }
 
     @Test
     void testSoapRecordWithNullPortType() {
         Service mockService = mock(Service.class);
 
-        SoapRecord<TestPort> record = new SoapRecord<>(mockService, null);
-
-        assertEquals(mockService, record.service());
-        assertNull(record.portType());
+        assertThrows(NullPointerException.class, () -> {
+            new SoapRecord<>(mockService, null);
+        });
     }
 }

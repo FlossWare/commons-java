@@ -17,7 +17,6 @@
 package org.flossware.jcommons.util;
 
 import java.util.Objects;
-import java.util.logging.Logger;
 
 /**
  * Array utility class.
@@ -29,18 +28,6 @@ public class ArrayUtil {
      * Default minimum size for an array.
      */
     public static final int DEFAULT_MIN_ARRAY_LENGTH = 1;
-
-    /**
-     * Our logger.
-     */
-    private static final Logger logger = Logger.getLogger(ArrayUtil.class.getName());
-
-    /**
-     * Return the logger.
-     */
-    private static Logger getLogger() {
-        return logger;
-    }
 
     /**
      * Ensure an array has something in it.

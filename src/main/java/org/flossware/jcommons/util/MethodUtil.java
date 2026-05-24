@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -15,18 +14,6 @@ import java.util.stream.Collectors;
  * @author sfloess
  */
 public class MethodUtil {
-    /**
-     * Our logger.
-     */
-    private static final Logger logger = Logger.getLogger(MethodUtil.class.getName());
-
-    /**
-     * Return the logger.
-     */
-    private static Logger getLogger() {
-        return logger;
-    }
-
     private MethodUtil() {
     }
 

@@ -89,11 +89,4 @@ class ArrayUtilTest {
         constructor.newInstance();
     }
 
-    @Test
-    void testPrivateGetLogger() throws Exception {
-        java.lang.reflect.Method method = ArrayUtil.class.getDeclaredMethod("getLogger");
-        method.setAccessible(true);
-        Object logger = method.invoke(null);
-        assertNotNull(logger);
-    }
 }

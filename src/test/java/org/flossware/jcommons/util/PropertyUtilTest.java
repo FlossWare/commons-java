@@ -37,7 +37,7 @@ class PropertyUtilTest {
 
     @Test
     void testFromInputStream_withNullInputStream() {
-        assertThrows(JCommonsIOException.class, () ->
+        assertThrows(NullPointerException.class, () ->
             PropertyUtil.fromInputStream(null, false));
     }
 
@@ -77,7 +77,7 @@ class PropertyUtilTest {
 
     @Test
     void testFromReader_withNullReader() {
-        assertThrows(JCommonsIOException.class, () ->
+        assertThrows(NullPointerException.class, () ->
             PropertyUtil.fromReader(null, false));
     }
 
