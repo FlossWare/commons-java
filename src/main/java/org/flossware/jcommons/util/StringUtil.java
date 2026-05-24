@@ -111,13 +111,24 @@ public class StringUtil {
      * Return true if a separator can be appended or false if not. To append,
      * the index must be less than or equal to the array's length - 2.
      *
-     * @param index the place within the array we are processing.
-     * @param objs the array of objects being processed.
+     * @param separator the separator string to check against
+     * @param index the place within the array we are processing
+     * @param objs the array of objects being processed
      *
-     * @return true if we can append a separator or false if not.
+     * @return true if we can append a separator or false if not
      */
     static boolean isSeparatorAppendable(final String separator, final int index, final Object... objs) {
-        return LoggerUtil.logAndReturn(getLogger(), Level.FINEST, "Is the separator appendable [{0}] for index [{1}]", null != objs && index <= (objs.length - 2) && !objs[index].toString().endsWith(separator), index);
+        if (objs == null) {
+            return false;
+        }
+
+        boolean isNotLastElement = index <= (objs.length - 2);
+        boolean doesNotEndWithSeparator = !objs[index].toString().endsWith(separator);
+        boolean canAppend = isNotLastElement && doesNotEndWithSeparator;
+
+        LoggerUtil.log(getLogger(), Level.FINEST, "Is the separator appendable [{0}] for index [{1}]", canAppend, index);
+
+        return canAppend;
     }
 
     /**

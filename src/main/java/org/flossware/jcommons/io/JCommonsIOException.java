@@ -17,16 +17,17 @@
 package org.flossware.jcommons.io;
 
 /**
- * Raised if any IO problems arise.
+ * Unchecked exception wrapper for IO-related failures.
+ * Renamed from IOException to avoid naming conflict with java.io.IOException.
  *
  * @author Scot P. Floess
  */
-public class IOException extends RuntimeException {
+public class JCommonsIOException extends RuntimeException {
 
     /**
      * Default constructor.
      */
-    public IOException() {
+    public JCommonsIOException() {
 
     }
 
@@ -35,7 +36,7 @@ public class IOException extends RuntimeException {
      *
      * @param message detail message.
      */
-    public IOException(final String message) {
+    public JCommonsIOException(final String message) {
         super(message);
     }
 
@@ -44,7 +45,7 @@ public class IOException extends RuntimeException {
      *
      * @param cause the cause of why self is being raised.
      */
-    public IOException(final Throwable cause) {
+    public JCommonsIOException(final Throwable cause) {
         super(cause);
     }
 
@@ -54,7 +55,7 @@ public class IOException extends RuntimeException {
      * @param message detail message.
      * @param cause   the cause of why self is being raised.
      */
-    public IOException(final String message, final Throwable cause) {
+    public JCommonsIOException(final String message, final Throwable cause) {
         super(message, cause);
     }
 }

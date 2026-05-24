@@ -26,7 +26,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.flossware.jcommons.io.FileException;
-import org.flossware.jcommons.io.IOException;
+import org.flossware.jcommons.io.JCommonsIOException;
 
 /**
  * Properties utility class.
@@ -64,7 +64,7 @@ public final class PropertyUtil {
         } catch (final Exception exception) {
             LoggerUtil.log(getLogger(), Level.WARNING, "Trouble reading input stream!", exception);
 
-            throw new IOException(exception);
+            throw new JCommonsIOException(exception);
         } finally {
             if (closeStream) {
                 IOUtils.close(inputStream);
@@ -80,7 +80,7 @@ public final class PropertyUtil {
         } catch (final Exception exception) {
             LoggerUtil.log(getLogger(), Level.WARNING, "Trouble reading input stream!", exception);
 
-            throw new IOException(exception);
+            throw new JCommonsIOException(exception);
         } finally {
             if (closeReader) {
                 IOUtils.close(reader);
