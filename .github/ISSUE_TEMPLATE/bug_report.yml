@@ -1,0 +1,49 @@
+name: Bug Report
+description: Report a bug or unexpected behavior
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug!
+
+  - type: input
+    id: version
+    attributes:
+      label: jcommons Version
+      description: Which version are you using?
+      placeholder: e.g., 1.31
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What happened? What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Minimal code to reproduce the issue
+      placeholder: |
+        String result = StringUtil.concat("foo", "bar");
+        // Expected: "foobar"
+        // Actual: throws NullPointerException
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Java version, OS, etc.
+      placeholder: |
+        - Java: 17.0.5
+        - OS: macOS 13.2
+        - Build tool: Maven 3.9.0
+    validations:
+      required: false
