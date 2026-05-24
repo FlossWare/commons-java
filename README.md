@@ -135,11 +135,11 @@ mvn clean install -DskipTests
 
 ## Test Coverage
 
-The library maintains **100% unit test coverage** with **247 comprehensive tests**:
+The library maintains **100% unit test coverage** with **256 comprehensive tests**:
 
 **Coverage Metrics:**
-- ✅ **100% instruction coverage** (1,274/1,274 instructions)
-- ✅ **100% branch coverage** (68/68 branches)
+- ✅ **100% instruction coverage** (1,334/1,334 instructions)
+- ✅ **100% branch coverage** (74/74 branches)
 - ✅ **100% method coverage** (120/120 methods)
 - ✅ **100% class coverage** (18/18 classes)
 

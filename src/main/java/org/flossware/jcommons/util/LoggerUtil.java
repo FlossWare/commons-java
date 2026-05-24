@@ -81,12 +81,12 @@ public final class LoggerUtil {
      * @param objs      a var arg thats converted to an object array for logging.
      */
     public static void log(final Logger logger, final Level level, final Throwable throwable, final String str, final Object... objs) {
-        final StringWriter sw = new StringWriter();
-        try (final PrintWriter pw = new PrintWriter(sw)) {
-            throwable.printStackTrace(pw);
-            final String toLog = StringUtil.concat(str, System.getProperty("line.separator"), sw.toString());
-            logger.log(level, toLog, objs);
-        }
+        logger.log(level, throwable, () -> {
+            if (objs.length == 0) {
+                return str;
+            }
+            return java.text.MessageFormat.format(str, objs);
+        });
     }
 
     /**
