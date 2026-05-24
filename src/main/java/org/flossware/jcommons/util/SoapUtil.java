@@ -73,6 +73,12 @@ public final class SoapUtil {
     private SoapUtil() {
     }
 
+    /**
+     * Gets the SOAP factory instance for creating SOAP elements.
+     *
+     * @return the SOAPFactory instance
+     * @throws SoapException if the SOAP factory could not be instantiated
+     */
     public static SOAPFactory getSoapFactory() {
         return soapFactorySupplier.get();
     }

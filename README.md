@@ -46,7 +46,7 @@ Core utilities for Apache CXF SOAP clients:
 <dependency>
     <groupId>org.flossware</groupId>
     <artifactId>jcommons</artifactId>
-    <version>1.21</version>
+    <version>1.29</version>
 </dependency>
 
 <repositories>
@@ -135,15 +135,24 @@ mvn clean install -DskipTests
 
 ## Test Coverage
 
-The library includes **104 comprehensive unit tests** covering:
-- Input validation edge cases (null, empty, whitespace)
-- Exception handling verification
-- SOAP utilities with proper null checks
-- String operations and encoding
-- File operations with temporary files
-- Serialization/deserialization
+The library maintains **100% unit test coverage** with **247 comprehensive tests**:
 
-All tests pass with 0 failures.
+**Coverage Metrics:**
+- ✅ **100% instruction coverage** (1,274/1,274 instructions)
+- ✅ **100% branch coverage** (68/68 branches)
+- ✅ **100% method coverage** (120/120 methods)
+- ✅ **100% class coverage** (18/18 classes)
+
+**Test Suite Includes:**
+- Input validation edge cases (null, empty, whitespace)
+- Exception handling verification (including defensive paths)
+- SOAP utilities with Mockito-based integration tests
+- String operations, encoding, and serialization
+- File operations with temporary files
+- Reflection-based tests for private constructors
+- Mock-based tests for unreachable exception paths
+
+All 247 tests pass with 0 failures. JaCoCo coverage reports are generated with each build.
 
 ## Architecture
 

@@ -8,8 +8,14 @@ package org.flossware.jcommons;
  *
  */
 public interface Stringifiable {
+    /**
+     * System property name for line separator.
+     */
     String LINE_SEPARATOR_PROPERTY = "line.separator";
 
+    /**
+     * The line separator string for this system.
+     */
     String LINE_SEPARATOR_STRING = System.getProperty(LINE_SEPARATOR_PROPERTY);
 
     /**

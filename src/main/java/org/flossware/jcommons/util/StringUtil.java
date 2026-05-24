@@ -36,6 +36,9 @@ public class StringUtil {
         return logger;
     }
 
+    /**
+     * Default error message for blank string validation.
+     */
     public static final String STRING_CANNOT_BE_BLANK = "String cannot be blank!";
 
     /**
@@ -43,6 +46,14 @@ public class StringUtil {
      */
     public static final String DEFAULT_SEPARATOR = "";
 
+    /**
+     * Validates that a string is not null, empty, or whitespace-only.
+     *
+     * @param string the string to validate
+     * @param message the error message to use if validation fails
+     * @return the validated string
+     * @throws IllegalArgumentException if the string is blank
+     */
     public static String requireNonBlank(final String string, final String message) {
         if (StringUtils.isBlank(string)) {
             LoggerUtil.log(getLogger(), Level.SEVERE, "String is empty [", string, "]");
@@ -53,13 +64,23 @@ public class StringUtil {
         return string;
     }
 
+    /**
+     * Validates that a string is not null, empty, or whitespace-only using default error message.
+     *
+     * @param string the string to validate
+     * @return the validated string
+     * @throws IllegalArgumentException if the string is blank
+     */
     public static String requireNonBlank(final String string) {
         return requireNonBlank(string, STRING_CANNOT_BE_BLANK);
     }
 
 
     /**
-     * URL encodes <code>str</code>.
+     * URL encodes a string using UTF-8 encoding.
+     *
+     * @param str the string to URL encode
+     * @return the URL-encoded string
      */
     public static String asUrlEncoded(final String str) {
         return URLEncoder.encode(str, StandardCharsets.UTF_8);
@@ -376,13 +397,13 @@ public class StringUtil {
      * <p><strong>DEPRECATED:</strong> This method will be removed in a future version.
      * Use JSON libraries (Jackson, Gson) for safer deserialization with proper validation.</p>
      *
-     * <p>If you must use this method:
+     * <p>If you must use this method:</p>
      * <ul>
      *   <li>Only deserialize data you serialized yourself</li>
      *   <li>Only from trusted, authenticated sources</li>
      *   <li>Never from user input, network requests, or external files</li>
      *   <li>Consider implementing ObjectInputFilter for additional protection</li>
-     * </ul></p>
+     * </ul>
      *
      * @param <T> the type of the object to deserialize
      * @param str the Base64-encoded compressed string to deserialize
@@ -420,13 +441,13 @@ public class StringUtil {
      * <p><strong>DEPRECATED:</strong> This method will be removed in a future version.
      * Use JSON libraries (Jackson, Gson) for safer deserialization with proper validation.</p>
      *
-     * <p>If you must use this method:
+     * <p>If you must use this method:</p>
      * <ul>
      *   <li>Only deserialize data you serialized yourself</li>
      *   <li>Only from trusted, authenticated sources</li>
      *   <li>Never from user input, network requests, or external files</li>
      *   <li>Consider implementing ObjectInputFilter for additional protection</li>
-     * </ul></p>
+     * </ul>
      *
      * @param <T> the type of the object to deserialize
      * @param str the Base64-encoded string to deserialize
