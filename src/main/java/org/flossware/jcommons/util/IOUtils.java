@@ -66,7 +66,9 @@ public class IOUtils {
     }
 
     /**
-     * Attempts to close inputStream. If any trouble arise closing, no error is logged.
+     * Attempts to close a closeable quietly. If any trouble arises closing, no error is logged.
+     * This is useful for cleanup in finally blocks where you don't want exceptions to mask
+     * the original exception.
      *
      * @param closeable the thing to close.
      */
@@ -75,10 +77,10 @@ public class IOUtils {
             return;
         }
 
-        try{
+        try {
             closeable.close();
         } catch (final IOException ioException) {
-            getLogger().log(Level.SEVERE, "Trouble closing", ioException);
+            // Silently ignore - this is a "quiet" close
         }
     }
 }

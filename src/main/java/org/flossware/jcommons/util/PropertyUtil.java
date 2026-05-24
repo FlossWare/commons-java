@@ -117,6 +117,6 @@ public final class PropertyUtil {
     }
 
     public static Properties fromFile(final String filename) {
-        return fromFile(filename);
+        return fromFile(new File(filename));
     }
 }
