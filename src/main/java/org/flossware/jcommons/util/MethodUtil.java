@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -49,20 +50,20 @@ public class MethodUtil {
      * @param <T> the annotation type
      * @param klass the class to search for annotated methods
      * @param annotationClass the annotation class to search for
-     * @return the first annotation found on any method, or null if not found
+     * @return Optional containing the first annotation found, or empty if not found
      */
-    public static <T extends Annotation> T findAnnotationOnMethods(final Class<?> klass, final Class<T> annotationClass) {
+    public static <T extends Annotation> Optional<T> findAnnotationOnMethods(final Class<?> klass, final Class<T> annotationClass) {
         Objects.requireNonNull(klass, "Class must not be null");
         Objects.requireNonNull(annotationClass, "Annotation class must not be null");
 
         for (final Method method : klass.getMethods()) {
             T annotation = method.getAnnotation(annotationClass);
             if (annotation != null) {
-                return annotation;
+                return Optional.of(annotation);
             }
         }
 
-        return null;
+        return Optional.empty();
     }
 
     /**
@@ -71,12 +72,12 @@ public class MethodUtil {
      * @param <T> the annotation type
      * @param klass the class to search for annotated methods
      * @param annotation the annotation instance to search for
-     * @return the first matching annotation found on any method, or null if not found
+     * @return Optional containing the first matching annotation found, or empty if not found
      */
     @SuppressWarnings("unchecked")
-    public static <T extends Annotation> T findAnnotationOnMethods(final Class<?> klass, final T annotation) {
+    public static <T extends Annotation> Optional<T> findAnnotationOnMethods(final Class<?> klass, final T annotation) {
         Objects.requireNonNull(klass, "Class must not be null");
         Objects.requireNonNull(annotation, "Annotation must not be null");
-        return (T) findAnnotationOnMethods(klass, annotation.annotationType());
+        return (Optional<T>) findAnnotationOnMethods(klass, annotation.annotationType());
     }
 }

@@ -133,8 +133,12 @@ public class StringUtil {
      *
      * @return true if we can append a separator or false if not
      */
-    static boolean isSeparatorAppendable(final String separator, final int index, final Object... objs) {
-        if (objs == null) {
+    private static boolean isSeparatorAppendable(final String separator, final int index, final Object... objs) {
+        if (objs == null || index < 0 || index >= objs.length) {
+            return false;
+        }
+
+        if (objs[index] == null) {
             return false;
         }
 

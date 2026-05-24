@@ -214,7 +214,7 @@ public final class FileUtil {
      */
     @Deprecated
     public static FileInputStream getFileInputStream(final String fileName) {
-        return getFileInputStream(new File(StringUtil.ensureString(fileName, "Cannot have a null or empty file name!")));
+        return getFileInputStream(new File(StringUtil.requireNonBlank(fileName, "Cannot have a null or empty file name!")));
     }
 
     /**
@@ -246,6 +246,6 @@ public final class FileUtil {
      */
     @Deprecated
     public static File ensureFileExists(final String file) {
-        return ensureFileExists(new File(StringUtil.ensureString(file, "Cannot ensure an empty file name!")));
+        return ensureFileExists(new File(StringUtil.requireNonBlank(file, "Cannot ensure an empty file name!")));
     }
 }

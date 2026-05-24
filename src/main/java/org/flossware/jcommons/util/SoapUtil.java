@@ -7,7 +7,6 @@ import jakarta.xml.ws.Service;
 import jakarta.xml.ws.WebServiceClient;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
@@ -26,54 +25,23 @@ public final class SoapUtil {
      */
     private static final Logger logger = Logger.getLogger(SoapUtil.class.getName());
 
-    private static final Supplier<SOAPFactory> soapFactorySupplier;
-
-    private static class SoapFactorySupplier implements Supplier<SOAPFactory> {
-        final SOAPFactory soapFactory;
-
-        SoapFactorySupplier(final SOAPFactory soapFactory) {
-            this.soapFactory = soapFactory;
-        }
-
-        @Override
-        public SOAPFactory get() {
-            return soapFactory;
-        }
-    }
-
-
-    private static class NoSoapFactorySupplier implements Supplier<SOAPFactory> {
-        @Override
-        public SOAPFactory get() {
-            throw new SoapException("Could not instantiate soap factory!");
-        }
-    }
-
-    static {
-        Supplier<SOAPFactory> factory;
-
-        try {
-            factory = new SoapFactorySupplier(SOAPFactory.newInstance());
-        } catch(final SOAPException soapException) {
-            factory = new NoSoapFactorySupplier();
-
-            logger.log(Level.SEVERE, "Could not instantiate soap factory!", soapException);
-        }
-
-        soapFactorySupplier = factory;
-    }
-
     private SoapUtil() {
     }
 
     /**
-     * Gets the SOAP factory instance for creating SOAP elements.
+     * Gets a new SOAP factory instance for creating SOAP elements.
+     * Creates a new instance on each call to ensure thread safety.
      *
-     * @return the SOAPFactory instance
+     * @return a new SOAPFactory instance
      * @throws SoapException if the SOAP factory could not be instantiated
      */
     public static SOAPFactory getSoapFactory() {
-        return soapFactorySupplier.get();
+        try {
+            return SOAPFactory.newInstance();
+        } catch (final SOAPException soapException) {
+            logger.log(Level.SEVERE, "Could not instantiate soap factory!", soapException);
+            throw new SoapException("Could not instantiate soap factory!", soapException);
+        }
     }
 
     /**

@@ -82,14 +82,14 @@ class MethodUtilTest {
 
     @Test
     void testFindAnnotationOnMethods() {
-        TestAnnotation annotation = MethodUtil.findAnnotationOnMethods(TestClass.class, TestAnnotation.class);
-        assertNotNull(annotation);
+        var annotation = MethodUtil.findAnnotationOnMethods(TestClass.class, TestAnnotation.class);
+        assertTrue(annotation.isPresent());
     }
 
     @Test
     void testFindAnnotationOnMethods_notFound() {
-        NotPresentAnnotation annotation = MethodUtil.findAnnotationOnMethods(TestClass.class, NotPresentAnnotation.class);
-        assertNull(annotation);
+        var annotation = MethodUtil.findAnnotationOnMethods(TestClass.class, NotPresentAnnotation.class);
+        assertTrue(annotation.isEmpty());
     }
 
     @Test
@@ -107,8 +107,8 @@ class MethodUtilTest {
     @Test
     void testFindAnnotationOnMethodsWithInstance() throws NoSuchMethodException {
         TestAnnotation annotationInstance = TestClass.class.getMethod("annotatedMethod1").getAnnotation(TestAnnotation.class);
-        TestAnnotation foundAnnotation = MethodUtil.findAnnotationOnMethods(TestClass.class, annotationInstance);
-        assertNotNull(foundAnnotation);
+        var foundAnnotation = MethodUtil.findAnnotationOnMethods(TestClass.class, annotationInstance);
+        assertTrue(foundAnnotation.isPresent());
     }
 
     @Test
