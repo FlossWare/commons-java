@@ -258,7 +258,7 @@ public class StringUtil {
      * @return true if <code>str</code> contains <code>contains</code>.
      */
     public static boolean isContained(final String str, final String contains) {
-        final boolean retVal = (null == str) ? false : str.contains(contains);
+        final boolean retVal = (null != str) && str.contains(contains);
 
         LoggerUtil.log(getLogger(), Level.FINEST, "Exception message contained result [{0}] for [{1}] message [{2}]", retVal, contains, str);
 
@@ -272,7 +272,7 @@ public class StringUtil {
             return;
         }
 
-        try (final ObjectOutputStream oos = new ObjectOutputStream(os)) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(os)) {
             oos.writeObject(serializable);
         } catch (final IOException ioException) {
             LoggerUtil.log(getLogger(), Level.SEVERE, ioException, "Trouble serializing object as a string!");
@@ -287,7 +287,7 @@ public class StringUtil {
         }
 
         try {
-            try (final GZIPOutputStream gos = new GZIPOutputStream(baos)) {
+            try (GZIPOutputStream gos = new GZIPOutputStream(baos)) {
                 toStream(gos, serializable);
             }
         } catch (final IOException ioException) {
@@ -371,7 +371,7 @@ public class StringUtil {
             return null;
         }
 
-        try (final ObjectInputStream ois = new ObjectInputStream(is)) {
+        try (ObjectInputStream ois = new ObjectInputStream(is)) {
             // Add security filter to restrict deserialization to trusted packages only
             ois.setObjectInputFilter(filterInfo -> {
                 if (filterInfo.serialClass() != null) {
@@ -405,7 +405,7 @@ public class StringUtil {
             return null;
         }
 
-        try (final GZIPInputStream gis = new GZIPInputStream(bais)) {
+        try (GZIPInputStream gis = new GZIPInputStream(bais)) {
             return fromStream(gis);
         } catch (final IOException ioException) {
             LoggerUtil.log(getLogger(), Level.SEVERE, ioException, "Trouble serializing object as a string!");
@@ -523,7 +523,7 @@ public class StringUtil {
      * @return a unique string containing prefix as prefix.
      */
     public static final String generateUniqueString(final String prefix) {
-        return StringUtil.generateUniqueString(prefix, "");
+        return generateUniqueString(prefix, "");
     }
 
     /**
@@ -532,7 +532,7 @@ public class StringUtil {
      * @return a unique string.
      */
     public static final String generateUniqueString() {
-        return StringUtil.generateUniqueString("");
+        return generateUniqueString("");
     }
 
     /**

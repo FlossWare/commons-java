@@ -79,7 +79,7 @@ public class IOUtils {
 
         try {
             closeable.close();
-        } catch (final IOException ioException) {
+        } catch (final IOException ioException) { // NOPMD - EmptyCatchBlock is intentional for quiet close
             // Silently ignore - this is a "quiet" close
         }
     }
