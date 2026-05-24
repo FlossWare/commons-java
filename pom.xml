@@ -152,6 +152,55 @@
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <id>enforce</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <!-- Require Java 17+ -->
+                                <requireJavaVersion>
+                                    <version>[17,)</version>
+                                    <message>Java 17 or higher is required</message>
+                                </requireJavaVersion>
+
+                                <!-- Require Maven 3.6.3+ -->
+                                <requireMavenVersion>
+                                    <version>[3.6.3,)</version>
+                                    <message>Maven 3.6.3 or higher is required</message>
+                                </requireMavenVersion>
+
+                                <!-- Ban duplicate dependencies -->
+                                <banDuplicatePomDependencyVersions/>
+
+                                <!-- Require dependency convergence -->
+                                <dependencyConvergence/>
+
+                                <!-- Require plugin versions -->
+                                <requirePluginVersions>
+                                    <message>All plugins must have explicit versions</message>
+                                    <banLatest>true</banLatest>
+                                    <banRelease>true</banRelease>
+                                    <banSnapshots>true</banSnapshots>
+                                </requirePluginVersions>
+
+                                <!-- Require no SNAPSHOT dependencies in releases -->
+                                <requireReleaseDeps>
+                                    <message>No SNAPSHOT dependencies allowed in releases</message>
+                                    <onlyWhenRelease>true</onlyWhenRelease>
+                                </requireReleaseDeps>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-scm-plugin</artifactId>
                 <version>${org.apache.maven.plugins_maven-scm-plugin}</version>
 
@@ -165,6 +214,22 @@
             </plugin>
         </plugins>            
     </build>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Force newer versions to resolve dependency convergence issues -->
+            <dependency>
+                <groupId>jakarta.activation</groupId>
+                <artifactId>jakarta.activation-api</artifactId>
+                <version>2.1.4</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.xml.bind</groupId>
+                <artifactId>jakarta.xml.bind-api</artifactId>
+                <version>4.0.4</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <dependency>
