@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <!--
+        Exclude EI_EXPOSE_REP and EI_EXPOSE_REP2 for Java records.
+        Records are meant to be transparent data carriers and exposing
+        their internal representation is intentional and safe.
+    -->
+    <Match>
+        <Class name="org.flossware.jcommons.soap.SoapRecord" />
+        <Or>
+            <Bug pattern="EI_EXPOSE_REP" />
+            <Bug pattern="EI_EXPOSE_REP2" />
+        </Or>
+    </Match>
+</FindBugsFilter>

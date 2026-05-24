@@ -232,12 +232,4 @@ class SoapUtilTest {
         assertEquals("http://test.namespace", result.getNamespaceURI());
         assertEquals("TestService", result.getLocalPart());
     }
-
-    @Test
-    void testPrivateGetLogger() throws Exception {
-        java.lang.reflect.Method method = SoapUtil.class.getDeclaredMethod("getLogger");
-        method.setAccessible(true);
-        Object logger = method.invoke(null);
-        assertNotNull(logger);
-    }
 }

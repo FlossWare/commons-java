@@ -63,13 +63,6 @@ public final class SoapUtil {
         soapFactorySupplier = factory;
     }
 
-    /**
-     * Return the logger.
-     */
-    private static Logger getLogger() {
-        return logger;
-    }
-
     private SoapUtil() {
     }
 
