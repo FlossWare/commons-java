@@ -45,8 +45,8 @@
         <org.apache.cxf_rt-frontend-jaxws>4.2.0</org.apache.cxf_rt-frontend-jaxws>
         <org.apache.cxf_cxf-core>4.2.0</org.apache.cxf_cxf-core>
 
-        <org.junit.jupiter_junit-jupiter-api>5.11.4</org.junit.jupiter_junit-jupiter-api>
-        <org.mockito_mockito-core>5.14.2</org.mockito_mockito-core>
+        <org.junit.jupiter_junit-jupiter-api>6.1.0</org.junit.jupiter_junit-jupiter-api>
+        <org.mockito_mockito-core>5.23.0</org.mockito_mockito-core>
 
         <message>Automated Version Bump ${project.version} [ci skip]</message>
     </properties>
