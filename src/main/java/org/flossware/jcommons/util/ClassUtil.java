@@ -57,5 +57,6 @@ public final class ClassUtil {
      * Default constructor not allowed.
      */
     private ClassUtil() {
+        throw new AssertionError("Utility class - do not instantiate");
     }
 }

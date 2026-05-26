@@ -180,5 +180,6 @@ public final class LoggerUtil {
      * Default constructor not allowed.
      */
     private LoggerUtil() {
+        throw new AssertionError("Utility class - do not instantiate");
     }
 }

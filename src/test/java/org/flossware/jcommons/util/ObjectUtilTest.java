@@ -41,7 +41,10 @@ class ObjectUtilTest {
         Constructor<ObjectUtil> constructor = ObjectUtil.class.getDeclaredConstructor();
         assertTrue(java.lang.reflect.Modifier.isPrivate(constructor.getModifiers()));
         constructor.setAccessible(true);
-        constructor.newInstance();
+
+        var exception = assertThrows(java.lang.reflect.InvocationTargetException.class, constructor::newInstance);
+        assertTrue(exception.getCause() instanceof AssertionError);
+        assertEquals("Utility class - do not instantiate", exception.getCause().getMessage());
     }
 
 }

@@ -10,7 +10,7 @@ import java.util.Objects;
  *
  * @author sfloess
  */
-public class UrlUtil {
+public final class UrlUtil {
 
     /**
      * Protocol separator.
@@ -21,6 +21,7 @@ public class UrlUtil {
      * Private constructor to prevent instantiation.
      */
     private UrlUtil() {
+        throw new AssertionError("Utility class - do not instantiate");
     }
 
     /**

@@ -26,6 +26,7 @@ public final class SoapUtil {
     private static final Logger logger = Logger.getLogger(SoapUtil.class.getName());
 
     private SoapUtil() {
+        throw new AssertionError("Utility class - do not instantiate");
     }
 
     /**

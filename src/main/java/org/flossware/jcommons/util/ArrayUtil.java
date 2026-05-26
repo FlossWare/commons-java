@@ -23,7 +23,7 @@ import java.util.Objects;
  *
  * @author flossware
  */
-public class ArrayUtil {
+public final class ArrayUtil {
     /**
      * Default minimum size for an array.
      */
@@ -107,5 +107,6 @@ public class ArrayUtil {
      * Default constructor not allowed
      */
     private ArrayUtil() {
+        throw new AssertionError("Utility class - do not instantiate");
     }
 }

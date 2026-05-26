@@ -44,6 +44,7 @@ public final class FileUtil {
      * Default constructor not allowed.
      */
     private FileUtil() {
+        throw new AssertionError("Utility class - do not instantiate");
     }
 
     /**

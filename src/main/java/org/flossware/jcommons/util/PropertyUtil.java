@@ -54,6 +54,7 @@ public final class PropertyUtil {
      * Default constructor not allowed.
      */
     private PropertyUtil() {
+        throw new AssertionError("Utility class - do not instantiate");
     }
 
 

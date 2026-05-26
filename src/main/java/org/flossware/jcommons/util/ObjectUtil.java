@@ -20,6 +20,7 @@ public final class ObjectUtil {
      * Default constructor not allowed.
      */
     private ObjectUtil() {
+        throw new AssertionError("Utility class - do not instantiate");
     }
 
     /**

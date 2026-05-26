@@ -26,7 +26,7 @@ import java.util.logging.Logger;
  *
  * @author Scot P. Floess
  */
-public class IOUtils {
+public final class IOUtils {
     /**
      * Our logger.
      */
@@ -46,6 +46,7 @@ public class IOUtils {
      * Default constructor not allowed.
      */
     private IOUtils() {
+        throw new AssertionError("Utility class - do not instantiate");
     }
 
     /**

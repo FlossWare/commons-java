@@ -14,8 +14,9 @@ import java.util.stream.Collectors;
  *
  * @author sfloess
  */
-public class MethodUtil {
+public final class MethodUtil {
     private MethodUtil() {
+        throw new AssertionError("Utility class - do not instantiate");
     }
 
     /**

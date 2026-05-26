@@ -25,7 +25,7 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author sfloess
  */
-public class StringUtil {
+public final class StringUtil {
     /**
      * Our logger.
      */
@@ -539,5 +539,6 @@ public class StringUtil {
      * Default constructor not allowed
      */
     private StringUtil() {
+        throw new AssertionError("Utility class - do not instantiate");
     }
 }
