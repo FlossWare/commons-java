@@ -511,7 +511,7 @@ public final class StringUtil {
      *
      * @return a unique string containing prefix as prefix and suffix as suffix.
      */
-    public static final String generateUniqueString(final String prefix, final String suffix) {
+    public static String generateUniqueString(final String prefix, final String suffix) {
         return prefix + UUID.randomUUID().toString() + suffix;
     }
 
@@ -522,7 +522,7 @@ public final class StringUtil {
      *
      * @return a unique string containing prefix as prefix.
      */
-    public static final String generateUniqueString(final String prefix) {
+    public static String generateUniqueString(final String prefix) {
         return generateUniqueString(prefix, "");
     }
 
@@ -531,7 +531,7 @@ public final class StringUtil {
      *
      * @return a unique string.
      */
-    public static final String generateUniqueString() {
+    public static String generateUniqueString() {
         return generateUniqueString("");
     }
 
