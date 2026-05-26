@@ -52,7 +52,7 @@ public final class FileUtil {
      *
      * @return our logger.
      */
-    static Logger getLogger() {
+    private static Logger getLogger() {
         return LOGGER;
     }
 

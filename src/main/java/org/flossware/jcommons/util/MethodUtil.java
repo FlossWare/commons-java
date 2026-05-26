@@ -20,11 +20,14 @@ public final class MethodUtil {
     }
 
     /**
-     * Finds all methods in a class that are annotated with a specific annotation class.
+     * Finds all public methods in a class that are annotated with a specific annotation class.
+     *
+     * <p>Note: Only public methods are searched (inherited and declared). Protected, package-private,
+     * and private methods are not included in the search.
      *
      * @param klass the class to search for annotated methods
      * @param annotationClass the annotation class to search for
-     * @return a list of methods that have the specified annotation
+     * @return a list of public methods that have the specified annotation
      */
     public static List<Method> findMethodsForAnnotationClass(final Class<?> klass, final Class<? extends Annotation> annotationClass) {
         Objects.requireNonNull(klass, "Class must not be null");
@@ -33,11 +36,14 @@ public final class MethodUtil {
     }
 
     /**
-     * Finds all methods in a class that are annotated with a specific annotation.
+     * Finds all public methods in a class that are annotated with a specific annotation.
+     *
+     * <p>Note: Only public methods are searched (inherited and declared). Protected, package-private,
+     * and private methods are not included in the search.
      *
      * @param klass the class to search for annotated methods
      * @param annotation the annotation instance to search for
-     * @return a list of methods that have the specified annotation
+     * @return a list of public methods that have the specified annotation
      */
     public static List<Method> findMethodsForAnnotation(final Class<?> klass, final Annotation annotation) {
         Objects.requireNonNull(klass, "Class must not be null");
@@ -46,12 +52,15 @@ public final class MethodUtil {
     }
 
     /**
-     * Finds the first annotation of a specific type on any method in a class.
+     * Finds the first annotation of a specific type on any public method in a class.
+     *
+     * <p>Note: Only public methods are searched (inherited and declared). Protected, package-private,
+     * and private methods are not included in the search.
      *
      * @param <T> the annotation type
      * @param klass the class to search for annotated methods
      * @param annotationClass the annotation class to search for
-     * @return Optional containing the first annotation found, or empty if not found
+     * @return Optional containing the first annotation found on a public method, or empty if not found
      */
     public static <T extends Annotation> Optional<T> findAnnotationOnMethods(final Class<?> klass, final Class<T> annotationClass) {
         Objects.requireNonNull(klass, "Class must not be null");
@@ -68,12 +77,15 @@ public final class MethodUtil {
     }
 
     /**
-     * Finds the first annotation matching the given annotation instance on any method in a class.
+     * Finds the first annotation matching the given annotation instance on any public method in a class.
+     *
+     * <p>Note: Only public methods are searched (inherited and declared). Protected, package-private,
+     * and private methods are not included in the search.
      *
      * @param <T> the annotation type
      * @param klass the class to search for annotated methods
      * @param annotation the annotation instance to search for
-     * @return Optional containing the first matching annotation found, or empty if not found
+     * @return Optional containing the first matching annotation found on a public method, or empty if not found
      */
     @SuppressWarnings("unchecked")
     public static <T extends Annotation> Optional<T> findAnnotationOnMethods(final Class<?> klass, final T annotation) {
