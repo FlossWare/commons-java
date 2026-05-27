@@ -135,13 +135,14 @@ mvn clean install -DskipTests
 
 ## Test Coverage
 
-The library maintains **comprehensive test coverage** with **260 unit tests**:
+The library maintains **exceptional test coverage** with **262 unit tests**:
 
 **Coverage Metrics:**
-- ✅ **97% instruction coverage** (1,524/1,562 instructions)
-- ✅ **87% branch coverage** (84/96 branches)
-- ✅ **99.3% method coverage** (134/135 methods)
-- ✅ **100% class coverage** (19/19 classes)
+- ✅ **99% instruction coverage** (1,551/1,562 instructions)
+- ✅ **93% branch coverage** (90/96 branches)
+- ✅ **100% method coverage** (135/135 methods) 🎯
+- ✅ **100% class coverage** (19/19 classes) 🎯
+- ✅ **~99% line coverage** (373/376 lines)
 
 **Test Suite Includes:**
 - Input validation edge cases (null, empty, whitespace)
@@ -152,12 +153,15 @@ The library maintains **comprehensive test coverage** with **260 unit tests**:
 - Reflection-based tests for private constructors and utility class enforcement
 - Mock-based tests for unreachable exception paths
 - Defensive code validation via reflection
+- ObjectInputFilter security testing for deserialization
+- Complex object graph deserialization (ArrayList, nested objects)
 
-All 260 tests pass with 0 failures. JaCoCo coverage reports are generated with each build.
+All 262 tests pass with 0 failures. JaCoCo coverage reports are generated with each build.
 
-**Remaining Coverage Gaps:**
-- StringUtil ObjectInputFilter lambda (security filter - difficult to test without complex mocking)
-- SoapUtil.getSoapFactory() success path (requires full SOAP runtime in test classpath)
+**Remaining Coverage Gaps (11 instructions, 6 branches, 3 lines):**
+- StringUtil lines 386-388, 390: ObjectInputFilter REJECTED/UNDECIDED paths  
+  (defensive security code for untrusted package blocking - requires complex adversarial testing)
+- Note: The ALLOWED path (lines 378-384) for trusted packages is fully covered
 
 ## Architecture
 
