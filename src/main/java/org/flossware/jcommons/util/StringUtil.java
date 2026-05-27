@@ -120,7 +120,7 @@ public final class StringUtil {
      * @throws IllegalArgumentException if <code>str</code> is blank.
      * @deprecated Use {@link #requireNonBlank(String, String)} instead
      */
-    @Deprecated
+    @Deprecated(since = "1.22", forRemoval = true)
     public static String ensureString(final String str, final String errorMsg) throws IllegalArgumentException {
         return requireNonBlank(str, errorMsg);
     }
@@ -136,7 +136,7 @@ public final class StringUtil {
      * @throws IllegalArgumentException if <code>str</code> is blank.
      * @deprecated Use {@link #requireNonBlank(String)} instead
      */
-    @Deprecated
+    @Deprecated(since = "1.22", forRemoval = true)
     public static String ensureString(final String str) throws IllegalArgumentException {
         return requireNonBlank(str);
     }

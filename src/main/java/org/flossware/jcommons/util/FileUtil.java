@@ -194,7 +194,7 @@ public final class FileUtil {
      * @throws FileException if there is any problem creating the file input stream
      * @deprecated Use {@link #newInputStream(Path)} instead for modern NIO.2 API
      */
-    @Deprecated
+    @Deprecated(since = "1.22", forRemoval = true)
     public static FileInputStream getFileInputStream(final File file) {
         try {
             return new FileInputStream(Objects.requireNonNull(file, "File must not be null"));
@@ -213,7 +213,7 @@ public final class FileUtil {
      * @throws FileException if there is any problem creating the file input stream
      * @deprecated Use {@link #newInputStream(String)} instead for modern NIO.2 API
      */
-    @Deprecated
+    @Deprecated(since = "1.22", forRemoval = true)
     public static FileInputStream getFileInputStream(final String fileName) {
         return getFileInputStream(new File(StringUtil.requireNonBlank(fileName, "File name must not be null or empty")));
     }
@@ -226,7 +226,7 @@ public final class FileUtil {
      * @throws IllegalArgumentException if file does not exist
      * @deprecated Use {@link #requireExists(Path)} instead for modern NIO.2 API
      */
-    @Deprecated
+    @Deprecated(since = "1.22", forRemoval = true)
     public static File ensureFileExists(final File file) {
         Objects.requireNonNull(file, "File must not be null");
 
@@ -245,7 +245,7 @@ public final class FileUtil {
      * @throws IllegalArgumentException if file does not exist
      * @deprecated Use {@link #requireExists(String)} instead for modern NIO.2 API
      */
-    @Deprecated
+    @Deprecated(since = "1.22", forRemoval = true)
     public static File ensureFileExists(final String file) {
         return ensureFileExists(new File(StringUtil.requireNonBlank(file, "File name must not be null or empty")));
     }
