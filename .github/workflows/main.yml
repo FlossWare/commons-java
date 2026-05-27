@@ -67,7 +67,7 @@ jobs:
         run: "mvn -U build-helper:parse-version versions:set -DnewVersion=\\${parsedVersion.majorVersion}.\\${parsedVersion.nextMinorVersion} versions:commit"
 
       - name: Ensure latest dependencies in pom.xml
-        run: "mvn -Dincludes='org.apache.commons:*, org.apache.cxf:*, org.junit.jupiter:*' -DgenerateBackupPoms=false versions:update-properties"
+        run: "mvn -Dincludes='org.apache.commons:*, org.apache.cxf:*, org.junit.jupiter:*, org.mockito:*' -DgenerateBackupPoms=false versions:update-properties"
 
       - name: Building and testing
         run: "mvn -U clean install"
