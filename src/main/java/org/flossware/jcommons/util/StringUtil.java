@@ -58,7 +58,8 @@ public final class StringUtil {
      */
     public static String requireNonBlank(final String string, final String message) {
         if (StringUtils.isBlank(string)) {
-            LoggerUtil.log(getLogger(), Level.SEVERE, "String is empty [", string, "]");
+            // Validation failures are caller's responsibility, log at FINE not SEVERE
+            LoggerUtil.log(getLogger(), Level.FINE, "String is empty [", string, "]");
 
             throw new IllegalArgumentException(message);
         }
@@ -435,7 +436,7 @@ public final class StringUtil {
     @Deprecated(since = "1.22", forRemoval = true)
     public static <T extends Serializable> T fromCompressedString(final String str) {
         if (StringUtils.isBlank(str)) {
-            LoggerUtil.log(getLogger(), Level.SEVERE, "Cannot deserialize from an empty string!");
+            LoggerUtil.log(getLogger(), Level.FINE, "Cannot deserialize from an empty string!");
             throw new IllegalArgumentException("Cannot deserialize from an empty string!");
         }
 
@@ -475,7 +476,7 @@ public final class StringUtil {
     @Deprecated(since = "1.22", forRemoval = true)
     public static <T extends Serializable> T fromString(final String str) {
         if (StringUtils.isBlank(str)) {
-            LoggerUtil.log(getLogger(), Level.SEVERE, "Cannot deserialize from an empty string!");
+            LoggerUtil.log(getLogger(), Level.FINE, "Cannot deserialize from an empty string!");
             throw new IllegalArgumentException("Cannot deserialize from an empty string!");
         }
 
