@@ -122,7 +122,7 @@ public final class PropertyUtil {
      * @throws JCommonsIOException if resource cannot be found or read
      */
     public static Properties fromResource(final String resource) {
-        Objects.requireNonNull(resource, "Resource path cannot be null");
+        Objects.requireNonNull(resource, "Resource path must not be null");
 
         InputStream inputStream = PropertyUtil.class.getClassLoader().getResourceAsStream(resource);
         if (inputStream == null) {

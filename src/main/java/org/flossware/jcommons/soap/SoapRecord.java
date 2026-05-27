@@ -18,7 +18,7 @@ public record SoapRecord<T>(Service service, Class<T> portType) {
      * Compact constructor that validates parameters.
      */
     public SoapRecord {
-        Objects.requireNonNull(service, "Service cannot be null");
-        Objects.requireNonNull(portType, "Port type cannot be null");
+        Objects.requireNonNull(service, "Service must not be null");
+        Objects.requireNonNull(portType, "Port type must not be null");
     }
 }

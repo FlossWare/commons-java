@@ -35,7 +35,7 @@ public final class UrlUtil {
      * @throws IllegalArgumentException if computing the URL fails.
      */
     public static URL createUrl(final String rawUrl) {
-        Objects.requireNonNull(rawUrl, "URL cannot be null");
+        Objects.requireNonNull(rawUrl, "URL must not be null");
 
         try {
             return new URL(rawUrl);
@@ -52,7 +52,7 @@ public final class UrlUtil {
      * @throws NullPointerException if url is null
      */
     public static String asProtocolAndHost(final URL url) {
-        Objects.requireNonNull(url, "URL cannot be null");
+        Objects.requireNonNull(url, "URL must not be null");
 
         return StringUtil.concat(url.getProtocol(), PROTOCOL_SEPARATOR, url.getHost());
     }
@@ -68,7 +68,7 @@ public final class UrlUtil {
      * @throws IllegalArgumentException if computing the URL fails.
      */
     public static String computeHostUrlAsString(final String rawUrl) {
-        Objects.requireNonNull(rawUrl, "URL cannot be null");
+        Objects.requireNonNull(rawUrl, "URL must not be null");
 
         return asProtocolAndHost(createUrl(rawUrl));
     }
@@ -83,7 +83,7 @@ public final class UrlUtil {
      * @throws UrlException if the URL protocol does not support standard host extraction (e.g., jar:, file:)
      */
     public static URL computeHostUrl(final String rawUrl) {
-        Objects.requireNonNull(rawUrl, "URL cannot be null");
+        Objects.requireNonNull(rawUrl, "URL must not be null");
 
         try {
             return new URL(computeHostUrlAsString(rawUrl));

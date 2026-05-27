@@ -165,8 +165,8 @@ public final class StringUtil {
      * @throws NullPointerException if separator is null
      */
     public static StringBuilder concatWithSeparator(final StringBuilder stringBuilder, final boolean isSeparatorAtEnd, final String separator, Object... objs) {
-        Objects.requireNonNull(separator, "Separator cannot be null");
-        ArrayUtil.ensureArray(objs, "Must have a list of objects to concat!");
+        Objects.requireNonNull(separator, "Separator must not be null");
+        ArrayUtil.ensureArray(objs, "Objects must not be null");
 
         for (int index = 0; index < objs.length; index++) {
             stringBuilder.append(objs[index]);

@@ -68,7 +68,7 @@ public final class FileUtil {
      */
     public static InputStream newInputStream(final Path path) {
         try {
-            return Files.newInputStream(Objects.requireNonNull(path, "Cannot have a null path!"));
+            return Files.newInputStream(Objects.requireNonNull(path, "Path must not be null"));
         } catch (final IOException ioException) {
             LoggerUtil.log(getLogger(), Level.WARNING, ioException, "Cannot open input stream for path [{0}]", path);
             throw new FileException(ioException);
@@ -84,7 +84,7 @@ public final class FileUtil {
      * @throws FileException if there is any problem opening the input stream
      */
     public static InputStream newInputStream(final String pathString) {
-        return newInputStream(Paths.get(StringUtil.requireNonBlank(pathString, "Cannot have a null or empty path string!")));
+        return newInputStream(Paths.get(StringUtil.requireNonBlank(pathString, "Path string must not be null or empty")));
     }
 
     /**
@@ -95,7 +95,7 @@ public final class FileUtil {
      * @throws IllegalArgumentException if path is null or does not exist
      */
     public static Path requireExists(final Path path) {
-        Objects.requireNonNull(path, "Cannot ensure a null path!");
+        Objects.requireNonNull(path, "Path must not be null");
 
         if (!Files.exists(path)) {
             throw new IllegalArgumentException(path + " does not exist!");
@@ -112,7 +112,7 @@ public final class FileUtil {
      * @throws IllegalArgumentException if pathString is null, empty, or does not exist
      */
     public static Path requireExists(final String pathString) {
-        return requireExists(Paths.get(StringUtil.requireNonBlank(pathString, "Cannot ensure an empty path string!")));
+        return requireExists(Paths.get(StringUtil.requireNonBlank(pathString, "Path string must not be null or empty")));
     }
 
     /**
@@ -197,7 +197,7 @@ public final class FileUtil {
     @Deprecated
     public static FileInputStream getFileInputStream(final File file) {
         try {
-            return new FileInputStream(Objects.requireNonNull(file, "Cannot have a null file!"));
+            return new FileInputStream(Objects.requireNonNull(file, "File must not be null"));
         } catch (final FileNotFoundException fileNotFoundException) {
             LoggerUtil.log(getLogger(), Level.WARNING, fileNotFoundException, "File [{0}] not found", file);
             throw new FileException(fileNotFoundException);
@@ -215,7 +215,7 @@ public final class FileUtil {
      */
     @Deprecated
     public static FileInputStream getFileInputStream(final String fileName) {
-        return getFileInputStream(new File(StringUtil.requireNonBlank(fileName, "Cannot have a null or empty file name!")));
+        return getFileInputStream(new File(StringUtil.requireNonBlank(fileName, "File name must not be null or empty")));
     }
 
     /**
@@ -228,7 +228,7 @@ public final class FileUtil {
      */
     @Deprecated
     public static File ensureFileExists(final File file) {
-        Objects.requireNonNull(file, "Cannot ensure a null file!");
+        Objects.requireNonNull(file, "File must not be null");
 
         if (!file.exists()) {
             throw new IllegalArgumentException(file + " does not exist!");
@@ -247,6 +247,6 @@ public final class FileUtil {
      */
     @Deprecated
     public static File ensureFileExists(final String file) {
-        return ensureFileExists(new File(StringUtil.requireNonBlank(file, "Cannot ensure an empty file name!")));
+        return ensureFileExists(new File(StringUtil.requireNonBlank(file, "File name must not be null or empty")));
     }
 }

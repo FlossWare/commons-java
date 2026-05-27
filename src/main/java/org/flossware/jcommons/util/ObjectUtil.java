@@ -31,6 +31,6 @@ public final class ObjectUtil {
      * @return the package for object.
      */
     public static String getPackage(final Object object) {
-        return ClassUtil.getPackageName(Objects.requireNonNull(object, "Must have an object!").getClass());
+        return ClassUtil.getPackageName(Objects.requireNonNull(object, "Object must not be null").getClass());
     }
 }

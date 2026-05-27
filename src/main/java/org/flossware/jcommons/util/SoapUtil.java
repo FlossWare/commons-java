@@ -55,9 +55,9 @@ public final class SoapUtil {
      * @throws NullPointerException if service or name is null
      */
     public static void setHeader(final Service service, final String name, final Object headerValue) {
-        Objects.requireNonNull(service, "Service cannot be null");
-        Objects.requireNonNull(name, "Header name cannot be null");
-        Objects.requireNonNull(headerValue, "Header value cannot be null");
+        Objects.requireNonNull(service, "Service must not be null");
+        Objects.requireNonNull(name, "Header name must not be null");
+        Objects.requireNonNull(headerValue, "Header value must not be null");
 
         ClientProxy.getClient(service).getRequestContext().put(name, headerValue);
     }
@@ -72,9 +72,9 @@ public final class SoapUtil {
      * @throws NullPointerException if service, qname, or headerValue is null
      */
     public static void setHeader(final Service service, final QName qname, final Object headerValue) {
-        Objects.requireNonNull(service, "Service cannot be null");
-        Objects.requireNonNull(qname, "QName cannot be null");
-        Objects.requireNonNull(headerValue, "Header value cannot be null");
+        Objects.requireNonNull(service, "Service must not be null");
+        Objects.requireNonNull(qname, "QName must not be null");
+        Objects.requireNonNull(headerValue, "Header value must not be null");
 
         setHeader(service, Header.HEADER_LIST, new Header(qname, headerValue));
     }
@@ -88,8 +88,8 @@ public final class SoapUtil {
      * @throws NullPointerException if service or headers is null
      */
     public static void setHeaders(final Service service, final Header... headers) {
-        Objects.requireNonNull(service, "Service cannot be null");
-        Objects.requireNonNull(headers, "Headers cannot be null");
+        Objects.requireNonNull(service, "Service must not be null");
+        Objects.requireNonNull(headers, "Headers must not be null");
 
         setHeader(service, Header.HEADER_LIST, Arrays.asList(headers));
     }
@@ -106,7 +106,7 @@ public final class SoapUtil {
      * @throws IllegalArgumentException if url is blank
      */
     public static <T> T setUrl(final T port, final String url) {
-        Objects.requireNonNull(port, "Port cannot be null");
+        Objects.requireNonNull(port, "Port must not be null");
         StringUtil.requireNonBlank(url, "URL cannot be blank");
 
         ((BindingProvider) port).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, url);
@@ -123,7 +123,7 @@ public final class SoapUtil {
      * @throws NullPointerException if webServiceClient is null
      */
     public static QName computeQName(final WebServiceClient webServiceClient) {
-        Objects.requireNonNull(webServiceClient, "WebServiceClient annotation cannot be null");
+        Objects.requireNonNull(webServiceClient, "WebServiceClient annotation must not be null");
 
         return new QName(webServiceClient.targetNamespace(), webServiceClient.name());
     }
@@ -138,7 +138,7 @@ public final class SoapUtil {
      * @throws IllegalArgumentException if the class is not annotated with @WebServiceClient
      */
     public static QName computeQName(final Class<? extends Service> klass) {
-        Objects.requireNonNull(klass, "Service class cannot be null");
+        Objects.requireNonNull(klass, "Service class must not be null");
 
         WebServiceClient annotation = klass.getAnnotation(WebServiceClient.class);
         if (annotation == null) {
@@ -158,7 +158,7 @@ public final class SoapUtil {
      * @throws IllegalArgumentException if the service class is not annotated with @WebServiceClient
      */
     public static QName computeQName(final Service service) {
-        Objects.requireNonNull(service, "Service cannot be null");
+        Objects.requireNonNull(service, "Service must not be null");
 
         return computeQName(service.getClass());
     }

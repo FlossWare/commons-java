@@ -34,7 +34,7 @@ public final class ClassUtil {
      *         is a primitive type, or is an array type with component type in the default package.
      */
     public static String getPackageName(final Class<?> klass) {
-        return Objects.requireNonNull(klass, "Must have a class!").getPackageName();
+        return Objects.requireNonNull(klass, "Class must not be null").getPackageName();
     }
 
     /**
@@ -50,7 +50,7 @@ public final class ClassUtil {
         // Unchecked cast is unavoidable: getClass() returns Class<?>, but we parameterize
         // the return type based on caller's context. Safe in practice as the cast matches
         // the actual runtime type, though type parameter T cannot be verified at compile time.
-        return (Class<T>) Objects.requireNonNull(object, "Must have an object!").getClass();
+        return (Class<T>) Objects.requireNonNull(object, "Object must not be null").getClass();
     }
 
     /**
