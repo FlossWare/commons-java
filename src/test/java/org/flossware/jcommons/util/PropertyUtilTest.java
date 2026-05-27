@@ -82,6 +82,23 @@ class PropertyUtilTest {
     }
 
     @Test
+    void testFromReader_withInvalidData() {
+        Reader reader = new Reader() {
+            @Override
+            public int read(char[] cbuf, int off, int len) throws IOException {
+                throw new IOException("Test exception");
+            }
+
+            @Override
+            public void close() throws IOException {
+            }
+        };
+
+        assertThrows(JCommonsIOException.class, () ->
+            PropertyUtil.fromReader(reader, false));
+    }
+
+    @Test
     void testFromFile(@TempDir Path tempDir) throws IOException {
         Path tempFile = tempDir.resolve("test.properties");
         String propertiesContent = "key1=value1\nkey2=value2\n";

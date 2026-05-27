@@ -3,6 +3,7 @@ package org.flossware.jcommons.util;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ClassUtilTest {
 
@@ -42,6 +43,17 @@ class ClassUtilTest {
         Integer num = 42;
         Class<Integer> clazz = ClassUtil.getClass(num);
         assertEquals(Integer.class, clazz);
+    }
+
+    @Test
+    void testPrivateConstructor() throws Exception {
+        java.lang.reflect.Constructor<ClassUtil> constructor = ClassUtil.class.getDeclaredConstructor();
+        assertTrue(java.lang.reflect.Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+
+        var exception = assertThrows(java.lang.reflect.InvocationTargetException.class, constructor::newInstance);
+        assertTrue(exception.getCause() instanceof AssertionError);
+        assertEquals("Utility class - do not instantiate", exception.getCause().getMessage());
     }
 
 }

@@ -6,6 +6,9 @@ import org.mockito.Mockito;
 import java.io.Closeable;
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 class IOUtilsTest {
@@ -48,5 +51,16 @@ class IOUtilsTest {
         doThrow(new IOException("Test exception")).when(closeable).close();
         IOUtils.closeQuietly(closeable);
         verify(closeable, times(1)).close();
+    }
+
+    @Test
+    void testPrivateConstructor() throws Exception {
+        java.lang.reflect.Constructor<IOUtils> constructor = IOUtils.class.getDeclaredConstructor();
+        assertTrue(java.lang.reflect.Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+
+        var exception = assertThrows(java.lang.reflect.InvocationTargetException.class, constructor::newInstance);
+        assertTrue(exception.getCause() instanceof AssertionError);
+        assertEquals("Utility class - do not instantiate", exception.getCause().getMessage());
     }
 }

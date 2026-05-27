@@ -62,6 +62,17 @@ class StringUtilTest {
     }
 
     @Test
+    void testEnsureString_withCustomMessage() {
+        assertEquals("test", StringUtil.ensureString("test", "Custom error message"));
+    }
+
+    @Test
+    void testEnsureString_withCustomMessage_throwsOnBlank() {
+        assertThrows(IllegalArgumentException.class, () ->
+            StringUtil.ensureString("", "Custom error message"));
+    }
+
+    @Test
     void testEnsureString_throwsOnBlank() {
         assertThrows(IllegalArgumentException.class, () ->
             StringUtil.ensureString(""));
@@ -241,6 +252,19 @@ class StringUtilTest {
             "isSeparatorAppendable", String.class, int.class, Object[].class);
         method.setAccessible(true);
         Boolean result = (Boolean) method.invoke(null, "-", 0, (Object[]) null);
+        assertFalse(result);
+    }
+
+    @Test
+    void testIsSeparatorAppendable_withNullElement() throws Exception {
+        // Test the private static method isSeparatorAppendable with null element
+        // This defensive code cannot be reached via public API because ArrayUtil.ensureArray
+        // rejects arrays with null elements, so we test it via reflection
+        java.lang.reflect.Method method = StringUtil.class.getDeclaredMethod(
+            "isSeparatorAppendable", String.class, int.class, Object[].class);
+        method.setAccessible(true);
+        Object[] arrayWithNull = new Object[]{"test", null, "other"};
+        Boolean result = (Boolean) method.invoke(null, "-", 1, arrayWithNull);
         assertFalse(result);
     }
 
