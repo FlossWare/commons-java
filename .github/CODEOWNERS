@@ -1,0 +1,21 @@
+# CODEOWNERS - Automated PR review assignment
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owner for everything in the repo
+* @sfloess
+
+# Core source code
+/src/main/java/ @sfloess
+/src/test/java/ @sfloess
+
+# Build configuration
+pom.xml @sfloess
+.github/workflows/ @sfloess
+
+# Documentation
+*.md @sfloess
+/docs/ @sfloess
+
+# Security-sensitive files
+SECURITY.md @sfloess
+dependency-check-suppressions.xml @sfloess

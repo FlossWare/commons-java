@@ -20,6 +20,36 @@
         </license>
     </licenses>
 
+    <developers>
+        <developer>
+            <id>sfloess</id>
+            <name>Scot P. Floess</name>
+            <email>sfloess@redhat.com</email>
+            <organization>FlossWare</organization>
+            <organizationUrl>https://github.com/FlossWare</organizationUrl>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+            <timezone>America/Chicago</timezone>
+        </developer>
+    </developers>
+
+    <organization>
+        <name>FlossWare</name>
+        <url>https://github.com/FlossWare</url>
+    </organization>
+
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/FlossWare/jcommons/issues</url>
+    </issueManagement>
+
+    <ciManagement>
+        <system>GitHub Actions</system>
+        <url>https://github.com/FlossWare/jcommons/actions</url>
+    </ciManagement>
+
     <packaging>jar</packaging>
 
     <properties>
@@ -53,8 +83,9 @@
 
     <scm>
         <connection>scm:git:https://github.com/FlossWare/jcommons.git</connection>
-        <developerConnection>scm:git:https://github.com/FlossWare/jcommons.git</developerConnection>
+        <developerConnection>scm:git:git@github.com:FlossWare/jcommons.git</developerConnection>
         <url>https://github.com/FlossWare/jcommons</url>
+        <tag>HEAD</tag>
     </scm>
 
     <build>
@@ -515,5 +546,10 @@
             <name>packagecloud-flossware</name>
             <url>https://packagecloud.io/flossware/java/maven2/</url>
         </repository>
+        <snapshotRepository>
+            <id>packagecloud-flossware-snapshots</id>
+            <name>packagecloud-flossware-snapshots</name>
+            <url>https://packagecloud.io/flossware/java/maven2/</url>
+        </snapshotRepository>
     </distributionManagement>
 </project>

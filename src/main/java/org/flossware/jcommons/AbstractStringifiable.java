@@ -41,7 +41,7 @@ public abstract class AbstractStringifiable extends AbstractBase implements Stri
      * @return the StringBuilder with the appended line
      */
     protected StringBuilder appendLine(final StringBuilder stringBuilder, final String... line) {
-        return StringUtil.concat(stringBuilder, line).append(LINE_SEPARATOR_STRING);
+        return StringUtil.concat(stringBuilder, (Object[]) line).append(LINE_SEPARATOR_STRING);
     }
 
     /**
