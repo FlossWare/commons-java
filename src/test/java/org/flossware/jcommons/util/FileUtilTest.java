@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -337,5 +338,95 @@ class FileUtilTest {
         var exception = assertThrows(java.lang.reflect.InvocationTargetException.class, constructor::newInstance);
         assertTrue(exception.getCause() instanceof AssertionError);
         assertEquals("Utility class - do not instantiate", exception.getCause().getMessage());
+    }
+
+    // ========== Path Traversal Security Tests ==========
+
+    @Test
+    void testValidatePathTraversal_withValidPath() throws IOException {
+        Path subDir = tempDir.resolve("subdir");
+        Files.createDirectory(subDir);
+        Path testFile = subDir.resolve("test.txt");
+        Files.writeString(testFile, "test");
+
+        Path result = FileUtil.validatePathTraversal(testFile, tempDir);
+        assertTrue(result.startsWith(tempDir.toRealPath()));
+    }
+
+    @Test
+    void testValidatePathTraversal_withTraversalAttempt() throws IOException {
+        Path subDir = tempDir.resolve("subdir");
+        Files.createDirectory(subDir);
+
+        // Attempt to traverse up and out
+        Path traversalPath = subDir.resolve("../../../etc/passwd");
+
+        assertThrows(IllegalArgumentException.class, () ->
+            FileUtil.validatePathTraversal(traversalPath, tempDir));
+    }
+
+    @Test
+    void testValidatePathTraversal_withNullPath() {
+        assertThrows(NullPointerException.class, () ->
+            FileUtil.validatePathTraversal(null, tempDir));
+    }
+
+    @Test
+    void testValidatePathTraversal_withNullBaseDirectory() throws IOException {
+        Path testFile = tempDir.resolve("test.txt");
+        Files.writeString(testFile, "test");
+
+        assertThrows(NullPointerException.class, () ->
+            FileUtil.validatePathTraversal(testFile, null));
+    }
+
+    @Test
+    void testValidateNoTraversalPatterns_withCleanPath() {
+        Path cleanPath = Paths.get("subdir/file.txt");
+        // Should not throw
+        FileUtil.validateNoTraversalPatterns(cleanPath);
+    }
+
+    @Test
+    void testValidateNoTraversalPatterns_withDotDot() {
+        Path traversalPath = Paths.get("subdir/../file.txt");
+        assertThrows(IllegalArgumentException.class, () ->
+            FileUtil.validateNoTraversalPatterns(traversalPath));
+    }
+
+    @Test
+    void testValidateNoTraversalPatterns_withDotSlash() {
+        Path traversalPath = Paths.get("./subdir/file.txt");
+        assertThrows(IllegalArgumentException.class, () ->
+            FileUtil.validateNoTraversalPatterns(traversalPath));
+    }
+
+    @Test
+    void testValidateNoTraversalPatterns_withNullPath() {
+        assertThrows(NullPointerException.class, () ->
+            FileUtil.validateNoTraversalPatterns(null));
+    }
+
+    @Test
+    void testNewInputStream_withBaseDirectory() throws IOException {
+        Path testFile = tempDir.resolve("secure.txt");
+        Files.writeString(testFile, "secure content");
+
+        try (InputStream is = FileUtil.newInputStream(testFile, tempDir)) {
+            assertNotNull(is);
+            String content = new String(is.readAllBytes());
+            assertEquals("secure content", content);
+        }
+    }
+
+    @Test
+    void testNewInputStream_withBaseDirectory_traversalAttempt() throws IOException {
+        Path subDir = tempDir.resolve("subdir");
+        Files.createDirectory(subDir);
+
+        Path traversalPath = subDir.resolve("../../../etc/passwd");
+
+        assertThrows(IllegalArgumentException.class, () ->
+            FileUtil.newInputStream(traversalPath, subDir));
     }
 }

@@ -56,6 +56,65 @@ public final class FileUtil {
         return LOGGER;
     }
 
+    // ========== Path Traversal Security ==========
+
+    /**
+     * Validates that a path does not escape a base directory using path traversal.
+     * Resolves symbolic links and normalizes paths to detect traversal attempts.
+     *
+     * @param path the path to validate
+     * @param baseDirectory the base directory that path must be within
+     * @return the normalized, real path if validation succeeds
+     * @throws IllegalArgumentException if path is null, baseDirectory is null,
+     *                                  or path attempts to escape baseDirectory
+     * @throws FileException if there is an I/O error resolving paths
+     */
+    public static Path validatePathTraversal(final Path path, final Path baseDirectory) {
+        Objects.requireNonNull(path, "Path must not be null");
+        Objects.requireNonNull(baseDirectory, "Base directory must not be null");
+
+        try {
+            // Resolve to real path (follows symlinks, normalizes ..)
+            final Path realPath = path.toRealPath();
+            final Path realBase = baseDirectory.toRealPath();
+
+            // Check if path is within base directory
+            if (!realPath.startsWith(realBase)) {
+                throw new IllegalArgumentException(
+                    "Path traversal detected: " + path + " escapes base directory " + baseDirectory
+                );
+            }
+
+            return realPath;
+        } catch (final IOException ioException) {
+            LoggerUtil.log(getLogger(), Level.WARNING, ioException,
+                "Cannot validate path [{0}] against base [{1}]", path, baseDirectory);
+            throw new FileException(ioException);
+        }
+    }
+
+    /**
+     * Validates that a path does not contain suspicious traversal patterns.
+     * This is a fast check that doesn't require filesystem access.
+     *
+     * @param path the path to validate
+     * @throws IllegalArgumentException if path contains traversal patterns
+     */
+    public static void validateNoTraversalPatterns(final Path path) {
+        Objects.requireNonNull(path, "Path must not be null");
+
+        final String pathString = path.toString();
+
+        // Check for common traversal patterns
+        if (pathString.contains("..") ||
+            pathString.contains("./") ||
+            pathString.contains(".\\")) {
+            throw new IllegalArgumentException(
+                "Path contains suspicious traversal patterns: " + path
+            );
+        }
+    }
+
     // ========== Modern NIO.2 Path-based methods ==========
 
     /**
@@ -73,6 +132,21 @@ public final class FileUtil {
             LoggerUtil.log(getLogger(), Level.WARNING, ioException, "Cannot open input stream for path [{0}]", path);
             throw new FileException(ioException);
         }
+    }
+
+    /**
+     * Return an input stream for the given path with path traversal validation.
+     *
+     * @param path the path for which we desire an input stream
+     * @param baseDirectory the base directory that path must be within
+     * @return an input stream for reading from the path
+     * @throws IllegalArgumentException if path is null, baseDirectory is null,
+     *                                  or path attempts to escape baseDirectory
+     * @throws FileException if there is any problem opening the input stream
+     */
+    public static InputStream newInputStream(final Path path, final Path baseDirectory) {
+        final Path validatedPath = validatePathTraversal(path, baseDirectory);
+        return newInputStream(validatedPath);
     }
 
     /**
