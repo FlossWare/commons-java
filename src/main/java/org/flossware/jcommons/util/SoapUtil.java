@@ -23,7 +23,7 @@ public final class SoapUtil {
     /**
      * Our logger.
      */
-    private static final Logger logger = Logger.getLogger(SoapUtil.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SoapUtil.class.getName());
 
     private SoapUtil() {
         throw new AssertionError("Utility class - do not instantiate");
@@ -40,7 +40,7 @@ public final class SoapUtil {
         try {
             return SOAPFactory.newInstance();
         } catch (final SOAPException soapException) {
-            logger.log(Level.SEVERE, "Could not instantiate soap factory!", soapException);
+            LOGGER.log(Level.SEVERE, "Could not instantiate soap factory!", soapException);
             throw new SoapException("Could not instantiate soap factory!", soapException);
         }
     }

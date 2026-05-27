@@ -30,7 +30,7 @@ public final class IOUtils {
     /**
      * Our logger.
      */
-    private static final Logger logger = Logger.getLogger(IOUtils.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(IOUtils.class.getName());
 
 
     /**
@@ -39,7 +39,7 @@ public final class IOUtils {
      * @return the logger.
      */
     private static Logger getLogger() {
-        return logger;
+        return LOGGER;
     }
 
     /**

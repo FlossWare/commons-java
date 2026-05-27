@@ -29,13 +29,13 @@ public final class StringUtil {
     /**
      * Our logger.
      */
-    private static final Logger logger = Logger.getLogger(StringUtil.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(StringUtil.class.getName());
 
     /**
      * Return the logger.
      */
     private static Logger getLogger() {
-        return logger;
+        return LOGGER;
     }
 
     /**
