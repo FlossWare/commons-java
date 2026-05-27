@@ -432,8 +432,8 @@ class StringUtilTest {
 
     @Test
     @SuppressWarnings("deprecation")
-    void testFromStream_objectInputFilter() throws Exception {
-        // Test the ObjectInputFilter by invoking fromStream directly with reflection
+    void testFromStream_objectInputFilter_allowedPath() throws Exception {
+        // Test the ObjectInputFilter ALLOWED path by invoking fromStream directly with reflection
         // Use ArrayList to trigger filter invocation (more complex than String)
 
         // Serialize an ArrayList (from java.util package - should be allowed by filter)
@@ -458,6 +458,104 @@ class StringUtilTest {
         assertEquals(2, result.size());
         assertEquals("item1", result.get(0));
         assertEquals("item2", result.get(1));
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
+    void testFromStream_objectInputFilter_withCustomObject() throws Exception {
+        // Test ObjectInputFilter with a custom serializable object from this test class
+        // This class is in org.flossware.jcommons.util package, so it should be ALLOWED
+
+        CustomSerializable obj = new CustomSerializable("test data");
+
+        java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+        try (java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(baos)) {
+            oos.writeObject(obj);
+        }
+
+        java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream(baos.toByteArray());
+        java.lang.reflect.Method method = StringUtil.class.getDeclaredMethod(
+            "fromStream", java.io.InputStream.class);
+        method.setAccessible(true);
+
+        CustomSerializable result = (CustomSerializable) method.invoke(null, bais);
+        assertNotNull(result);
+        assertEquals("test data", result.getData());
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
+    void testFromStream_objectInputFilter_rejectedPath() throws Exception {
+        // Test ObjectInputFilter REJECTED path with untrusted package
+        // com.untrusted.test is NOT in the allowed list (org.flossware.*, java.lang.*, java.util.*, [L)
+
+        com.untrusted.test.UntrustedSerializable obj = new com.untrusted.test.UntrustedSerializable("untrusted data");
+
+        java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+        try (java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(baos)) {
+            oos.writeObject(obj);
+        }
+
+        // Try to deserialize - the filter should REJECT it and return null
+        java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream(baos.toByteArray());
+        java.lang.reflect.Method method = StringUtil.class.getDeclaredMethod(
+            "fromStream", java.io.InputStream.class);
+        method.setAccessible(true);
+
+        // The filter will reject the untrusted class, causing deserialization to fail
+        // fromStream should catch the exception and return null
+        Object result = method.invoke(null, bais);
+        assertNull(result);
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
+    void testFromStream_objectInputFilter_undecidedPath() throws Exception {
+        // Test to trigger UNDECIDED path - use a deeply nested structure
+        // that might trigger filter callbacks with null serialClass()
+
+        // Create a nested ArrayList structure
+        java.util.ArrayList<java.util.ArrayList<String>> nested = new java.util.ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            java.util.ArrayList<String> inner = new java.util.ArrayList<>();
+            inner.add("item-" + i + "-1");
+            inner.add("item-" + i + "-2");
+            nested.add(inner);
+        }
+
+        java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+        try (java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(baos)) {
+            oos.writeObject(nested);
+        }
+
+        // Deserialize - during processing, the filter may be called with null serialClass
+        // for metadata operations (array size, stream depth, etc.)
+        java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream(baos.toByteArray());
+        java.lang.reflect.Method method = StringUtil.class.getDeclaredMethod(
+            "fromStream", java.io.InputStream.class);
+        method.setAccessible(true);
+
+        @SuppressWarnings("unchecked")
+        java.util.ArrayList<java.util.ArrayList<String>> result =
+            (java.util.ArrayList<java.util.ArrayList<String>>) method.invoke(null, bais);
+
+        assertNotNull(result);
+        assertEquals(3, result.size());
+        assertEquals("item-0-1", result.get(0).get(0));
+    }
+
+    // Static nested class for testing - in org.flossware.jcommons.util package (trusted)
+    private static class CustomSerializable implements java.io.Serializable {
+        private static final long serialVersionUID = 1L;
+        private final String data;
+
+        public CustomSerializable(String data) {
+            this.data = data;
+        }
+
+        public String getData() {
+            return data;
+        }
     }
 
     @Test
