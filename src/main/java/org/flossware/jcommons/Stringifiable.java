@@ -4,7 +4,7 @@ package org.flossware.jcommons;
  *
  * API to convert an object to a StringBuilder and makes it pretty.
  *
- * @author sfloess
+ * @author Scot P. Floess
  *
  */
 public interface Stringifiable {

@@ -8,7 +8,7 @@ import java.util.Objects;
  * Utility class for URL parsing, creation, and manipulation.
  * Provides methods for extracting protocol and host information from URLs.
  *
- * @author sfloess
+ * @author Scot P. Floess
  */
 public final class UrlUtil {
 

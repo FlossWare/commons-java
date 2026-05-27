@@ -17,7 +17,7 @@ import org.apache.cxf.headers.Header;
  * Utility class for Apache CXF SOAP service operations.
  * Provides methods for configuring SOAP endpoints, headers, and QName computation.
  *
- * @author sfloess
+ * @author Scot P. Floess
  */
 public final class SoapUtil {
     /**

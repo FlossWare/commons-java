@@ -21,7 +21,7 @@ import java.util.Objects;
 /**
  * Array utility class.
  *
- * @author flossware
+ * @author Scot P. Floess
  */
 public final class ArrayUtil {
     /**

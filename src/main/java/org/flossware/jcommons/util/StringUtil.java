@@ -23,7 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * Same vein as <code>java.util.Objects</code>
  *
- * @author sfloess
+ * @author Scot P. Floess
  */
 public final class StringUtil {
     /**

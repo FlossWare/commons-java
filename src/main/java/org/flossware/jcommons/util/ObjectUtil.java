@@ -6,7 +6,7 @@ import java.util.Objects;
  *
  * Utility class in the spirit of java.util.Objects.
  *
- * @author sfloess
+ * @author Scot P. Floess
  *
  */
 public final class ObjectUtil {

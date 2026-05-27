@@ -21,7 +21,7 @@ import java.util.Objects;
 /**
  * Utility class for class functionality.
  *
- * @author sfloess
+ * @author Scot P. Floess
  */
 public final class ClassUtil {
 

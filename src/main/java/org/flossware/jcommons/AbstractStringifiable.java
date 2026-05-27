@@ -6,7 +6,7 @@ import org.flossware.jcommons.util.StringUtil;
  *
  * Default abstract base class of stringifiables.
  *
- * @author sfloess
+ * @author Scot P. Floess
  *
  */
 public abstract class AbstractStringifiable extends AbstractBase implements Stringifiable {

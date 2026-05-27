@@ -11,7 +11,7 @@ import java.util.Objects;
  * @param <T> the port type
  * @param service the SOAP service instance (must not be null)
  * @param portType the port class type (must not be null)
- * @author sfloess
+ * @author Scot P. Floess
  */
 public record SoapRecord<T>(Service service, Class<T> portType) {
     /**

@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 /**
  * Same vein as <code>java.util.Collections</code>
  *
- * @author sfloess
+ * @author Scot P. Floess
  */
 public final class MethodUtil {
     private MethodUtil() {
