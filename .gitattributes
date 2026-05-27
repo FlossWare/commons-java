@@ -1,0 +1,59 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Java source files
+*.java text eol=lf diff=java
+*.groovy text eol=lf diff=java
+*.kt text eol=lf diff=java
+*.kts text eol=lf diff=java
+
+# Configuration files
+*.xml text eol=lf
+*.properties text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.json text eol=lf
+
+# Build files
+pom.xml text eol=lf
+build.gradle text eol=lf
+settings.gradle text eol=lf
+gradlew text eol=lf
+mvnw text eol=lf
+
+# Documentation
+*.md text eol=lf
+*.txt text eol=lf
+*.adoc text eol=lf
+
+# Shell scripts
+*.sh text eol=lf
+*.bash text eol=lf
+
+# Batch scripts
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary files
+*.jar binary
+*.class binary
+*.so binary
+*.dll binary
+*.dylib binary
+*.exe binary
+*.zip binary
+*.tar.gz binary
+*.7z binary
+
+# Images
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg text
+
+# IDE files
+.editorconfig text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
