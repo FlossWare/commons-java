@@ -392,7 +392,7 @@ public final class StringUtil {
 
             return (T) ois.readObject();
         } catch (final IOException | ClassNotFoundException exception) {
-            LoggerUtil.log(getLogger(), Level.SEVERE, exception, "Trouble serializing object as a string!");
+            LoggerUtil.log(getLogger(), Level.SEVERE, exception, "Trouble deserializing object from stream!");
         }
 
         return null;
@@ -408,7 +408,7 @@ public final class StringUtil {
         try (GZIPInputStream gis = new GZIPInputStream(bais)) {
             return fromStream(gis);
         } catch (final IOException ioException) {
-            LoggerUtil.log(getLogger(), Level.SEVERE, ioException, "Trouble serializing object as a string!");
+            LoggerUtil.log(getLogger(), Level.SEVERE, ioException, "Trouble decompressing and deserializing object from string!");
         }
 
         return null;

@@ -163,10 +163,12 @@ public final class PropertyUtil {
      * @throws FileException if the file cannot be read
      */
     public static Properties fromFile(final File file) {
-        try {
-            return populateFromInputStream(new Properties(), new FileInputStream(file), true);
+        try (FileInputStream fis = new FileInputStream(file)) {
+            return populateFromInputStream(new Properties(), fis, false);
         } catch (final FileNotFoundException fnfe) {
             throw new FileException(fnfe);
+        } catch (final IOException ioe) {
+            throw new FileException(ioe);
         }
     }
 

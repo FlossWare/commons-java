@@ -34,7 +34,7 @@ public final class ArrayUtil {
      *
      * @param <V>       the type of array.
      *
-     * @param values    represents the array to ensureObject there are value or has at least one element.
+     * @param values    the array to validate (must not be null, must contain at least minLength non-null elements).
      * @param minLength the minimum number of elements in the array.
      * @param errorMsg  is the message of the IllegalArgumentException if raised.
      *
@@ -61,7 +61,7 @@ public final class ArrayUtil {
      *
      * @param <V>       the type of array.
      *
-     * @param values    represents the array to ensureObject there are value or has at least one element.
+     * @param values    the array to validate (must not be null, must contain at least minLength non-null elements).
      * @param minLength the minimum number of elements in the array.
      *
      * @return values if not null, contains at least one element and each element is not null.
@@ -77,7 +77,7 @@ public final class ArrayUtil {
      *
      * @param <V>      the type for the elements of the array.
      *
-     * @param values   represents the array to ensureObject there are value or has at least one element.
+     * @param values   the array to validate (must not be null, must contain at least one non-null element).
      * @param errorMsg is the message of the IllegalArgumentException if raised.
      *
      * @return values if not null, contains at least one element and each element is not null.
@@ -93,7 +93,7 @@ public final class ArrayUtil {
      *
      * @param <V>    the type for the elements of the array.
      *
-     * @param values represents the array to ensureObject there are value or has at least one element.
+     * @param values the array to validate (must not be null, must contain at least one non-null element).
      *
      * @return values if not null, contains at least one element and each element is not null.
      *
