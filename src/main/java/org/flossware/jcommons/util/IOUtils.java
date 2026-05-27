@@ -38,7 +38,7 @@ public final class IOUtils {
      *
      * @return the logger.
      */
-    protected static Logger getLogger() {
+    private static Logger getLogger() {
         return logger;
     }
 
