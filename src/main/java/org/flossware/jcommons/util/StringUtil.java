@@ -365,11 +365,7 @@ public final class StringUtil {
     }
 
     static <T extends Serializable> T fromStream(final InputStream is) {
-        if (null == is) {
-            LoggerUtil.log(getLogger(), Level.WARNING, "Cannot deserialize from a null input stream!");
-
-            return null;
-        }
+        Objects.requireNonNull(is, "Input stream must not be null");
 
         try (ObjectInputStream ois = new ObjectInputStream(is)) {
             // Add security filter to restrict deserialization to trusted packages only
@@ -393,25 +389,19 @@ public final class StringUtil {
             return (T) ois.readObject();
         } catch (final IOException | ClassNotFoundException exception) {
             LoggerUtil.log(getLogger(), Level.SEVERE, exception, "Trouble deserializing object from stream!");
+            throw new RuntimeException("Failed to deserialize from stream", exception);
         }
-
-        return null;
     }
 
     static <T extends Serializable> T fromCompressedString(final ByteArrayInputStream bais) {
-        if (null == bais) {
-            LoggerUtil.log(getLogger(), Level.WARNING, "Cannot deserialize from a null input stream!");
-
-            return null;
-        }
+        Objects.requireNonNull(bais, "Input stream must not be null");
 
         try (GZIPInputStream gis = new GZIPInputStream(bais)) {
             return fromStream(gis);
         } catch (final IOException ioException) {
             LoggerUtil.log(getLogger(), Level.SEVERE, ioException, "Trouble decompressing and deserializing object from string!");
+            throw new RuntimeException("Failed to decompress and deserialize from string", ioException);
         }
-
-        return null;
     }
 
     /**
@@ -451,11 +441,7 @@ public final class StringUtil {
 
         byte[] decodedBytes = Base64.getDecoder().decode(str);
         final ByteArrayInputStream bais = new ByteArrayInputStream(decodedBytes);
-        T result = fromCompressedString(bais);
-        if (result == null) {
-            throw new RuntimeException("Failed to deserialize compressed string");
-        }
-        return result;
+        return fromCompressedString(bais);
     }
 
     /**
@@ -495,11 +481,7 @@ public final class StringUtil {
 
         byte[] decodedBytes = Base64.getDecoder().decode(str);
         final ByteArrayInputStream bais = new ByteArrayInputStream(decodedBytes);
-        T result = fromStream(bais);
-        if (result == null) {
-            throw new RuntimeException("Failed to deserialize string");
-        }
-        return result;
+        return fromStream(bais);
     }
 
     /**

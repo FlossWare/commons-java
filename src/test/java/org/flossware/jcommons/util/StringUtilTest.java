@@ -296,13 +296,15 @@ class StringUtilTest {
 
     @Test
     void testFromStream_withNullInputStream() throws Exception {
-        // Test package-private fromStream method with null
+        // Test package-private fromStream method with null - should throw NullPointerException
         java.lang.reflect.Method method = StringUtil.class.getDeclaredMethod(
             "fromStream", java.io.InputStream.class);
         method.setAccessible(true);
 
-        Object result = method.invoke(null, (java.io.InputStream) null);
-        assertNull(result);
+        var exception = assertThrows(java.lang.reflect.InvocationTargetException.class,
+            () -> method.invoke(null, (java.io.InputStream) null));
+        assertTrue(exception.getCause() instanceof NullPointerException);
+        assertEquals("Input stream must not be null", exception.getCause().getMessage());
     }
 
     @Test
@@ -312,8 +314,12 @@ class StringUtilTest {
             "fromCompressedString", java.io.ByteArrayInputStream.class);
         method.setAccessible(true);
 
-        Object result = method.invoke(null, (java.io.ByteArrayInputStream) null);
-        assertNull(result);
+        var exception = assertThrows(java.lang.reflect.InvocationTargetException.class,
+            () -> method.invoke(null, (java.io.ByteArrayInputStream) null));
+        assertTrue(exception.getCause() instanceof NullPointerException);
+        assertEquals("Input stream must not be null", exception.getCause().getMessage());
+        assertTrue(exception.getCause() instanceof NullPointerException);
+        assertEquals("Input stream must not be null", exception.getCause().getMessage());
     }
 
     @Test
@@ -504,8 +510,13 @@ class StringUtilTest {
 
         // The filter will reject the untrusted class, causing deserialization to fail
         // fromStream should catch the exception and return null
-        Object result = method.invoke(null, bais);
-        assertNull(result);
+        // The filter will reject the untrusted class, causing deserialization to fail
+        // fromStream should throw RuntimeException wrapping InvalidClassException
+        var exception = assertThrows(java.lang.reflect.InvocationTargetException.class,
+            () -> method.invoke(null, bais));
+        assertTrue(exception.getCause() instanceof RuntimeException);
+        assertTrue(exception.getCause().getCause() instanceof java.io.InvalidClassException);
+        assertTrue(exception.getCause().getCause().getMessage().contains("REJECTED"));
     }
 
     @Test
