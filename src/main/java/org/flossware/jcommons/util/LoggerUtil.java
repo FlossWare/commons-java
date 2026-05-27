@@ -20,7 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A logger utility class that adds the ability to log and return values as well as present a var args array to log vs creating an
+ * A logger utility class that adds the ability to log and return values as well as present a format arguments array to log vs creating an
  * object array to log multiple things. As an example, one typically will do this for a multi output log:
  *
  * <code>
@@ -29,7 +29,7 @@ import java.util.logging.Logger;
  * }
  * </code>
  *
- * A better (simpler notation) is to use var args like so:
+ * A better (simpler notation) is to use format arguments like so:
  *
  * <code>
  * public static void doSomething() {
@@ -70,13 +70,13 @@ import java.util.logging.Logger;
  */
 public final class LoggerUtil {
     /**
-     * Performs a log using the var args <code>objs</code> as an array that can be presented to the logger.
+     * Performs a log using the format arguments <code>objs</code> as an array that can be presented to the logger.
      *
      * @param logger    the logger to use.
      * @param level     the level of the log.
      * @param throwable the throwable to log with <code>str</code>.
      * @param str       the format string.
-     * @param objs      a var arg thats converted to an object array for logging.
+     * @param objs      a format arguments that are converted to an object array for logging.
      */
     public static void log(final Logger logger, final Level level, final Throwable throwable, final String str, final Object... objs) {
         logger.log(level, throwable, () -> {
@@ -88,7 +88,7 @@ public final class LoggerUtil {
     }
 
     /**
-     * Performs a log using the var args <code>objs</code> as an array that can be presented to the logger.
+     * Performs a log using the format arguments <code>objs</code> as an array that can be presented to the logger.
      *
      * @param logger    the logger to use.
      * @param level     the level of the log.
@@ -100,12 +100,12 @@ public final class LoggerUtil {
     }
 
     /**
-     * Performs a log using the var args <code>objs</code> as an array that can be presented to the logger.
+     * Performs a log using the format arguments <code>objs</code> as an array that can be presented to the logger.
      *
      * @param logger the logger to use.
      * @param level  the level of the log.
      * @param str    the format string.
-     * @param objs   a var arg thats converted to an object array for logging.
+     * @param objs   a format arguments that are converted to an object array for logging.
      */
     public static void log(final Logger logger, final Level level, final String str, final Object... objs) {
         logger.log(level, str, objs);
@@ -130,7 +130,7 @@ public final class LoggerUtil {
     }
 
     /**
-     * Log and return the value thats found at <code>index</code> in the var arg <code>objs</code>.
+     * Log and return the value that are found at <code>index</code> in the format arguments <code>objs</code>.
      *
      * @param <V>    the type to return.
      *
@@ -138,9 +138,9 @@ public final class LoggerUtil {
      * @param level  the level of the log.
      * @param str    the format string.
      * @param index  the index into <code>objs</code> that is the return value.
-     * @param objs   a var arg thats converted to an object array for logging.
+     * @param objs   a format arguments that are converted to an object array for logging.
      *
-     * @return the value found at index <code>index</code> in the var args <code>objs</code>.
+     * @return the value found at index <code>index</code> in the format arguments <code>objs</code>.
      * @throws IllegalArgumentException if index is negative or >= objs.length
      */
     @SuppressWarnings("unchecked") // Safe: Returning element from varargs array that is type-checked at call site
@@ -161,16 +161,16 @@ public final class LoggerUtil {
     }
 
     /**
-     * Log and return the value at found as the 0th index in the var args <code>objs</code>.
+     * Log and return the value at found as the 0th index in the format arguments <code>objs</code>.
      *
      * @param <V>    the type to return.
      *
      * @param logger the logger to use.
      * @param level  the level of the log.
      * @param str    the format string.
-     * @param objs   a var arg thats converted to an object array for logging.
+     * @param objs   a format arguments that are converted to an object array for logging.
      *
-     * @return the value found at 0th index in the var args <code>objs</code>.
+     * @return the value found at 0th index in the format arguments <code>objs</code>.
      */
     public static <V> V logAndReturn(final Logger logger, final Level level, final String str, final Object... objs) {
         return logAndReturnByIndex(logger, level, str, 0, objs);

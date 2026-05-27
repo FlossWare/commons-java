@@ -48,19 +48,19 @@ public abstract class AbstractBase {
     }
 
     /**
-     * Performs a log using the var args <code>objs</code> as an array that can be presented to the logger.
+     * Performs a log using the format arguments <code>objs</code> as an array that can be presented to the logger.
      *
      * @param level     the level of the log.
      * @param throwable the throwable to log with <code>str</code>.
      * @param str       the format string.
-     * @param objs      a var arg thats converted to an object array for logging.
+     * @param objs      a format arguments that are converted to an object array for logging.
      */
     protected void log(final Level level, final Throwable throwable, final String str, final Object... objs) {
         LoggerUtil.log(getLogger(), level, throwable, str, objs);
     }
 
     /**
-     * Performs a log using the var args <code>objs</code> as an array that can be presented to the logger.
+     * Performs a log using the format arguments <code>objs</code> as an array that can be presented to the logger.
      *
      * @param level     the level of the log.
      * @param throwable the throwable to log with <code>str</code>.
@@ -71,11 +71,11 @@ public abstract class AbstractBase {
     }
 
     /**
-     * Performs a log using the var args <code>objs</code> as an array that can be presented to the logger.
+     * Performs a log using the format arguments <code>objs</code> as an array that can be presented to the logger.
      *
      * @param level the level of the log.
      * @param str   the format string.
-     * @param objs  a var arg thats converted to an object array for logging.
+     * @param objs  a format arguments that are converted to an object array for logging.
      */
     protected void log(final Level level, final String str, final Object... objs) {
         LoggerUtil.log(getLogger(), level, str, objs);
@@ -97,7 +97,7 @@ public abstract class AbstractBase {
     }
 
     /**
-     * Log and return the value thats found at <code>index</code> in the var arg <code>objs</code>. The "i" in LogFi stands for
+     * Log and return the value that are found at <code>index</code> in the format arguments <code>objs</code>. The "i" in LogFi stands for
      * integer position. Without a unique name on this method, there is conflict in calling the logAndReturn() counterpart.
      *
      * @param <V>   the type to return.
@@ -105,24 +105,24 @@ public abstract class AbstractBase {
      * @param level the level of the log.
      * @param str   the format string.
      * @param index the index into <code>objs</code> that is the return value.
-     * @param objs  a var arg thats converted to an object array for logging.
+     * @param objs  a format arguments that are converted to an object array for logging.
      *
-     * @return the value found at index <code>index</code> in the var args <code>objs</code>.
+     * @return the value found at index <code>index</code> in the format arguments <code>objs</code>.
      */
     protected <V> V logAndReturnByIndex(final Level level, final String str, final int index, final Object... objs) {
         return LoggerUtil.logAndReturnByIndex(getLogger(), level, str, index, objs);
     }
 
     /**
-     * Log and return the value at found as the 0th index in the var arg <code>objs</code>.
+     * Log and return the value at found as the 0th index in the format arguments <code>objs</code>.
      *
      * @param <V>   the type to return.
      *
      * @param level the level of the log.
      * @param str   the format string.
-     * @param objs  a var arg thats converted to an object array for logging.
+     * @param objs  a format arguments that are converted to an object array for logging.
      *
-     * @return the value found at 0th index in the var args <code>objs</code>.
+     * @return the value found at 0th index in the format arguments <code>objs</code>.
      */
     protected <V> V logAndReturn(final Level level, final String str, final Object... objs) {
         return LoggerUtil.logAndReturn(getLogger(), level, str, objs);
@@ -132,7 +132,7 @@ public abstract class AbstractBase {
      * Convenience method to log at INFO level.
      *
      * @param str the format string
-     * @param objs a var arg converted to an object array for logging
+     * @param objs a format arguments converted to an object array for logging
      */
     protected void logInfo(final String str, final Object... objs) {
         log(Level.INFO, str, objs);
@@ -142,7 +142,7 @@ public abstract class AbstractBase {
      * Convenience method to log at WARNING level.
      *
      * @param str the format string
-     * @param objs a var arg converted to an object array for logging
+     * @param objs a format arguments converted to an object array for logging
      */
     protected void logWarning(final String str, final Object... objs) {
         log(Level.WARNING, str, objs);
@@ -153,7 +153,7 @@ public abstract class AbstractBase {
      *
      * @param throwable the throwable to log
      * @param str the format string
-     * @param objs a var arg converted to an object array for logging
+     * @param objs a format arguments converted to an object array for logging
      */
     protected void logWarning(final Throwable throwable, final String str, final Object... objs) {
         log(Level.WARNING, throwable, str, objs);
@@ -163,7 +163,7 @@ public abstract class AbstractBase {
      * Convenience method to log at SEVERE level.
      *
      * @param str the format string
-     * @param objs a var arg converted to an object array for logging
+     * @param objs a format arguments converted to an object array for logging
      */
     protected void logError(final String str, final Object... objs) {
         log(Level.SEVERE, str, objs);
@@ -174,7 +174,7 @@ public abstract class AbstractBase {
      *
      * @param throwable the throwable to log
      * @param str the format string
-     * @param objs a var arg converted to an object array for logging
+     * @param objs a format arguments converted to an object array for logging
      */
     protected void logError(final Throwable throwable, final String str, final Object... objs) {
         log(Level.SEVERE, throwable, str, objs);
