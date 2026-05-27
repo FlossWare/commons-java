@@ -80,6 +80,7 @@ Thumbs.db
 *.properties
 !**/src/test/resources/**/*.properties
 !**/src/main/resources/**/*.properties
+!.mvn/wrapper/maven-wrapper.properties
 .solenopsis/
 *.key
 *.pem
