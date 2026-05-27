@@ -67,7 +67,7 @@ public abstract class AbstractBase {
      * @param str       the format string.
      */
     protected void log(final Level level, final Throwable throwable, final String str) {
-        LoggerUtil.log(getLogger(), level, str, throwable);
+        LoggerUtil.log(getLogger(), level, throwable, str);
     }
 
     /**
