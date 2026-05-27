@@ -431,6 +431,36 @@ class StringUtilTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
+    void testFromStream_objectInputFilter() throws Exception {
+        // Test the ObjectInputFilter by invoking fromStream directly with reflection
+        // Use ArrayList to trigger filter invocation (more complex than String)
+
+        // Serialize an ArrayList (from java.util package - should be allowed by filter)
+        java.util.ArrayList<String> testList = new java.util.ArrayList<>();
+        testList.add("item1");
+        testList.add("item2");
+
+        java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+        try (java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(baos)) {
+            oos.writeObject(testList);
+        }
+
+        // Deserialize using fromStream - this should exercise the filter's ALLOWED path
+        java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream(baos.toByteArray());
+        java.lang.reflect.Method method = StringUtil.class.getDeclaredMethod(
+            "fromStream", java.io.InputStream.class);
+        method.setAccessible(true);
+
+        @SuppressWarnings("unchecked")
+        java.util.ArrayList<String> result = (java.util.ArrayList<String>) method.invoke(null, bais);
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertEquals("item1", result.get(0));
+        assertEquals("item2", result.get(1));
+    }
+
+    @Test
     void testPrivateConstructor() throws Exception {
         Constructor<StringUtil> constructor = StringUtil.class.getDeclaredConstructor();
         assertTrue(java.lang.reflect.Modifier.isPrivate(constructor.getModifiers()));
