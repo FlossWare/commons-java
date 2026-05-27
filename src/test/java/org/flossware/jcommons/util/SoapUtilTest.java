@@ -232,4 +232,15 @@ class SoapUtilTest {
         assertEquals("http://test.namespace", result.getNamespaceURI());
         assertEquals("TestService", result.getLocalPart());
     }
+
+    @Test
+    void testPrivateConstructor() throws Exception {
+        java.lang.reflect.Constructor<SoapUtil> constructor = SoapUtil.class.getDeclaredConstructor();
+        assertTrue(java.lang.reflect.Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+
+        var exception = assertThrows(java.lang.reflect.InvocationTargetException.class, constructor::newInstance);
+        assertTrue(exception.getCause() instanceof AssertionError);
+        assertEquals("Utility class - do not instantiate", exception.getCause().getMessage());
+    }
 }

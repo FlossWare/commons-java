@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class LoggerUtilTest {
 
@@ -96,5 +97,16 @@ class LoggerUtilTest {
     void testLogAndReturnByIndex_indexEqualsLength() {
         assertThrows(IllegalArgumentException.class, () ->
             LoggerUtil.logAndReturnByIndex(logger, Level.INFO, "Test", 2, "value1", "value2"));
+    }
+
+    @Test
+    void testPrivateConstructor() throws Exception {
+        java.lang.reflect.Constructor<LoggerUtil> constructor = LoggerUtil.class.getDeclaredConstructor();
+        assertTrue(java.lang.reflect.Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+
+        var exception = assertThrows(java.lang.reflect.InvocationTargetException.class, constructor::newInstance);
+        assertTrue(exception.getCause() instanceof AssertionError);
+        assertEquals("Utility class - do not instantiate", exception.getCause().getMessage());
     }
 }
