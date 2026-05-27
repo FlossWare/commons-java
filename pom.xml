@@ -123,6 +123,20 @@
                 </configuration>
             </plugin>
 
+            <!-- Maven Failsafe Plugin for Integration Tests -->
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${maven-surefire-plugin}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- JaCoCo Plugin for Code Coverage - Strict 100% -->
             <plugin>
                 <groupId>org.jacoco</groupId>
