@@ -135,13 +135,13 @@ mvn clean install -DskipTests
 
 ## Test Coverage
 
-The library maintains **comprehensive test coverage** with **251 unit tests**:
+The library maintains **comprehensive test coverage** with **260 unit tests**:
 
 **Coverage Metrics:**
-- ✅ **96% instruction coverage** (1,286/1,338 instructions)
-- ✅ **88% branch coverage** (76/86 branches)
-- ✅ **99% method coverage** (87/88 methods)
-- ✅ **100% class coverage** (18/18 classes)
+- ✅ **97% instruction coverage** (1,524/1,562 instructions)
+- ✅ **87% branch coverage** (84/96 branches)
+- ✅ **99.3% method coverage** (134/135 methods)
+- ✅ **100% class coverage** (19/19 classes)
 
 **Test Suite Includes:**
 - Input validation edge cases (null, empty, whitespace)
@@ -149,10 +149,15 @@ The library maintains **comprehensive test coverage** with **251 unit tests**:
 - SOAP utilities with Mockito-based integration tests
 - String operations, encoding, and serialization
 - File operations with temporary files
-- Reflection-based tests for private constructors
+- Reflection-based tests for private constructors and utility class enforcement
 - Mock-based tests for unreachable exception paths
+- Defensive code validation via reflection
 
-All 251 tests pass with 0 failures. JaCoCo coverage reports are generated with each build.
+All 260 tests pass with 0 failures. JaCoCo coverage reports are generated with each build.
+
+**Remaining Coverage Gaps:**
+- StringUtil ObjectInputFilter lambda (security filter - difficult to test without complex mocking)
+- SoapUtil.getSoapFactory() success path (requires full SOAP runtime in test classpath)
 
 ## Architecture
 
