@@ -28,7 +28,7 @@
         <maven-clean-plugin>3.5.0</maven-clean-plugin>
         <maven-resources-plugin>3.3.1</maven-resources-plugin>
         <maven-compiler-plugin>3.15.0</maven-compiler-plugin>
-        <maven-surefire-plugin>3.5.2</maven-surefire-plugin>
+        <maven-surefire-plugin>3.5.5</maven-surefire-plugin>
         <maven-jar-plugin>3.5.0</maven-jar-plugin>
         <maven-install-plugin>3.1.4</maven-install-plugin>
         <maven-deploy-plugin>3.1.4</maven-deploy-plugin>
@@ -39,14 +39,14 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
 
-        <org.apache.maven.plugins_maven-scm-plugin>2.0.1</org.apache.maven.plugins_maven-scm-plugin>
+        <org.apache.maven.plugins_maven-scm-plugin>2.2.1</org.apache.maven.plugins_maven-scm-plugin>
 
         <org.apache.commons_commons-lang3>3.20.0</org.apache.commons_commons-lang3>
-        <org.apache.cxf_rt-frontend-jaxws>4.2.0</org.apache.cxf_rt-frontend-jaxws>
-        <org.apache.cxf_cxf-core>4.2.0</org.apache.cxf_cxf-core>
+        <org.apache.cxf_rt-frontend-jaxws>4.2.1</org.apache.cxf_rt-frontend-jaxws>
+        <org.apache.cxf_cxf-core>4.2.1</org.apache.cxf_cxf-core>
 
         <org.junit.jupiter_junit-jupiter-api>5.11.4</org.junit.jupiter_junit-jupiter-api>
-        <org.mockito_mockito-core>5.14.2</org.mockito_mockito-core>
+        <org.mockito_mockito-core>5.23.0</org.mockito_mockito-core>
 
         <message>Automated Version Bump ${project.version} [ci skip]</message>
     </properties>
@@ -307,6 +307,8 @@
                 <configuration>
                     <failBuildOnCVSS>7</failBuildOnCVSS>
                     <suppressionFile>dependency-check-suppressions.xml</suppressionFile>
+                    <!-- Disable OSS Index analyzer to avoid credential errors -->
+                    <ossindexAnalyzerEnabled>false</ossindexAnalyzerEnabled>
                 </configuration>
                 <executions>
                     <execution>
@@ -432,6 +434,14 @@
                 <groupId>jakarta.xml.bind</groupId>
                 <artifactId>jakarta.xml.bind-api</artifactId>
                 <version>4.0.4</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.angus</groupId>
+                <artifactId>angus-activation</artifactId>
+                <version>2.0.3</version>
+                <!-- CVE-2025-7962 is a false positive for angus-activation.
+                     The vulnerability affects angus-mail, not angus-activation.
+                     See: https://github.com/dependency-check/DependencyCheck/issues/8144 -->
             </dependency>
         </dependencies>
     </dependencyManagement>

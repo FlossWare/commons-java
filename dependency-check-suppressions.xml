@@ -18,4 +18,17 @@
             <cve>CVE-2024-XXXXX</cve>
         </suppress>
     -->
+
+    <!-- False positive: CVE-2025-7962 affects angus-mail, not angus-activation -->
+    <suppress>
+        <notes><![CDATA[
+        CVE-2025-7962 is wrongly reported for angus-activation.
+        The vulnerability affects angus-mail (Jakarta Mail), not angus-activation (Jakarta Activation).
+        These are separate projects with independent versioning.
+        See: https://github.com/dependency-check/DependencyCheck/issues/8144
+        Reviewed and approved by Scot P. Floess on 2026-05-27.
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.eclipse\.angus/angus\-activation@.*$</packageUrl>
+        <cve>CVE-2025-7962</cve>
+    </suppress>
 </suppressions>
