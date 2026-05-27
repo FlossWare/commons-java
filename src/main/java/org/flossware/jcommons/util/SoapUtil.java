@@ -31,7 +31,7 @@ public final class SoapUtil {
 
     /**
      * Gets a new SOAP factory instance for creating SOAP elements.
-     * Creates a new instance on each call to ensure thread safety.
+     * Delegates to SOAPFactory.newInstance() which returns a new factory on each call.
      *
      * @return a new SOAPFactory instance
      * @throws SoapException if the SOAP factory could not be instantiated

@@ -143,7 +143,7 @@ public final class LoggerUtil {
      * @return the value found at index <code>index</code> in the var args <code>objs</code>.
      * @throws IllegalArgumentException if index is negative or >= objs.length
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked") // Safe: Returning element from varargs array that is type-checked at call site
     public static <V> V logAndReturnByIndex(final Logger logger, final Level level, final String str, int index, final Object... objs) {
         if (index < 0) {
             throw new IllegalArgumentException("Index cannot be negative: " + index);

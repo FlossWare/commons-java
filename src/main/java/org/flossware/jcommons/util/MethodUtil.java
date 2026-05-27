@@ -87,7 +87,7 @@ public final class MethodUtil {
      * @param annotation the annotation instance to search for
      * @return Optional containing the first matching annotation found on a public method, or empty if not found
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked") // Safe: Cast from Optional<? extends Annotation> to Optional<T> where T is the annotation type
     public static <T extends Annotation> Optional<T> findAnnotationOnMethods(final Class<?> klass, final T annotation) {
         Objects.requireNonNull(klass, "Class must not be null");
         Objects.requireNonNull(annotation, "Annotation must not be null");
