@@ -115,9 +115,21 @@ mvn clean verify
 ### Adding New Utility Method
 1. Add method to appropriate *Util class
 2. Add comprehensive unit tests (null, empty, edge cases)
-3. Update JavaDoc with @since tag
+3. **REQUIRED:** Update JavaDoc with `@since` tag (current version)
 4. Run `mvn verify` - coverage must not drop
 5. Update CHANGELOG.md
+
+**Example:**
+```java
+/**
+ * Validates the input string.
+ * 
+ * @param input the string to validate
+ * @return validated string
+ * @since 1.32
+ */
+public static String validate(String input) { ... }
+```
 
 ### Fixing Security Vulnerability
 1. Check OWASP dependency-check report
