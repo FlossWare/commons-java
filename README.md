@@ -5,6 +5,7 @@ Foundation utilities for the [Solenopsis](https://github.com/solenopsis) Salesfo
 [![Build Status](https://github.com/FlossWare/jcommons/workflows/CD-CI/badge.svg)](https://github.com/FlossWare/jcommons/actions)
 [![codecov](https://codecov.io/gh/FlossWare/jcommons/branch/main/graph/badge.svg)](https://codecov.io/gh/FlossWare/jcommons)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Security Policy](https://img.shields.io/badge/security-policy-blue)](https://github.com/FlossWare/jcommons/blob/main/SECURITY.md)
 [![Maven Central](https://img.shields.io/badge/maven--central-packagecloud-orange)](https://packagecloud.io/flossware/java)
 [![Java Version](https://img.shields.io/badge/Java-17%2B-blue)](https://openjdk.org/projects/jdk/17/)
 [![Coverage](https://img.shields.io/badge/coverage-93%25-brightgreen)](https://github.com/FlossWare/jcommons/actions)
