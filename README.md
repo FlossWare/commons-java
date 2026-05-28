@@ -52,7 +52,7 @@ Core utilities for Apache CXF SOAP clients:
 <dependency>
     <groupId>org.flossware</groupId>
     <artifactId>jcommons</artifactId>
-    <version>1.31</version>
+    <version>LATEST</version> <!-- Check releases: https://github.com/FlossWare/jcommons/releases -->
 </dependency>
 
 <repositories>
@@ -240,10 +240,17 @@ See [CHANGELOG.md](CHANGELOG.md) for detailed migration guide.
 
 ## Contributing
 
-1. Ensure all tests pass: `mvn test`
-2. Follow existing code style
-3. Add tests for new functionality
-4. Update documentation
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines including:
+- Code style and standards (Google Java Style Guide)
+- Testing requirements (93% coverage minimum)
+- Pull request process
+- Commit message format
+
+**Quick start:**
+1. Fork and clone the repository
+2. Run `mvn verify` to ensure all tests pass
+3. Make changes following our coding standards
+4. Submit PR with tests and documentation
 
 ## License
 
