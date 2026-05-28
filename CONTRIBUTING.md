@@ -17,6 +17,56 @@ Thank you for your interest in contributing to jcommons! This document provides 
 
 This project adheres to the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
 
+## Reporting Issues
+
+### Use Issue Templates
+
+When creating a new issue, **please use the appropriate issue template**:
+
+- **[Bug Report](.github/ISSUE_TEMPLATE/bug_report.yml)** - Report unexpected behavior or errors
+- **[Feature Request](.github/ISSUE_TEMPLATE/feature_request.yml)** - Suggest new features or enhancements
+- **[v2.0 Migration Feedback](.github/ISSUE_TEMPLATE/migration_feedback.yml)** - Feedback on deprecated method migrations
+- **[Security Vulnerability](.github/ISSUE_TEMPLATE/security_vulnerability.md)** - **DO NOT USE** - Report security issues privately via [Security Advisories](https://github.com/FlossWare/jcommons/security/advisories)
+
+**Note**: Blank issues are disabled. All issues must use a template.
+
+### Definition of Done for Issues
+
+An issue is **actionable** only when it satisfies:
+
+#### ✅ Version Verification
+- Specify version: `main` branch vs latest stable (v1.31)
+- Reproducible on specified version
+
+#### ✅ Environment Baseline
+- Java 17+ confirmed
+- Apache CXF 4.0+ confirmed (if using SoapUtil)
+- Relevant dependency versions listed
+
+#### ✅ Scope Alignment
+- Grounded in `org.flossware.jcommons` source code
+- Related to Solenopsis framework interaction (if applicable)
+- Not an external dependency issue
+
+#### ✅ Testing Standard (Bug Reports)
+- Includes minimal reproduction test case
+- Maintains 93% coverage baseline
+- Links to branch/PR with failing test
+
+#### ✅ Licensing Acknowledgment
+- Contributions governed by GPL v3.0
+- Acknowledged in template or PR
+
+### Triage Labels
+
+Issues not meeting the Definition of Done will be labeled:
+- `needs-info` - Missing required information
+- `needs-reproduction` - Missing test case
+- `needs-version` - Version not specified
+- `needs-env` - Environment details missing
+
+Once all requirements are met, the issue will be labeled `actionable`.
+
 ## Getting Started
 
 1. **Fork the repository** on GitHub
@@ -71,6 +121,55 @@ The build runs multiple quality checks automatically:
 - **OWASP Dependency Check** - Security vulnerability scanning
 
 All checks must pass for the build to succeed.
+
+### Advanced Quality Validation (Optional)
+
+#### Mutation Testing with PIT
+
+For deep quality validation, you can run PIT mutation testing:
+
+```bash
+# Run PIT mutation testing (takes 5-10 minutes)
+mvn org.pitest:pitest-maven:mutationCoverage
+
+# View report
+open target/pit-reports/index.html
+# Or: xdg-open target/pit-reports/index.html (Linux)
+```
+
+**What is Mutation Testing?**
+
+Mutation testing evaluates test quality by:
+1. Introducing small code changes (mutations)
+2. Re-running tests
+3. Checking if tests catch the mutations
+
+**Target**: 80% mutation coverage
+
+**When to Use**:
+- Before major releases
+- When refactoring complex logic
+- To verify test effectiveness
+- Not required for every commit (use `mvn verify` instead)
+
+#### Generate Maven Site
+
+To generate a unified quality dashboard:
+
+```bash
+# Generate comprehensive site with all reports
+mvn clean verify site
+
+# View site
+open target/site/index.html
+```
+
+The site includes:
+- Code coverage (JaCoCo)
+- Static analysis (SpotBugs, PMD, Checkstyle)
+- JavaDoc
+- Dependency reports
+- All quality metrics in one place
 
 ## Making Changes
 

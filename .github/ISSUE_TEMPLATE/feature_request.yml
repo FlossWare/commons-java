@@ -7,6 +7,44 @@ body:
       value: |
         Thanks for suggesting a new feature!
 
+  - type: dropdown
+    id: utility-class
+    attributes:
+      label: Utility Class
+      description: Which utility class does this feature relate to?
+      options:
+        - SoapUtil
+        - StringUtil
+        - FileUtil
+        - ArrayUtil
+        - ClassUtil
+        - LoggerUtil
+        - ObjectUtil
+        - UrlUtil
+        - MethodUtil
+        - New utility class
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: solenopsis-use-case
+    attributes:
+      label: Solenopsis Framework Use Case
+      description: |
+        How does this feature assist with:
+        - Solenopsis Salesforce SOAP operations?
+        - Session management?
+        - General utility handling?
+
+        **Context**: jcommons is the foundation for the Solenopsis framework.
+      placeholder: |
+        This feature would help with Solenopsis SOAP client generation by...
+        OR
+        This improves session caching in Solenopsis Session module by...
+    validations:
+      required: true
+
   - type: textarea
     id: problem
     attributes:
