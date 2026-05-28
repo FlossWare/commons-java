@@ -42,7 +42,7 @@ public final class ArrayUtil {
      *
      * @throws IllegalArgumentException if values has any nulls or does not have at least 1 element.
      */
-    public static <V> V[] ensureArray(final V[] values, final int minLength, final String errorMsg) throws IllegalArgumentException {
+    public static <V> V[] ensureArray(final V[] values, final int minLength, final String errorMsg) {
         Objects.requireNonNull(values, errorMsg);
 
         if (values.length < minLength) {
@@ -68,7 +68,7 @@ public final class ArrayUtil {
      *
      * @throws IllegalArgumentException if values has any nulls or does not have at least 1 element.
      */
-    public static <V> V[] ensureArray(final V[] values, final int minLength) throws IllegalArgumentException {
+    public static <V> V[] ensureArray(final V[] values, final int minLength) {
         return ensureArray(values, minLength, ObjectUtil.DEFAULT_ERROR_MSG);
     }
 
@@ -84,7 +84,7 @@ public final class ArrayUtil {
      *
      * @throws IllegalArgumentException if values has any nulls or does not have at least 1 element.
      */
-    public static <V> V[] ensureArray(final V[] values, final String errorMsg) throws IllegalArgumentException {
+    public static <V> V[] ensureArray(final V[] values, final String errorMsg) {
         return ensureArray(values, DEFAULT_MIN_ARRAY_LENGTH, errorMsg);
     }
 
@@ -99,7 +99,7 @@ public final class ArrayUtil {
      *
      * @throws IllegalArgumentException if values has any nulls or does not have at least 1 element.
      */
-    public static <V> V[] ensureArray(final V[] values) throws IllegalArgumentException {
+    public static <V> V[] ensureArray(final V[] values) {
         return ensureArray(values, ObjectUtil.DEFAULT_ERROR_MSG);
     }
 

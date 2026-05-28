@@ -121,7 +121,7 @@ public final class StringUtil {
      * @deprecated Use {@link #requireNonBlank(String, String)} instead
      */
     @Deprecated(since = "1.22", forRemoval = true)
-    public static String ensureString(final String str, final String errorMsg) throws IllegalArgumentException {
+    public static String ensureString(final String str, final String errorMsg) {
         return requireNonBlank(str, errorMsg);
     }
 
@@ -137,7 +137,7 @@ public final class StringUtil {
      * @deprecated Use {@link #requireNonBlank(String)} instead
      */
     @Deprecated(since = "1.22", forRemoval = true)
-    public static String ensureString(final String str) throws IllegalArgumentException {
+    public static String ensureString(final String str) {
         return requireNonBlank(str);
     }
 
