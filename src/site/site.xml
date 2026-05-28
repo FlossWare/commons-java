@@ -2,16 +2,16 @@
 <project xmlns="http://maven.apache.org/DECORATION/1.8.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/DECORATION/1.8.0 http://maven.apache.org/xsd/decoration-1.8.0.xsd"
-         name="jcommons">
+         name="commons-java">
 
     <bannerLeft>
-        <name>jcommons</name>
-        <href>https://github.com/FlossWare/jcommons</href>
+        <name>commons-java</name>
+        <href>https://github.com/FlossWare/commons-java</href>
     </bannerLeft>
 
     <bannerRight>
         <name>FlossWare</name>
-        <src>https://img.shields.io/badge/FlossWare-jcommons-blue</src>
+        <src>https://img.shields.io/badge/FlossWare-commons-java-blue</src>
         <href>https://github.com/FlossWare</href>
     </bannerRight>
 
@@ -29,7 +29,7 @@
             <topBarEnabled>true</topBarEnabled>
             <sideBarEnabled>true</sideBarEnabled>
             <gitHub>
-                <projectId>FlossWare/jcommons</projectId>
+                <projectId>FlossWare/commons-java</projectId>
                 <ribbonOrientation>right</ribbonOrientation>
                 <ribbonColor>gray</ribbonColor>
             </gitHub>
@@ -41,15 +41,15 @@
             <item name="Introduction" href="index.html"/>
             <item name="Getting Started" href="getting-started.html"/>
             <item name="Architecture" href="architecture.html"/>
-            <item name="Changelog" href="https://github.com/FlossWare/jcommons/blob/main/CHANGELOG.md"/>
+            <item name="Changelog" href="https://github.com/FlossWare/commons-java/blob/main/CHANGELOG.md"/>
         </menu>
 
         <menu name="Documentation">
             <item name="JavaDoc" href="apidocs/index.html"/>
             <item name="Source Xref" href="xref/index.html"/>
-            <item name="Contributing" href="https://github.com/FlossWare/jcommons/blob/main/CONTRIBUTING.md"/>
-            <item name="Security" href="https://github.com/FlossWare/jcommons/blob/main/SECURITY.md"/>
-            <item name="Code of Conduct" href="https://github.com/FlossWare/jcommons/blob/main/CODE_OF_CONDUCT.md"/>
+            <item name="Contributing" href="https://github.com/FlossWare/commons-java/blob/main/CONTRIBUTING.md"/>
+            <item name="Security" href="https://github.com/FlossWare/commons-java/blob/main/SECURITY.md"/>
+            <item name="Code of Conduct" href="https://github.com/FlossWare/commons-java/blob/main/CODE_OF_CONDUCT.md"/>
         </menu>
 
         <menu name="Quality Reports">

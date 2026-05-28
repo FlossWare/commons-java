@@ -1,682 +1,613 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
-    <groupId>org.flossware</groupId>
-    <artifactId>jcommons</artifactId>
-    <version>1.31</version>
-
-    <name>jcommons</name>
-    <description>This project is a collection of shareable Java related functionality.</description>
-
-    <url>https://github.com/FlossWare/jcommons</url>
-
-    <licenses>
-        <license>
-            <name>GNU General Public License, Version 3</name>
-            <url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
-    <developers>
-        <developer>
-            <id>sfloess</id>
-            <name>Scot P. Floess</name>
-            <email>sfloess@redhat.com</email>
-            <organization>FlossWare</organization>
-            <organizationUrl>https://github.com/FlossWare</organizationUrl>
-            <roles>
-                <role>architect</role>
-                <role>developer</role>
-            </roles>
-            <timezone>America/Chicago</timezone>
-        </developer>
-    </developers>
-
-    <organization>
-        <name>FlossWare</name>
-        <url>https://github.com/FlossWare</url>
-    </organization>
-
-    <issueManagement>
-        <system>GitHub Issues</system>
-        <url>https://github.com/FlossWare/jcommons/issues</url>
-    </issueManagement>
-
-    <ciManagement>
-        <system>GitHub Actions</system>
-        <url>https://github.com/FlossWare/jcommons/actions</url>
-    </ciManagement>
-
-    <packaging>jar</packaging>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-        <maven-clean-plugin>3.5.0</maven-clean-plugin>
-        <maven-resources-plugin>3.3.1</maven-resources-plugin>
-        <maven-compiler-plugin>3.15.0</maven-compiler-plugin>
-        <maven-surefire-plugin>3.5.5</maven-surefire-plugin>
-        <maven-jar-plugin>3.5.0</maven-jar-plugin>
-        <maven-install-plugin>3.1.4</maven-install-plugin>
-        <maven-deploy-plugin>3.1.4</maven-deploy-plugin>
-        <maven-site-plugin>3.12.1</maven-site-plugin>
-        <maven-project-info-reports-plugin>3.9.0</maven-project-info-reports-plugin>
-        <maven-javadoc-plugin>3.12.0</maven-javadoc-plugin>
-
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-
-        <org.apache.maven.plugins_maven-scm-plugin>2.2.1</org.apache.maven.plugins_maven-scm-plugin>
-
-        <org.apache.commons_commons-lang3>3.20.0</org.apache.commons_commons-lang3>
-        <org.apache.cxf_rt-frontend-jaxws>4.2.1</org.apache.cxf_rt-frontend-jaxws>
-        <org.apache.cxf_cxf-core>4.2.1</org.apache.cxf_cxf-core>
-
-        <org.junit.jupiter_junit-jupiter-api>5.11.4</org.junit.jupiter_junit-jupiter-api>
-        <org.mockito_mockito-core>5.23.0</org.mockito_mockito-core>
-
-        <message>Automated Version Bump ${project.version} [ci skip]</message>
-    </properties>
-
-    <scm>
-        <connection>scm:git:https://github.com/FlossWare/jcommons.git</connection>
-        <developerConnection>scm:git:git@github.com:FlossWare/jcommons.git</developerConnection>
-        <url>https://github.com/FlossWare/jcommons</url>
-        <tag>HEAD</tag>
-    </scm>
-
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <artifactId>maven-clean-plugin</artifactId>
-                    <version>${maven-clean-plugin}</version>
-                </plugin>
-
-                <plugin>
-                    <artifactId>maven-resources-plugin</artifactId>
-                    <version>${maven-resources-plugin}</version>
-                </plugin>
-
-                <plugin>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>${maven-compiler-plugin}</version>
-                </plugin>
-
-                <plugin>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>${maven-surefire-plugin}</version>
-                </plugin>
-
-                <plugin>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>${maven-jar-plugin}</version>
-                </plugin>
-
-                <plugin>
-                    <artifactId>maven-install-plugin</artifactId>
-                    <version>${maven-install-plugin}</version>
-                </plugin>
-
-                <plugin>
-                    <artifactId>maven-deploy-plugin</artifactId>
-                    <version>${maven-deploy-plugin}</version>
-                </plugin>
-
-                <plugin>
-                    <artifactId>maven-site-plugin</artifactId>
-                    <version>${maven-site-plugin}</version>
-                </plugin>
-
-                <plugin>
-                    <artifactId>maven-project-info-reports-plugin</artifactId>
-                    <version>${maven-project-info-reports-plugin}</version>
-                </plugin>
-
-                <plugin>
-                    <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>${maven-javadoc-plugin}</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-
-        <plugins>
-            <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven-surefire-plugin}</version>
-                <configuration>
-                    <excludes>
-                        <exclude>**/*IT.java</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-
-            <!-- Maven Failsafe Plugin for Integration Tests -->
-            <plugin>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>${maven-surefire-plugin}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- JaCoCo Plugin for Code Coverage - Strict 100% -->
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.12</version>
-                <executions>
-                    <execution>
-                        <id>prepare-agent</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>check</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <rule>
-                                    <element>BUNDLE</element>
-                                    <limits>
-                                        <!-- 93% instruction coverage (target: 100%) -->
-                                        <limit>
-                                            <counter>INSTRUCTION</counter>
-                                            <value>COVEREDRATIO</value>
-                                            <minimum>0.93</minimum>
-                                        </limit>
-                                        <!-- 86% branch coverage (target: 100%) -->
-                                        <limit>
-                                            <counter>BRANCH</counter>
-                                            <value>COVEREDRATIO</value>
-                                            <minimum>0.86</minimum>
-                                        </limit>
-                                        <!-- 93% line coverage (target: 100%) -->
-                                        <limit>
-                                            <counter>LINE</counter>
-                                            <value>COVEREDRATIO</value>
-                                            <minimum>0.93</minimum>
-                                        </limit>
-                                        <!-- No missed classes -->
-                                        <limit>
-                                            <counter>CLASS</counter>
-                                            <value>MISSEDCOUNT</value>
-                                            <maximum>0</maximum>
-                                        </limit>
-                                    </limits>
-                                </rule>
-                            </rules>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.6.3</version>
-                <executions>
-                    <execution>
-                        <id>enforce</id>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <!-- Require Java 17+ -->
-                                <requireJavaVersion>
-                                    <version>[17,)</version>
-                                    <message>Java 17 or higher is required</message>
-                                </requireJavaVersion>
-
-                                <!-- Require Maven 3.6.3+ -->
-                                <requireMavenVersion>
-                                    <version>[3.6.3,)</version>
-                                    <message>Maven 3.6.3 or higher is required</message>
-                                </requireMavenVersion>
-
-                                <!-- Ban duplicate dependencies -->
-                                <banDuplicatePomDependencyVersions/>
-
-                                <!-- Require dependency convergence -->
-                                <dependencyConvergence/>
-
-                                <!-- Require plugin versions -->
-                                <requirePluginVersions>
-                                    <message>All plugins must have explicit versions</message>
-                                    <banLatest>true</banLatest>
-                                    <banRelease>true</banRelease>
-                                    <banSnapshots>true</banSnapshots>
-                                </requirePluginVersions>
-
-                                <!-- Require no SNAPSHOT dependencies in releases -->
-                                <requireReleaseDeps>
-                                    <message>No SNAPSHOT dependencies allowed in releases</message>
-                                    <onlyWhenRelease>true</onlyWhenRelease>
-                                </requireReleaseDeps>
-                            </rules>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>com.github.spotbugs</groupId>
-                <artifactId>spotbugs-maven-plugin</artifactId>
-                <version>4.9.8.3</version>
-                <configuration>
-                    <effort>Max</effort>
-                    <threshold>Low</threshold>
-                    <failOnError>true</failOnError>
-                    <xmlOutput>true</xmlOutput>
-                    <excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.25.0</version>
-                <configuration>
-                    <printFailingErrors>true</printFailingErrors>
-                    <failOnViolation>true</failOnViolation>
-                    <minimumTokens>100</minimumTokens>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                            <goal>cpd-check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.6.0</version>
-                <configuration>
-                    <configLocation>google_checks.xml</configLocation>
-                    <consoleOutput>true</consoleOutput>
-                    <failOnViolation>true</failOnViolation>
-                    <violationSeverity>error</violationSeverity>
-                    <logViolationsToConsole>true</logViolationsToConsole>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.owasp</groupId>
-                <artifactId>dependency-check-maven</artifactId>
-                <version>10.0.4</version>
-                <configuration>
-                    <failBuildOnCVSS>7</failBuildOnCVSS>
-                    <suppressionFile>dependency-check-suppressions.xml</suppressionFile>
-                    <!-- Disable OSS Index analyzer to avoid credential errors -->
-                    <ossindexAnalyzerEnabled>false</ossindexAnalyzerEnabled>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.pitest</groupId>
-                <artifactId>pitest-maven</artifactId>
-                <version>1.17.3</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.pitest</groupId>
-                        <artifactId>pitest-junit5-plugin</artifactId>
-                        <version>1.2.1</version>
-                    </dependency>
-                </dependencies>
-                <configuration>
-                    <targetClasses>
-                        <param>org.flossware.jcommons.*</param>
-                    </targetClasses>
-                    <targetTests>
-                        <param>org.flossware.jcommons.*</param>
-                    </targetTests>
-                    <mutationThreshold>80</mutationThreshold>
-                    <coverageThreshold>100</coverageThreshold>
-                    <outputFormats>
-                        <format>HTML</format>
-                        <format>XML</format>
-                    </outputFormats>
-                    <timestampedReports>false</timestampedReports>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-scm-plugin</artifactId>
-                <version>${org.apache.maven.plugins_maven-scm-plugin}</version>
-
-                <configuration>
-                    <providerImplementations>
-                        <git>git</git>
-                    </providerImplementations>
-
-                    <tag>${project.version}</tag>
-                </configuration>
-            </plugin>
-
-            <!-- Maven Source Plugin -->
-            <plugin>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>3.3.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- Maven JavaDoc Plugin -->
-            <plugin>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>${maven-javadoc-plugin}</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- License Header Validation -->
-            <plugin>
-                <groupId>com.mycila</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <version>4.6</version>
-                <configuration>
-                    <header>LICENSE-HEADER.txt</header>
-                    <properties>
-                        <owner>Scot P. Floess</owner>
-                        <year>2016</year>
-                    </properties>
-                    <includes>
-                        <include>src/main/java/**/*.java</include>
-                        <include>src/test/java/**/*.java</include>
-                    </includes>
-                    <mapping>
-                        <java>SLASHSTAR_STYLE</java>
-                    </mapping>
-                    <strictCheck>true</strictCheck>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>check-headers</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
-    <reporting>
-        <plugins>
-            <!-- JaCoCo Coverage Report -->
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.12</version>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>report</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-
-            <!-- SpotBugs Static Analysis Report -->
-            <plugin>
-                <groupId>com.github.spotbugs</groupId>
-                <artifactId>spotbugs-maven-plugin</artifactId>
-                <version>4.9.8.3</version>
-                <configuration>
-                    <effort>Max</effort>
-                    <threshold>Low</threshold>
-                    <xmlOutput>true</xmlOutput>
-                    <excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
-                </configuration>
-            </plugin>
-
-            <!-- PMD Code Quality Report -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.25.0</version>
-                <configuration>
-                    <minimumTokens>100</minimumTokens>
-                </configuration>
-            </plugin>
-
-            <!-- Checkstyle Report -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.6.0</version>
-                <configuration>
-                    <configLocation>google_checks.xml</configLocation>
-                </configuration>
-            </plugin>
-
-            <!-- OWASP Dependency Check Security Report -->
-            <plugin>
-                <groupId>org.owasp</groupId>
-                <artifactId>dependency-check-maven</artifactId>
-                <version>10.0.4</version>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>aggregate</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-
-            <!-- Maven Project Info Reports -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>3.7.0</version>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>index</report>
-                            <report>summary</report>
-                            <report>dependencies</report>
-                            <report>dependency-info</report>
-                            <report>licenses</report>
-                            <report>team</report>
-                            <report>scm</report>
-                            <report>ci-management</report>
-                            <report>issue-management</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-
-            <!-- JavaDoc Report -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.12.0</version>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>javadoc</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-
-            <!-- Surefire Test Report -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>3.5.5</version>
-            </plugin>
-
-            <!-- JXR Source Cross-Reference -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jxr-plugin</artifactId>
-                <version>3.6.0</version>
-            </plugin>
-        </plugins>
-    </reporting>
-
-    <dependencyManagement>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.flossware</groupId>
+  <artifactId>commons-java</artifactId>
+  <version>2.0</version>
+  <name>FlossWare Commons</name>
+  <description>This project is a collection of shareable Java related functionality.</description>
+  <url>https://github.com/FlossWare/commons-java</url>
+  <licenses>
+    <license>
+      <name>GNU General Public License, Version 3</name>
+      <url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>sfloess</id>
+      <name>Scot P. Floess</name>
+      <email>sfloess@redhat.com</email>
+      <organization>FlossWare</organization>
+      <organizationUrl>https://github.com/FlossWare</organizationUrl>
+      <roles>
+        <role>architect</role>
+        <role>developer</role>
+      </roles>
+      <timezone>America/Chicago</timezone>
+    </developer>
+  </developers>
+  <organization>
+    <name>FlossWare</name>
+    <url>https://github.com/FlossWare</url>
+  </organization>
+  <issueManagement>
+    <system>GitHub Issues</system>
+    <url>https://github.com/FlossWare/commons-java/issues</url>
+  </issueManagement>
+  <ciManagement>
+    <system>GitHub Actions</system>
+    <url>https://github.com/FlossWare/commons-java/actions</url>
+  </ciManagement>
+  <packaging>jar</packaging>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven-clean-plugin>3.5.0</maven-clean-plugin>
+    <maven-resources-plugin>3.3.1</maven-resources-plugin>
+    <maven-compiler-plugin>3.15.0</maven-compiler-plugin>
+    <maven-surefire-plugin>3.5.5</maven-surefire-plugin>
+    <maven-jar-plugin>3.5.0</maven-jar-plugin>
+    <maven-install-plugin>3.1.4</maven-install-plugin>
+    <maven-deploy-plugin>3.1.4</maven-deploy-plugin>
+    <maven-site-plugin>3.12.1</maven-site-plugin>
+    <maven-project-info-reports-plugin>3.9.0</maven-project-info-reports-plugin>
+    <maven-javadoc-plugin>3.12.0</maven-javadoc-plugin>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <org.apache.maven.plugins_maven-scm-plugin>2.2.1</org.apache.maven.plugins_maven-scm-plugin>
+    <org.apache.commons_commons-lang3>3.20.0</org.apache.commons_commons-lang3>
+    <org.apache.cxf_rt-frontend-jaxws>4.2.1</org.apache.cxf_rt-frontend-jaxws>
+    <org.apache.cxf_cxf-core>4.2.1</org.apache.cxf_cxf-core>
+    <org.junit.jupiter_junit-jupiter-api>5.11.4</org.junit.jupiter_junit-jupiter-api>
+    <org.mockito_mockito-core>5.23.0</org.mockito_mockito-core>
+    <message>Automated Version Bump ${project.version} [ci skip]</message>
+  </properties>
+  <scm>
+    <connection>scm:git:https://github.com/FlossWare/commons-java.git</connection>
+    <developerConnection>scm:git:git@github.com:FlossWare/commons-java.git</developerConnection>
+    <url>https://github.com/FlossWare/commons-java</url>
+    <tag>HEAD</tag>
+  </scm>
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>${maven-clean-plugin}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>${maven-resources-plugin}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven-compiler-plugin}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${maven-surefire-plugin}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>${maven-jar-plugin}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>${maven-install-plugin}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>${maven-deploy-plugin}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>${maven-site-plugin}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-project-info-reports-plugin</artifactId>
+          <version>${maven-project-info-reports-plugin}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>${maven-javadoc-plugin}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven-surefire-plugin}</version>
+        <configuration>
+          <excludes>
+            <exclude>**/*IT.java</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+      <!-- Maven Failsafe Plugin for Integration Tests -->
+      <plugin>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>${maven-surefire-plugin}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- JaCoCo Plugin for Code Coverage - Strict 100% -->
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.12</version>
+        <executions>
+          <execution>
+            <id>prepare-agent</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>report</id>
+            <phase>test</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>check</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <rule>
+                  <element>BUNDLE</element>
+                  <limits>
+                    <!-- 93% instruction coverage (target: 100%) -->
+                    <limit>
+                      <counter>INSTRUCTION</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>0.93</minimum>
+                    </limit>
+                    <!-- 86% branch coverage (target: 100%) -->
+                    <limit>
+                      <counter>BRANCH</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>0.86</minimum>
+                    </limit>
+                    <!-- 93% line coverage (target: 100%) -->
+                    <limit>
+                      <counter>LINE</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>0.93</minimum>
+                    </limit>
+                    <!-- No missed classes -->
+                    <limit>
+                      <counter>CLASS</counter>
+                      <value>MISSEDCOUNT</value>
+                      <maximum>0</maximum>
+                    </limit>
+                  </limits>
+                </rule>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.6.3</version>
+        <executions>
+          <execution>
+            <id>enforce</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <!-- Require Java 17+ -->
+                <requireJavaVersion>
+                  <version>[17,)</version>
+                  <message>Java 17 or higher is required</message>
+                </requireJavaVersion>
+                <!-- Require Maven 3.6.3+ -->
+                <requireMavenVersion>
+                  <version>[3.6.3,)</version>
+                  <message>Maven 3.6.3 or higher is required</message>
+                </requireMavenVersion>
+                <!-- Ban duplicate dependencies -->
+                <banDuplicatePomDependencyVersions/>
+                <!-- Require dependency convergence -->
+                <dependencyConvergence/>
+                <!-- Require plugin versions -->
+                <requirePluginVersions>
+                  <message>All plugins must have explicit versions</message>
+                  <banLatest>true</banLatest>
+                  <banRelease>true</banRelease>
+                  <banSnapshots>true</banSnapshots>
+                </requirePluginVersions>
+                <!-- Require no SNAPSHOT dependencies in releases -->
+                <requireReleaseDeps>
+                  <message>No SNAPSHOT dependencies allowed in releases</message>
+                  <onlyWhenRelease>true</onlyWhenRelease>
+                </requireReleaseDeps>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.9.8.3</version>
+        <configuration>
+          <effort>Max</effort>
+          <threshold>Low</threshold>
+          <failOnError>true</failOnError>
+          <xmlOutput>true</xmlOutput>
+          <excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>3.25.0</version>
+        <configuration>
+          <printFailingErrors>true</printFailingErrors>
+          <failOnViolation>true</failOnViolation>
+          <minimumTokens>100</minimumTokens>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+              <goal>cpd-check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.6.0</version>
+        <configuration>
+          <configLocation>google_checks.xml</configLocation>
+          <consoleOutput>true</consoleOutput>
+          <failOnViolation>true</failOnViolation>
+          <violationSeverity>error</violationSeverity>
+          <logViolationsToConsole>true</logViolationsToConsole>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.owasp</groupId>
+        <artifactId>dependency-check-maven</artifactId>
+        <version>10.0.4</version>
+        <configuration>
+          <failBuildOnCVSS>7</failBuildOnCVSS>
+          <suppressionFile>dependency-check-suppressions.xml</suppressionFile>
+          <!-- Disable OSS Index analyzer to avoid credential errors -->
+          <ossindexAnalyzerEnabled>false</ossindexAnalyzerEnabled>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.pitest</groupId>
+        <artifactId>pitest-maven</artifactId>
+        <version>1.17.3</version>
         <dependencies>
-            <!-- Force newer versions to resolve dependency convergence issues -->
-            <dependency>
-                <groupId>jakarta.activation</groupId>
-                <artifactId>jakarta.activation-api</artifactId>
-                <version>2.1.4</version>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.xml.bind</groupId>
-                <artifactId>jakarta.xml.bind-api</artifactId>
-                <version>4.0.4</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.angus</groupId>
-                <artifactId>angus-activation</artifactId>
-                <version>2.0.3</version>
-                <!-- CVE-2025-7962 is a false positive for angus-activation.
+          <dependency>
+            <groupId>org.pitest</groupId>
+            <artifactId>pitest-junit5-plugin</artifactId>
+            <version>1.2.1</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <targetClasses>
+            <param>org.flossware.jcommons.*</param>
+          </targetClasses>
+          <targetTests>
+            <param>org.flossware.jcommons.*</param>
+          </targetTests>
+          <mutationThreshold>80</mutationThreshold>
+          <coverageThreshold>100</coverageThreshold>
+          <outputFormats>
+            <format>HTML</format>
+            <format>XML</format>
+          </outputFormats>
+          <timestampedReports>false</timestampedReports>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-scm-plugin</artifactId>
+        <version>${org.apache.maven.plugins_maven-scm-plugin}</version>
+        <configuration>
+          <providerImplementations>
+            <git>git</git>
+          </providerImplementations>
+          <tag>${project.version}</tag>
+        </configuration>
+      </plugin>
+      <!-- Maven Source Plugin -->
+      <plugin>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>3.3.1</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- Maven JavaDoc Plugin -->
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>${maven-javadoc-plugin}</version>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- License Header Validation -->
+      <plugin>
+        <groupId>com.mycila</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <version>4.6</version>
+        <configuration>
+          <header>LICENSE-HEADER.txt</header>
+          <properties>
+            <owner>Scot P. Floess</owner>
+            <year>2016</year>
+          </properties>
+          <includes>
+            <include>src/main/java/**/*.java</include>
+            <include>src/test/java/**/*.java</include>
+          </includes>
+          <mapping>
+            <java>SLASHSTAR_STYLE</java>
+          </mapping>
+          <strictCheck>true</strictCheck>
+        </configuration>
+        <executions>
+          <execution>
+            <id>check-headers</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  <reporting>
+    <plugins>
+      <!-- JaCoCo Coverage Report -->
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.12</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>report</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+      <!-- SpotBugs Static Analysis Report -->
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.9.8.3</version>
+        <configuration>
+          <effort>Max</effort>
+          <threshold>Low</threshold>
+          <xmlOutput>true</xmlOutput>
+          <excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
+        </configuration>
+      </plugin>
+      <!-- PMD Code Quality Report -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>3.25.0</version>
+        <configuration>
+          <minimumTokens>100</minimumTokens>
+        </configuration>
+      </plugin>
+      <!-- Checkstyle Report -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.6.0</version>
+        <configuration>
+          <configLocation>google_checks.xml</configLocation>
+        </configuration>
+      </plugin>
+      <!-- OWASP Dependency Check Security Report -->
+      <plugin>
+        <groupId>org.owasp</groupId>
+        <artifactId>dependency-check-maven</artifactId>
+        <version>10.0.4</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>aggregate</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+      <!-- Maven Project Info Reports -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>3.7.0</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>index</report>
+              <report>summary</report>
+              <report>dependencies</report>
+              <report>dependency-info</report>
+              <report>licenses</report>
+              <report>team</report>
+              <report>scm</report>
+              <report>ci-management</report>
+              <report>issue-management</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+      <!-- JavaDoc Report -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.12.0</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>javadoc</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+      <!-- Surefire Test Report -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>3.5.5</version>
+      </plugin>
+      <!-- JXR Source Cross-Reference -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+        <version>3.6.0</version>
+      </plugin>
+    </plugins>
+  </reporting>
+  <dependencyManagement>
+    <dependencies>
+      <!-- Force newer versions to resolve dependency convergence issues -->
+      <dependency>
+        <groupId>jakarta.activation</groupId>
+        <artifactId>jakarta.activation-api</artifactId>
+        <version>2.1.4</version>
+      </dependency>
+      <dependency>
+        <groupId>jakarta.xml.bind</groupId>
+        <artifactId>jakarta.xml.bind-api</artifactId>
+        <version>4.0.4</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.angus</groupId>
+        <artifactId>angus-activation</artifactId>
+        <version>2.0.3</version>
+        <!-- CVE-2025-7962 is a false positive for angus-activation.
                      The vulnerability affects angus-mail, not angus-activation.
                      See: https://github.com/dependency-check/DependencyCheck/issues/8144 -->
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>${org.apache.commons_commons-lang3}</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.apache.cxf/cxf-core -->
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-frontend-jaxws</artifactId>
-            <version>${org.apache.cxf_rt-frontend-jaxws}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-core</artifactId>
-            <version>${org.apache.cxf_cxf-core}</version>
-        </dependency>
-
-        <!-- Additional CXF dependencies required for SOAP -->
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-frontend-simple</artifactId>
-            <version>${org.apache.cxf_cxf-core}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>jakarta.xml.ws</groupId>
-            <artifactId>jakarta.xml.ws-api</artifactId>
-            <version>4.0.3</version>
-        </dependency>
-
-        <dependency>
-            <groupId>jakarta.xml.soap</groupId>
-            <artifactId>jakarta.xml.soap-api</artifactId>
-            <version>3.0.2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${org.junit.jupiter_junit-jupiter-api}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>${org.junit.jupiter_junit-jupiter-api}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>${org.mockito_mockito-core}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-junit-jupiter</artifactId>
-            <version>${org.mockito_mockito-core}</version>
-            <scope>test</scope>
-        </dependency>
+      </dependency>
     </dependencies>
-
-    <distributionManagement>
-        <repository>
-            <id>packagecloud-flossware</id>
-            <name>packagecloud-flossware</name>
-            <url>https://packagecloud.io/flossware/java/maven2/</url>
-        </repository>
-        <snapshotRepository>
-            <id>packagecloud-flossware-snapshots</id>
-            <name>packagecloud-flossware-snapshots</name>
-            <url>https://packagecloud.io/flossware/java/maven2/</url>
-        </snapshotRepository>
-    </distributionManagement>
+  </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>${org.apache.commons_commons-lang3}</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.apache.cxf/cxf-core -->
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-frontend-jaxws</artifactId>
+      <version>${org.apache.cxf_rt-frontend-jaxws}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-core</artifactId>
+      <version>${org.apache.cxf_cxf-core}</version>
+    </dependency>
+    <!-- Additional CXF dependencies required for SOAP -->
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-frontend-simple</artifactId>
+      <version>${org.apache.cxf_cxf-core}</version>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.xml.ws</groupId>
+      <artifactId>jakarta.xml.ws-api</artifactId>
+      <version>4.0.3</version>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.xml.soap</groupId>
+      <artifactId>jakarta.xml.soap-api</artifactId>
+      <version>3.0.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>${org.junit.jupiter_junit-jupiter-api}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>${org.junit.jupiter_junit-jupiter-api}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>${org.mockito_mockito-core}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-junit-jupiter</artifactId>
+      <version>${org.mockito_mockito-core}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  <distributionManagement>
+    <repository>
+      <id>packagecloud-flossware</id>
+      <name>packagecloud-flossware</name>
+      <url>https://packagecloud.io/flossware/java/maven2/</url>
+    </repository>
+    <snapshotRepository>
+      <id>packagecloud-flossware-snapshots</id>
+      <name>packagecloud-flossware-snapshots</name>
+      <url>https://packagecloud.io/flossware/java/maven2/</url>
+    </snapshotRepository>
+  </distributionManagement>
 </project>

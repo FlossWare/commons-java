@@ -1,10 +1,10 @@
-# jcommons
+# commons-java
 
 Foundation utilities for the [Solenopsis](https://github.com/solenopsis) Salesforce SOAP framework.
 
 ## Overview
 
-jcommons provides low-level utilities used by the Solenopsis framework for Salesforce SOAP operations:
+commons-java provides low-level utilities used by the Solenopsis framework for Salesforce SOAP operations:
 
 - **[solenopsis/soap](https://github.com/solenopsis/soap)** - Salesforce SOAP client generation (Apex, Metadata, Enterprise, Partner, Tooling APIs)
 - **[solenopsis/session](https://github.com/solenopsis/session)** - Salesforce session management and authentication
@@ -60,7 +60,7 @@ See the [JaCoCo Coverage Report](jacoco/index.html) for details.
 ```xml
 <dependency>
     <groupId>org.flossware</groupId>
-    <artifactId>jcommons</artifactId>
+    <artifactId>commons-java</artifactId>
     <version>LATEST</version>
 </dependency>
 
@@ -74,10 +74,10 @@ See the [JaCoCo Coverage Report](jacoco/index.html) for details.
 
 ## License
 
-GNU General Public License, Version 3 - See [LICENSE](https://github.com/FlossWare/jcommons/blob/main/LICENSE) file
+GNU General Public License, Version 3 - See [LICENSE](https://github.com/FlossWare/commons-java/blob/main/LICENSE) file
 
 ## Links
 
-- **Source**: [https://github.com/FlossWare/jcommons](https://github.com/FlossWare/jcommons)
-- **Issues**: [https://github.com/FlossWare/jcommons/issues](https://github.com/FlossWare/jcommons/issues)
+- **Source**: [https://github.com/FlossWare/commons-java](https://github.com/FlossWare/commons-java)
+- **Issues**: [https://github.com/FlossWare/commons-java/issues](https://github.com/FlossWare/commons-java/issues)
 - **Package Repository**: [https://packagecloud.io/flossware/java](https://packagecloud.io/flossware/java)

@@ -28,7 +28,7 @@
  *
  * @since 1.32
  */
-module org.flossware.jcommons {
+module org.flossware.commons {
     // Java platform modules
     requires java.logging;
     requires java.xml;
@@ -43,8 +43,8 @@ module org.flossware.jcommons {
     requires org.apache.cxf.frontend.simple;
 
     // Export public API packages
-    exports org.flossware.jcommons;
-    exports org.flossware.jcommons.io;
-    exports org.flossware.jcommons.soap;
-    exports org.flossware.jcommons.util;
+    exports org.flossware.commons;
+    exports org.flossware.commons.io;
+    exports org.flossware.commons.soap;
+    exports org.flossware.commons.util;
 }
