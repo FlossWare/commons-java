@@ -22,25 +22,25 @@
  *
  * <h2>Core Utilities</h2>
  * <ul>
- *   <li>{@link org.flossware.jcommons.util.ArrayUtil} - Array validation and manipulation</li>
- *   <li>{@link org.flossware.jcommons.util.ClassUtil} - Class introspection and loading</li>
- *   <li>{@link org.flossware.jcommons.util.LoggerUtil} - Enhanced logging with format arguments and log-and-return</li>
- *   <li>{@link org.flossware.jcommons.util.ObjectUtil} - Object comparison and validation</li>
- *   <li>{@link org.flossware.jcommons.util.StringUtil} - String validation, encoding, and serialization</li>
+ *   <li>{@link org.flossware.commons.util.ArrayUtil} - Array validation and manipulation</li>
+ *   <li>{@link org.flossware.commons.util.ClassUtil} - Class introspection and loading</li>
+ *   <li>{@link org.flossware.commons.util.LoggerUtil} - Enhanced logging with format arguments and log-and-return</li>
+ *   <li>{@link org.flossware.commons.util.ObjectUtil} - Object comparison and validation</li>
+ *   <li>{@link org.flossware.commons.util.StringUtil} - String validation, encoding, and serialization</li>
  * </ul>
  *
  * <h2>I/O Utilities</h2>
  * <ul>
- *   <li>{@link org.flossware.jcommons.util.FileUtil} - File operations and validation</li>
- *   <li>{@link org.flossware.jcommons.util.IOUtils} - InputStream/OutputStream utilities</li>
- *   <li>{@link org.flossware.jcommons.util.PropertyUtil} - Properties file loading and validation</li>
+ *   <li>{@link org.flossware.commons.util.FileUtil} - File operations and validation</li>
+ *   <li>{@link org.flossware.commons.util.IOUtils} - InputStream/OutputStream utilities</li>
+ *   <li>{@link org.flossware.commons.util.PropertyUtil} - Properties file loading and validation</li>
  * </ul>
  *
  * <h2>Web and SOAP Utilities</h2>
  * <ul>
- *   <li>{@link org.flossware.jcommons.util.UrlUtil} - URL parsing and validation</li>
- *   <li>{@link org.flossware.jcommons.util.SoapUtil} - SOAP web service client utilities</li>
- *   <li>{@link org.flossware.jcommons.util.MethodUtil} - Method introspection for annotations</li>
+ *   <li>{@link org.flossware.commons.util.UrlUtil} - URL parsing and validation</li>
+ *   <li>{@link org.flossware.commons.util.SoapUtil} - SOAP web service client utilities</li>
+ *   <li>{@link org.flossware.commons.util.MethodUtil} - Method introspection for annotations</li>
  * </ul>
  *
  * <p>All classes in this package are final utility classes with private constructors,

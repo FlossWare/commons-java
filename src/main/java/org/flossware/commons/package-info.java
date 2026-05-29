@@ -21,9 +21,9 @@
  * <p>This package provides fundamental abstractions used throughout the library:
  *
  * <ul>
- *   <li>{@link org.flossware.jcommons.Stringifiable} - Interface for objects that can be converted to string representations</li>
- *   <li>{@link org.flossware.jcommons.AbstractStringifiable} - Base implementation of Stringifiable</li>
- *   <li>{@link org.flossware.jcommons.AbstractBase} - Base class providing logging and string conversion capabilities</li>
+ *   <li>{@link org.flossware.commons.Stringifiable} - Interface for objects that can be converted to string representations</li>
+ *   <li>{@link org.flossware.commons.AbstractStringifiable} - Base implementation of Stringifiable</li>
+ *   <li>{@link org.flossware.commons.AbstractBase} - Base class providing logging and string conversion capabilities</li>
  * </ul>
  *
  * @author Scot P. Floess

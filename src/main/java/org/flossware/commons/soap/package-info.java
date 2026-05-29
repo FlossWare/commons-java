@@ -21,10 +21,10 @@
  * <p>This package provides types for working with SOAP web services:
  *
  * <ul>
- *   <li>{@link org.flossware.jcommons.soap.SoapRecord} - Record type for pairing SOAP services with port types</li>
+ *   <li>{@link org.flossware.commons.soap.SoapRecord} - Record type for pairing SOAP services with port types</li>
  * </ul>
  *
- * <p>These classes are used in conjunction with {@link org.flossware.jcommons.util.SoapUtil}
+ * <p>These classes are used in conjunction with {@link org.flossware.commons.util.SoapUtil}
  * for creating and configuring SOAP web service clients.
  *
  * @author Scot P. Floess
