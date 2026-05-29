@@ -124,7 +124,7 @@ class SoapIntegrationIT {
             assertNotNull(factory2);
             // Factory reuse
             assertSame(factory1, factory2);
-        } catch (org.flossware.jcommons.util.SoapException e) {
+        } catch (org.flossware.commons.soap.SoapException e) {
             // SOAP factory may not be available in test environment
             // This is expected - skip the test
             System.out.println("SOAP factory not available in test environment - skipping");
