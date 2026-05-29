@@ -6,7 +6,7 @@
         their internal representation is intentional and safe.
     -->
     <Match>
-        <Class name="org.flossware.jcommons.soap.SoapRecord" />
+        <Class name="org.flossware.commons.soap.SoapRecord" />
         <Or>
             <Bug pattern="EI_EXPOSE_REP" />
             <Bug pattern="EI_EXPOSE_REP2" />
@@ -19,7 +19,7 @@
         They are deprecated and scheduled for removal in v2.0.
     -->
     <Match>
-        <Class name="org.flossware.jcommons.util.StringUtil" />
+        <Class name="org.flossware.commons.util.StringUtil" />
         <Bug pattern="THROWS_METHOD_THROWS_RUNTIMEEXCEPTION" />
     </Match>
 </FindBugsFilter>
