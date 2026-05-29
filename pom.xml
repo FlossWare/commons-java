@@ -62,6 +62,8 @@
     <org.junit.jupiter_junit-jupiter-api>5.11.4</org.junit.jupiter_junit-jupiter-api>
     <org.mockito_mockito-core>5.23.0</org.mockito_mockito-core>
     <message>Automated Version Bump ${project.version} [ci skip]</message>
+    <sonar.organization>flossware</sonar.organization>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
   </properties>
   <scm>
     <connection>scm:git:https://github.com/FlossWare/commons-java.git</connection>
