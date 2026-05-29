@@ -38,7 +38,7 @@ class ClassUtilTest {
     @Test
     void testGetPackageName_withCustomClass() {
         String packageName = ClassUtil.getPackageName(ClassUtilTest.class);
-        assertEquals("org.flossware.jcommons.util", packageName);
+        assertEquals("org.flossware.commons.util", packageName);
     }
 
     @Test
