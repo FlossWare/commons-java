@@ -24,8 +24,6 @@ import jakarta.xml.ws.Service;
 import jakarta.xml.ws.WebServiceClient;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.namespace.QName;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.headers.Header;
@@ -37,11 +35,6 @@ import org.apache.cxf.headers.Header;
  * @author Scot P. Floess
  */
 public final class SoapUtil {
-    /**
-     * Our logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(SoapUtil.class.getName());
-
     private SoapUtil() {
         throw new AssertionError("Utility class - do not instantiate");
     }
