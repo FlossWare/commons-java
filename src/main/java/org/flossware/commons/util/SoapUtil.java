@@ -57,7 +57,6 @@ public final class SoapUtil {
         try {
             return SOAPFactory.newInstance();
         } catch (final SOAPException soapException) {
-            LOGGER.log(Level.SEVERE, "Could not instantiate soap factory!", soapException);
             throw new SoapException("Could not instantiate soap factory!", soapException);
         }
     }

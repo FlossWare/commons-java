@@ -197,12 +197,4 @@ class PropertyUtilTest {
         assertTrue(exception.getCause() instanceof AssertionError);
         assertEquals("Utility class - do not instantiate", exception.getCause().getMessage());
     }
-
-    @Test
-    void testPrivateGetLogger() throws Exception {
-        java.lang.reflect.Method method = PropertyUtil.class.getDeclaredMethod("getLogger");
-        method.setAccessible(true);
-        Object logger = method.invoke(null);
-        assertNotNull(logger);
-    }
 }

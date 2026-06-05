@@ -43,6 +43,7 @@ public class FileException extends CommonsIOException {
      * Sets the message.
      *
      * @param message detail message.
+     * @since 1.0
      */
     public FileException(final String message) {
         super(message);
@@ -52,6 +53,7 @@ public class FileException extends CommonsIOException {
      * Sets the cause of why self is being raised.
      *
      * @param cause the cause of why self is being raised.
+     * @since 1.0
      */
     public FileException(final Throwable cause) {
         super(cause);
@@ -62,6 +64,7 @@ public class FileException extends CommonsIOException {
      *
      * @param message detail message.
      * @param cause   the cause of why self is being raised.
+     * @since 1.0
      */
     public FileException(final String message, final Throwable cause) {
         super(message, cause);

@@ -24,8 +24,6 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.util.Objects;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.flossware.commons.io.FileException;
 import org.flossware.commons.io.CommonsIOException;
 
@@ -35,21 +33,6 @@ import org.flossware.commons.io.CommonsIOException;
  * @author Scot P. Floess
  */
 public final class PropertyUtil {
-    /**
-     * Our logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(PropertyUtil.class.getName());
-
-
-    /**
-     * Return the logger.
-     *
-     * @return our logger.
-     */
-    private static Logger getLogger() {
-        return LOGGER;
-    }
-
     /**
      * Default constructor not allowed.
      */
