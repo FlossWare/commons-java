@@ -22,18 +22,18 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class JCommonsIOExceptionTest {
+class CommonsIOExceptionTest {
 
     @Test
     void testDefaultConstructor() {
-        JCommonsIOException ex = new JCommonsIOException();
+        CommonsIOException ex = new CommonsIOException();
         assertNull(ex.getMessage());
         assertNull(ex.getCause());
     }
 
     @Test
     void testMessageConstructor() {
-        JCommonsIOException ex = new JCommonsIOException("Test message");
+        CommonsIOException ex = new CommonsIOException("Test message");
         assertEquals("Test message", ex.getMessage());
         assertNull(ex.getCause());
     }
@@ -41,7 +41,7 @@ class JCommonsIOExceptionTest {
     @Test
     void testCauseConstructor() {
         IOException cause = new IOException("cause");
-        JCommonsIOException ex = new JCommonsIOException(cause);
+        CommonsIOException ex = new CommonsIOException(cause);
         assertEquals(cause, ex.getCause());
         assertTrue(ex.getMessage().contains("IOException"));
     }
@@ -49,20 +49,20 @@ class JCommonsIOExceptionTest {
     @Test
     void testMessageAndCauseConstructor() {
         IOException cause = new IOException("cause");
-        JCommonsIOException ex = new JCommonsIOException("message", cause);
+        CommonsIOException ex = new CommonsIOException("message", cause);
         assertEquals("message", ex.getMessage());
         assertEquals(cause, ex.getCause());
     }
 
     @Test
     void testIsRuntimeException() {
-        JCommonsIOException ex = new JCommonsIOException();
+        CommonsIOException ex = new CommonsIOException();
         assertTrue(ex instanceof RuntimeException);
     }
 
     @Test
     void testSerializable() {
-        JCommonsIOException ex = new JCommonsIOException("test");
+        CommonsIOException ex = new CommonsIOException("test");
         assertTrue(ex instanceof java.io.Serializable);
     }
 }

@@ -17,7 +17,7 @@
 package org.flossware.commons.util;
 
 import org.flossware.commons.io.FileException;
-import org.flossware.commons.io.JCommonsIOException;
+import org.flossware.commons.io.CommonsIOException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -66,7 +66,7 @@ class PropertyUtilTest {
             }
         };
 
-        assertThrows(JCommonsIOException.class, () ->
+        assertThrows(CommonsIOException.class, () ->
             PropertyUtil.fromInputStream(inputStream, false));
     }
 
@@ -110,7 +110,7 @@ class PropertyUtilTest {
             }
         };
 
-        assertThrows(JCommonsIOException.class, () ->
+        assertThrows(CommonsIOException.class, () ->
             PropertyUtil.fromReader(reader, false));
     }
 
@@ -157,7 +157,7 @@ class PropertyUtilTest {
 
     @Test
     void testFromResource_withNonExistentResource() {
-        assertThrows(JCommonsIOException.class, () ->
+        assertThrows(CommonsIOException.class, () ->
             PropertyUtil.fromResource("non-existent-resource.properties"));
     }
 

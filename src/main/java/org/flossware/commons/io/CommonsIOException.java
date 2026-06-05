@@ -18,18 +18,22 @@ package org.flossware.commons.io;
 
 /**
  * Unchecked exception wrapper for IO-related failures.
- * Renamed from IOException to avoid naming conflict with java.io.IOException.
+ * Renamed from JCommonsIOException in version 1.32 to follow standard naming conventions.
  *
  * @author Scot P. Floess
+ * @since 1.0
  */
-public class JCommonsIOException extends RuntimeException {
+public class CommonsIOException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * Default constructor.
+     *
+     * @deprecated since 1.32 - no production usage, provide message or cause instead
      */
-    public JCommonsIOException() {
+    @Deprecated(since = "1.32", forRemoval = true)
+    public CommonsIOException() {
 
     }
 
@@ -37,8 +41,9 @@ public class JCommonsIOException extends RuntimeException {
      * Sets the message.
      *
      * @param message detail message.
+     * @since 1.0
      */
-    public JCommonsIOException(final String message) {
+    public CommonsIOException(final String message) {
         super(message);
     }
 
@@ -46,8 +51,9 @@ public class JCommonsIOException extends RuntimeException {
      * Sets the cause of why self is being raised.
      *
      * @param cause the cause of why self is being raised.
+     * @since 1.0
      */
-    public JCommonsIOException(final Throwable cause) {
+    public CommonsIOException(final Throwable cause) {
         super(cause);
     }
 
@@ -56,8 +62,9 @@ public class JCommonsIOException extends RuntimeException {
      *
      * @param message detail message.
      * @param cause   the cause of why self is being raised.
+     * @since 1.0
      */
-    public JCommonsIOException(final String message, final Throwable cause) {
+    public CommonsIOException(final String message, final Throwable cause) {
         super(message, cause);
     }
 }

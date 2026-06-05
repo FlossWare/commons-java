@@ -27,7 +27,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.flossware.commons.io.FileException;
-import org.flossware.commons.io.JCommonsIOException;
+import org.flossware.commons.io.CommonsIOException;
 
 /**
  * Properties utility class.
@@ -64,9 +64,7 @@ public final class PropertyUtil {
 
             return retVal;
         } catch (final IOException ioException) {
-            LoggerUtil.log(getLogger(), Level.WARNING, "Trouble reading input stream!", ioException);
-
-            throw new JCommonsIOException(ioException);
+            throw new CommonsIOException(ioException);
         } finally {
             if (closeStream) {
                 IOUtils.close(inputStream);
@@ -80,9 +78,7 @@ public final class PropertyUtil {
 
             return retVal;
         } catch (final IOException ioException) {
-            LoggerUtil.log(getLogger(), Level.WARNING, "Trouble reading from reader!", ioException);
-
-            throw new JCommonsIOException(ioException);
+            throw new CommonsIOException(ioException);
         } finally {
             if (closeReader) {
                 IOUtils.close(reader);
@@ -96,7 +92,7 @@ public final class PropertyUtil {
      * @param inputStream the input stream to read from
      * @param closeStream whether to close the stream after reading
      * @return Properties object loaded from the stream
-     * @throws JCommonsIOException if reading fails
+     * @throws CommonsIOException if reading fails
      */
     public static Properties fromInputStream(final InputStream inputStream, final boolean closeStream) {
         return populateFromInputStream(new Properties(), inputStream, closeStream);
@@ -107,7 +103,7 @@ public final class PropertyUtil {
      *
      * @param inputStream the input stream to read from
      * @return Properties object loaded from the stream
-     * @throws JCommonsIOException if reading fails
+     * @throws CommonsIOException if reading fails
      */
     public static Properties fromInputStream(final InputStream inputStream) {
         return fromInputStream(inputStream, false);
@@ -119,14 +115,14 @@ public final class PropertyUtil {
      * @param resource the resource path to load from
      * @return Properties object loaded from the resource
      * @throws IllegalArgumentException if resource parameter is null
-     * @throws JCommonsIOException if resource cannot be found or read
+     * @throws CommonsIOException if resource cannot be found or read
      */
     public static Properties fromResource(final String resource) {
         Objects.requireNonNull(resource, "Resource path must not be null");
 
         InputStream inputStream = PropertyUtil.class.getClassLoader().getResourceAsStream(resource);
         if (inputStream == null) {
-            throw new JCommonsIOException("Resource not found on classpath: " + resource);
+            throw new CommonsIOException("Resource not found on classpath: " + resource);
         }
 
         return fromInputStream(inputStream, true);
@@ -138,7 +134,7 @@ public final class PropertyUtil {
      * @param reader the reader to read from
      * @param closeReader whether to close the reader after reading
      * @return Properties object loaded from the reader
-     * @throws JCommonsIOException if reading fails
+     * @throws CommonsIOException if reading fails
      */
     public static Properties fromReader(final Reader reader, final boolean closeReader) {
         return populateFromReader(new Properties(), reader, closeReader);
@@ -149,7 +145,7 @@ public final class PropertyUtil {
      *
      * @param reader the reader to read from
      * @return Properties object loaded from the reader
-     * @throws JCommonsIOException if reading fails
+     * @throws CommonsIOException if reading fails
      */
     public static Properties fromReader(final Reader reader) {
         return fromReader(reader, false);

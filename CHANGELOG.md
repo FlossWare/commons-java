@@ -149,7 +149,7 @@ InputStream is = Files.newInputStream(path);
   - `UrlUtilTest`: Added defensive exception path test
     - `testComputeHostUrl_withMalformedURLException()` - Uses mockStatic to test AssertionError path
   - `PropertyUtilTest`: Added `testFromResource()` for resource loading
-  - Comprehensive test files for all exception classes (`FileExceptionTest`, `JCommonsIOExceptionTest`, `SoapExceptionTest`, `UrlExceptionTest`)
+  - Comprehensive test files for all exception classes (`FileExceptionTest`, `CommonsIOExceptionTest`, `SoapExceptionTest`, `UrlExceptionTest`)
   - Extended tests for `AbstractBase`, `AbstractStringifiable`, `FileUtil`, `PropertyUtil`, and all utility classes
 - Test resource file: `src/test/resources/test.properties`
 

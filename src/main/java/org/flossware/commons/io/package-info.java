@@ -21,7 +21,7 @@
  * <p>This package provides specialized runtime exceptions for I/O operations:
  *
  * <ul>
- *   <li>{@link org.flossware.commons.io.JCommonsIOException} - General I/O exception wrapper</li>
+ *   <li>{@link org.flossware.commons.io.CommonsIOException} - General I/O exception wrapper</li>
  *   <li>{@link org.flossware.commons.io.FileException} - File operation exceptions</li>
  * </ul>
  *

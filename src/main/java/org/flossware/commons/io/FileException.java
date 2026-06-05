@@ -19,15 +19,22 @@ package org.flossware.commons.io;
 /**
  * Raised if any problems arise dealing with a file.
  *
+ * <p>File operations are a specialized subset of I/O operations, so this exception
+ * extends CommonsIOException to maintain a clear exception hierarchy.
+ *
  * @author Scot P. Floess
+ * @since 1.0
  */
-public class FileException extends RuntimeException {
+public class FileException extends CommonsIOException {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * Default constructor.
+     *
+     * @deprecated since 1.32 - no production usage, provide message or cause instead
      */
+    @Deprecated(since = "1.32", forRemoval = true)
     public FileException() {
 
     }
