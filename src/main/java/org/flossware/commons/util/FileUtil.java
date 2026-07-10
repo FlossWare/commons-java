@@ -333,15 +333,15 @@ public final class FileUtil {
 
     /**
      * Return a file input stream for file.
+     * <p><b>SECURITY WARNING:</b> This method has limited path traversal protection
+     * and does not prevent TOCTOU or symlink attacks. Migrate to Path-based
+     * APIs for comprehensive security (CWE-22, CWE-367).
      *
      * @param file the file for whom we desire a file input stream
      * @return a file input stream
      * @throws IllegalArgumentException if file is null or path traversal detected
      * @throws FileException if there is any problem creating the file input stream
      * @deprecated Use {@link #newInputStream(Path)} instead for modern NIO.2 API
-     * @apiNote SECURITY WARNING: This method has limited path traversal protection
-     *          and does not prevent TOCTOU or symlink attacks. Migrate to Path-based
-     *          APIs for comprehensive security (CWE-22, CWE-367).
      */
     @Deprecated(since = "1.22", forRemoval = true)
     public static FileInputStream getFileInputStream(final File file) {

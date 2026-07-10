@@ -33,6 +33,9 @@ import java.util.Objects;
 public record SoapRecord<T>(Service service, Class<T> portType) {
     /**
      * Compact constructor that validates parameters.
+     *
+     * @param service the SOAP service instance (must not be null)
+     * @param portType the port class type (must not be null)
      */
     public SoapRecord {
         Objects.requireNonNull(service, "Service must not be null");

@@ -137,12 +137,12 @@ public final class PropertyUtil {
 
     /**
      * Load properties from a file.
+     * <p><b>SECURITY:</b> This method validates against path traversal attacks (CWE-22).
+     * Use with caution when accepting file paths from untrusted sources.
      *
      * @param file the file to load properties from
      * @return Properties object loaded from the file
      * @throws FileException if the file cannot be read or path traversal is detected
-     * @apiNote SECURITY: This method validates against path traversal attacks (CWE-22).
-     *          Use with caution when accepting file paths from untrusted sources.
      */
     public static Properties fromFile(final File file) {
         Objects.requireNonNull(file, "File must not be null");
@@ -171,14 +171,14 @@ public final class PropertyUtil {
 
     /**
      * Load properties from a file specified by path.
+     * <p><b>SECURITY:</b> This method validates against path traversal attacks (CWE-22).
+     * Paths containing ".." components or attempting to escape the parent
+     * directory are rejected. Use with caution when accepting file paths from
+     * untrusted sources.
      *
      * @param filename the path to the properties file
      * @return Properties object loaded from the file
      * @throws FileException if the file cannot be read or path traversal is detected
-     * @apiNote SECURITY: This method validates against path traversal attacks (CWE-22).
-     *          Paths containing ".." components or attempting to escape the parent
-     *          directory are rejected. Use with caution when accepting file paths from
-     *          untrusted sources.
      */
     public static Properties fromFile(final String filename) {
         StringUtil.requireNonBlank(filename, "Filename must not be null or empty");

@@ -372,6 +372,14 @@
       <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>${maven-javadoc-plugin}</version>
+        <configuration>
+          <source>17</source>
+          <doclint>all,-missing</doclint>
+          <quiet>true</quiet>
+          <sourceFileExcludes>
+            <sourceFileExclude>**/module-info.java</sourceFileExclude>
+          </sourceFileExcludes>
+        </configuration>
         <executions>
           <execution>
             <id>attach-javadocs</id>
