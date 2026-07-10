@@ -60,7 +60,7 @@ jobs:
             BRANCH_COVERAGE=$(grep -oP 'Total.*?<td class="ctr2">(\d+)%' target/site/jacoco/index.html | grep -oP '\d+%' | tail -1 || echo "0%")
             echo "instruction_coverage=${INSTRUCTION_COVERAGE}" >> $GITHUB_OUTPUT
             echo "branch_coverage=${BRANCH_COVERAGE}" >> $GITHUB_OUTPUT
-            echo "Coverage: Instruction=${INSTRUCTION_COVERAGE}, Branch=${BRANCH_COVERAGE}"
+            echo "Coverage: Instruction=${INSTRUCTION_COVERAGE}, Branch=${BRANCH_COVERAGE}" >&2
           else
             echo "instruction_coverage=N/A" >> $GITHUB_OUTPUT
             echo "branch_coverage=N/A" >> $GITHUB_OUTPUT
@@ -73,7 +73,7 @@ jobs:
           if [ -f target/spotbugsXml.xml ]; then
             BUG_COUNT=$(grep -c '<BugInstance' target/spotbugsXml.xml || echo "0")
             echo "bug_count=${BUG_COUNT}" >> $GITHUB_OUTPUT
-            echo "SpotBugs found: ${BUG_COUNT} bugs"
+            echo "SpotBugs found: ${BUG_COUNT} bugs" >&2
           else
             echo "bug_count=0" >> $GITHUB_OUTPUT
           fi
@@ -85,7 +85,7 @@ jobs:
           if [ -f target/pmd.xml ]; then
             VIOLATION_COUNT=$(grep -c '<violation' target/pmd.xml || echo "0")
             echo "violation_count=${VIOLATION_COUNT}" >> $GITHUB_OUTPUT
-            echo "PMD violations: ${VIOLATION_COUNT}"
+            echo "PMD violations: ${VIOLATION_COUNT}" >&2
           else
             echo "violation_count=0" >> $GITHUB_OUTPUT
           fi
@@ -97,7 +97,7 @@ jobs:
           if [ -f target/checkstyle-result.xml ]; then
             ERROR_COUNT=$(grep -c 'severity="error"' target/checkstyle-result.xml || echo "0")
             echo "error_count=${ERROR_COUNT}" >> $GITHUB_OUTPUT
-            echo "Checkstyle errors: ${ERROR_COUNT}"
+            echo "Checkstyle errors: ${ERROR_COUNT}" >&2
           else
             echo "error_count=0" >> $GITHUB_OUTPUT
           fi
@@ -113,7 +113,7 @@ jobs:
             echo "vulnerability_count=${VULNERABILITY_COUNT}" >> $GITHUB_OUTPUT
             echo "high_vulnerabilities=${HIGH_VULNS}" >> $GITHUB_OUTPUT
             echo "critical_vulnerabilities=${CRITICAL_VULNS}" >> $GITHUB_OUTPUT
-            echo "OWASP: ${VULNERABILITY_COUNT} vulnerabilities (${CRITICAL_VULNS} critical, ${HIGH_VULNS} high)"
+            echo "OWASP: ${VULNERABILITY_COUNT} vulnerabilities (${CRITICAL_VULNS} critical, ${HIGH_VULNS} high)" >&2
           else
             echo "vulnerability_count=0" >> $GITHUB_OUTPUT
             echo "high_vulnerabilities=0" >> $GITHUB_OUTPUT
