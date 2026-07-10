@@ -1,0 +1,107 @@
+name: Bug Report
+description: Report a bug or unexpected behavior
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug!
+
+  - type: input
+    id: version
+    attributes:
+      label: jcommons Version
+      description: Which version are you using?
+      placeholder: e.g., 1.31
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What happened? What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Minimal code to reproduce the issue
+      placeholder: |
+        String result = StringUtil.concat("foo", "bar");
+        // Expected: "foobar"
+        // Actual: throws NullPointerException
+    validations:
+      required: true
+
+  - type: input
+    id: java-version
+    attributes:
+      label: Java Version
+      description: Must be Java 17+ (project requirement)
+      placeholder: e.g., 17.0.5, 21.0.1
+    validations:
+      required: true
+
+  - type: input
+    id: cxf-version
+    attributes:
+      label: Apache CXF Version
+      description: Must be 4.0+ (if using SoapUtil)
+      placeholder: e.g., 4.2.1
+    validations:
+      required: false
+
+  - type: input
+    id: commons-lang-version
+    attributes:
+      label: Apache Commons Lang3 Version
+      description: Target 3.17+ (dependency version)
+      placeholder: e.g., 3.20.0
+    validations:
+      required: false
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Operating System & Build Tool
+      description: OS, Maven/Gradle version
+      placeholder: |
+        - OS: macOS 13.2 / Linux / Windows 11
+        - Build: Maven 3.9.9
+    validations:
+      required: false
+
+  - type: textarea
+    id: test-case
+    attributes:
+      label: Test Case (Required for Actionable Bugs)
+      description: |
+        Minimal failing test case to reproduce the issue.
+        Link to branch/PR with reproduction test.
+
+        **Note**: jcommons maintains 93% line coverage standard.
+        Issues without test cases may be labeled needs-reproduction.
+      placeholder: |
+        @Test
+        void testBugReproduction() {
+            String result = StringUtil.concat("foo", "bar");
+            assertEquals("foobar", result); // Fails
+        }
+
+        Branch: https://github.com/your-fork/jcommons/tree/bug-fix-123
+    validations:
+      required: false
+
+  - type: dropdown
+    id: serialization
+    attributes:
+      label: Serialization Issue?
+      description: Does this involve StringUtil serialization methods?
+      options:
+        - "No"
+        - "Yes - ObjectInputFilter logs needed"
+    validations:
+      required: false
