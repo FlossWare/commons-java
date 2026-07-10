@@ -65,11 +65,12 @@ public final class FileUtil {
 
     /**
      * Validates that a path does not escape a base directory using path traversal.
-     * Resolves symbolic links and normalizes paths to detect traversal attempts.
+     * For existing files, resolves symbolic links and normalizes paths.
+     * For non-existent files, validates using normalized absolute paths.
      *
      * @param path the path to validate
      * @param baseDirectory the base directory that path must be within
-     * @return the normalized, real path if validation succeeds
+     * @return the normalized path if validation succeeds
      * @throws IllegalArgumentException if path is null, baseDirectory is null,
      *                                  or path attempts to escape baseDirectory
      * @throws FileException if there is an I/O error resolving paths
@@ -79,18 +80,38 @@ public final class FileUtil {
         Objects.requireNonNull(baseDirectory, "Base directory must not be null");
 
         try {
-            // Resolve to real path (follows symlinks, normalizes ..)
-            final Path realPath = path.toRealPath();
-            final Path realBase = baseDirectory.toRealPath();
+            // For existing files, use toRealPath to follow symlinks
+            // For non-existent files, use normalize() + toAbsolutePath()
+            final Path normalizedPath;
+            final Path normalizedBase;
+
+            if (Files.exists(path, LinkOption.NOFOLLOW_LINKS)) {
+                normalizedPath = path.toRealPath();
+            } else {
+                normalizedPath = path.toAbsolutePath().normalize();
+            }
+
+            if (Files.exists(baseDirectory, LinkOption.NOFOLLOW_LINKS)) {
+                normalizedBase = baseDirectory.toRealPath();
+            } else {
+                normalizedBase = baseDirectory.toAbsolutePath().normalize();
+            }
 
             // Check if path is within base directory
-            if (!realPath.startsWith(realBase)) {
+            if (!normalizedPath.startsWith(normalizedBase)) {
                 throw new IllegalArgumentException(
                     "Path traversal detected: " + path + " escapes base directory " + baseDirectory
                 );
             }
 
-            return realPath;
+            // Additional check: reject paths with .. components after normalization
+            if (normalizedPath.toString().contains("..")) {
+                throw new IllegalArgumentException(
+                    "Path traversal pattern detected: " + path
+                );
+            }
+
+            return normalizedPath;
         } catch (final IOException ioException) {
             LoggerUtil.log(getLogger(), Level.WARNING, ioException,
                 "Cannot validate path [{0}] against base [{1}]", path, baseDirectory);

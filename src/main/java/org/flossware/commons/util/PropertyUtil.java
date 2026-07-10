@@ -22,6 +22,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+import java.nio.file.Path;
 import java.util.Objects;
 import java.util.Properties;
 import org.flossware.commons.io.FileException;
@@ -139,9 +140,26 @@ public final class PropertyUtil {
      *
      * @param file the file to load properties from
      * @return Properties object loaded from the file
-     * @throws FileException if the file cannot be read
+     * @throws FileException if the file cannot be read or path traversal is detected
+     * @apiNote SECURITY: This method validates against path traversal attacks (CWE-22).
+     *          Use with caution when accepting file paths from untrusted sources.
      */
     public static Properties fromFile(final File file) {
+        Objects.requireNonNull(file, "File must not be null");
+
+        // SECURITY: Validate against path traversal attacks
+        Path filePath = file.toPath().toAbsolutePath().normalize();
+        Path parentPath = filePath.getParent();
+
+        if (parentPath != null) {
+            try {
+                // Validate the file path doesn't escape its parent directory
+                FileUtil.validatePathTraversal(filePath, parentPath);
+            } catch (FileException e) {
+                throw new FileException("Path traversal detected in file: " + file, e);
+            }
+        }
+
         try (FileInputStream fis = new FileInputStream(file)) {
             return populateFromInputStream(new Properties(), fis, false);
         } catch (final FileNotFoundException fnfe) {
@@ -156,9 +174,14 @@ public final class PropertyUtil {
      *
      * @param filename the path to the properties file
      * @return Properties object loaded from the file
-     * @throws FileException if the file cannot be read
+     * @throws FileException if the file cannot be read or path traversal is detected
+     * @apiNote SECURITY: This method validates against path traversal attacks (CWE-22).
+     *          Paths containing ".." components or attempting to escape the parent
+     *          directory are rejected. Use with caution when accepting file paths from
+     *          untrusted sources.
      */
     public static Properties fromFile(final String filename) {
+        StringUtil.requireNonBlank(filename, "Filename must not be null or empty");
         return fromFile(new File(filename));
     }
 }

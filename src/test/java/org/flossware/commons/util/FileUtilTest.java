@@ -517,6 +517,64 @@ class FileUtilTest {
             FileUtil.newInputStream(traversalPath, subDir));
     }
 
+    // ========== Non-Existent Path Validation Tests (Issue #219) ==========
+
+    @Test
+    void testValidateNonExistentPathAllowed() throws Exception {
+        // Non-existent file in valid location should pass
+        Path nonExistent = tempDir.resolve("future-file.txt");
+        Path validated = FileUtil.validatePathTraversal(nonExistent, tempDir);
+        assertNotNull(validated);
+        assertTrue(validated.startsWith(tempDir.toAbsolutePath().normalize()));
+    }
+
+    @Test
+    void testValidateNonExistentPathRejectsTraversal() {
+        // Non-existent file with traversal should fail
+        Path traversal = tempDir.resolve("../outside.txt");
+        assertThrows(IllegalArgumentException.class, () ->
+            FileUtil.validatePathTraversal(traversal, tempDir));
+    }
+
+    @Test
+    void testValidateNonExistentPathInSubdirectory() throws Exception {
+        // Non-existent file in non-existent subdirectory should pass
+        Path nonExistent = tempDir.resolve("subdir/future-file.txt");
+        Path validated = FileUtil.validatePathTraversal(nonExistent, tempDir);
+        assertNotNull(validated);
+        assertTrue(validated.startsWith(tempDir.toAbsolutePath().normalize()));
+    }
+
+    @Test
+    void testValidateNonExistentPathRejectsComplexTraversal() {
+        // Complex traversal pattern should fail
+        Path traversal = tempDir.resolve("subdir/../../outside/secret.txt");
+        assertThrows(IllegalArgumentException.class, () ->
+            FileUtil.validatePathTraversal(traversal, tempDir));
+    }
+
+    @Test
+    void testValidateNonExistentBaseDirectory() {
+        // Non-existent base directory with valid relative path should work
+        Path nonExistentBase = tempDir.resolve("non-existent-base");
+        Path targetPath = nonExistentBase.resolve("file.txt");
+
+        // Should validate successfully (both normalized)
+        Path validated = FileUtil.validatePathTraversal(targetPath, nonExistentBase);
+        assertNotNull(validated);
+        assertTrue(validated.startsWith(nonExistentBase.toAbsolutePath().normalize()));
+    }
+
+    @Test
+    void testValidateNonExistentBaseDirectoryRejectsTraversal() {
+        // Non-existent base with traversal should still fail
+        Path nonExistentBase = tempDir.resolve("non-existent-base");
+        Path traversal = nonExistentBase.resolve("../outside.txt");
+
+        assertThrows(IllegalArgumentException.class, () ->
+            FileUtil.validatePathTraversal(traversal, nonExistentBase));
+    }
+
     // ========== Symlink and Hardlink Attack Security Tests ==========
 
     /**

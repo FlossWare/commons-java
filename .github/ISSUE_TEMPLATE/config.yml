@@ -1,8 +1,0 @@
-blank_issues_enabled: false
-contact_links:
-  - name: Solenopsis Framework
-    url: https://github.com/solenopsis
-    about: Questions about the Solenopsis Salesforce framework
-  - name: Security Vulnerability
-    url: https://github.com/FlossWare/jcommons/security/advisories
-    about: Report a security vulnerability (do not use public issues)
