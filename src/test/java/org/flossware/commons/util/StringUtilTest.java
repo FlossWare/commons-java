@@ -682,9 +682,9 @@ class StringUtilTest {
         assertTrue(dangerousClasses.contains("com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl"),
             "TemplatesImpl must be blacklisted");
 
-        // Verify the count - should have 11 dangerous classes
-        assertEquals(11, dangerousClasses.size(),
-            "Should have 11 dangerous classes in blacklist");
+        // Verify the count - updated to 19 to include java.util collection gadgets (#216)
+        assertEquals(19, dangerousClasses.size(),
+            "Should have 19 dangerous classes in blacklist");
     }
 
     @Test

@@ -397,7 +397,15 @@ public final class StringUtil {
         "com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl",
         "java.rmi.server.UnicastRemoteObject",
         "java.lang.invoke.SerializedLambda",
-        "sun.reflect.annotation.AnnotationInvocationHandler"
+        "sun.reflect.annotation.AnnotationInvocationHandler",
+        "java.util.HashMap",
+        "java.util.HashSet",
+        "java.util.LinkedHashMap",
+        "java.util.LinkedHashSet",
+        "java.util.TreeMap",
+        "java.util.TreeSet",
+        "java.util.Hashtable",
+        "java.util.PriorityQueue"
     );
 
     /**
@@ -454,10 +462,62 @@ public final class StringUtil {
                         }
                     }
 
-                    // Allow standard Java classes
+                    // Handle arrays - extract and validate component type
+                    if (className.startsWith("[")) {
+                        String componentType = className;
+
+                        // Extract component type from array notation
+                        // [Ljava.util.HashMap; → java.util.HashMap
+                        // [[Ljava.lang.String; → java.lang.String
+                        // [I → primitive (int[])
+                        while (componentType.startsWith("[")) {
+                            if (componentType.startsWith("[L") && componentType.endsWith(";")) {
+                                componentType = componentType.substring(2, componentType.length() - 1);
+                                break;
+                            } else if (componentType.length() >= 2 && componentType.charAt(1) != 'L' && componentType.charAt(1) != '[') {
+                                // Primitive array: [I, [Z, [B, etc.
+                                return ObjectInputFilter.Status.ALLOWED;
+                            } else if (componentType.startsWith("[[")) {
+                                // Multi-dimensional array - strip one dimension and continue
+                                componentType = componentType.substring(1);
+                            } else {
+                                // Malformed array notation
+                                break;
+                            }
+                        }
+
+                        // Now check if the component type is dangerous
+                        for (String dangerous : DANGEROUS_CLASSES) {
+                            if (componentType.equals(dangerous) || componentType.startsWith(dangerous + "$")) {
+                                LoggerUtil.log(getLogger(), Level.SEVERE,
+                                    "BLOCKED array with dangerous component: " + className + " (component: " + componentType + ")");
+                                return ObjectInputFilter.Status.REJECTED;
+                            }
+                        }
+
+                        // Check if component is a safe Flossware class
+                        for (String safeClass : SAFE_FLOSSWARE_CLASSES) {
+                            if (componentType.equals(safeClass) || componentType.startsWith(safeClass + "$")) {
+                                return ObjectInputFilter.Status.ALLOWED;
+                            }
+                        }
+
+                        // Check if component is standard Java
+                        if (componentType.startsWith("java.lang.") ||
+                            componentType.startsWith("java.util.") ||
+                            componentType.startsWith("java.time.") ||
+                            componentType.startsWith("java.math.")) {
+                            return ObjectInputFilter.Status.ALLOWED;
+                        }
+
+                        LoggerUtil.log(getLogger(), Level.WARNING,
+                            "Blocked array with untrusted component: " + className + " (component: " + componentType + ")");
+                        return ObjectInputFilter.Status.REJECTED;
+                    }
+
+                    // Allow standard Java classes (non-array)
                     if (className.startsWith("java.lang.") ||
-                        className.startsWith("java.util.") ||
-                        className.startsWith("[L")) {  // Array types
+                        className.startsWith("java.util.")) {
                         return ObjectInputFilter.Status.ALLOWED;
                     }
 
