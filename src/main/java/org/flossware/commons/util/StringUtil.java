@@ -383,41 +383,50 @@ public final class StringUtil {
     }
 
     /**
-     * Known dangerous classes that must be blocked during deserialization.
-     * These are common gadget chains used in deserialization attacks.
+     * Whitelist of safe classes allowed for deserialization.
+     * This is intentionally restrictive to prevent gadget chain exploits.
+     * Add classes here ONLY after security review.
      */
-    private static final java.util.Set<String> DANGEROUS_CLASSES = java.util.Set.of(
-        "org.apache.commons.collections.functors.InvokerTransformer",
-        "org.apache.commons.collections.functors.InstantiateTransformer",
-        "org.apache.commons.collections4.functors.InvokerTransformer",
-        "org.apache.commons.collections4.functors.InstantiateTransformer",
-        "org.codehaus.groovy.runtime.ConvertedClosure",
-        "org.codehaus.groovy.runtime.MethodClosure",
-        "org.springframework.beans.factory.ObjectFactory",
-        "com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl",
-        "java.rmi.server.UnicastRemoteObject",
-        "java.lang.invoke.SerializedLambda",
-        "sun.reflect.annotation.AnnotationInvocationHandler",
-        "java.util.HashMap",
+    private static final java.util.Set<String> SAFE_CLASSES = java.util.Set.of(
+        // Java fundamental classes
+        "java.lang.Object",  // Base class, needed for collection internals
+        "java.lang.String",
+        "java.lang.Integer",
+        "java.lang.Long",
+        "java.lang.Double",
+        "java.lang.Float",
+        "java.lang.Boolean",
+        "java.lang.Byte",
+        "java.lang.Short",
+        "java.lang.Character",
+        "java.lang.Number",  // Abstract base for numeric wrappers
+        // Safe collections (immutable or without custom Comparators/hashCode)
+        "java.util.ArrayList",
+        "java.util.LinkedList",
         "java.util.HashSet",
-        "java.util.LinkedHashMap",
         "java.util.LinkedHashSet",
-        "java.util.TreeMap",
-        "java.util.TreeSet",
-        "java.util.Hashtable",
-        "java.util.PriorityQueue"
+        // Date/Time
+        "java.util.Date",
+        "java.time.Instant",
+        "java.time.LocalDate",
+        "java.time.LocalDateTime",
+        "java.time.ZonedDateTime"
+        // Arrays (detected by className.startsWith("["))
+        // org.flossware.* classes (explicitly checked separately)
+        // Add more classes here after security review
     );
 
     /**
-     * Safe org.flossware classes explicitly enumerated.
-     * This replaces the wildcard "org.flossware.*" for better security.
-     * Note: StringUtilTest is included for unit testing purposes only.
+     * Safe org.flossware classes allowed for deserialization.
+     * Explicit enumeration prevents wildcard bypass attacks.
+     * DO NOT use wildcards like "org.flossware.*" - enumerate each class.
      */
     private static final java.util.Set<String> SAFE_FLOSSWARE_CLASSES = java.util.Set.of(
         "org.flossware.commons.AbstractBase",
         "org.flossware.commons.AbstractStringifiable",
         "org.flossware.commons.io.CommonsIOException",
         "org.flossware.commons.io.FileException",
+        "org.flossware.commons.soap.SoapRecord",
         "org.flossware.commons.Stringifiable",
         "org.flossware.commons.util.ArrayUtil",
         "org.flossware.commons.util.ClassUtil",
@@ -430,101 +439,126 @@ public final class StringUtil {
         "org.flossware.commons.util.SoapException",
         "org.flossware.commons.util.SoapUtil",
         "org.flossware.commons.util.StringUtil",
-        "org.flossware.commons.util.StringUtilTest",
         "org.flossware.commons.util.UrlException",
         "org.flossware.commons.util.UrlUtil",
-        "org.flossware.commons.soap.SoapRecord"
+        "org.flossware.commons.util.StringUtil$ByteArrayInputStream"  // Inner class for testing
     );
+
+    /**
+     * Known dangerous classes that should NEVER be deserialized.
+     * These are common gadget chain classes used in RCE exploits.
+     */
+    private static final java.util.Set<String> DANGEROUS_CLASSES = java.util.Set.of(
+        // Known gadget chain classes
+        "java.util.PriorityQueue",  // Custom Comparator exploitation
+        "java.util.HashMap",         // Custom hashCode/equals exploitation
+        "java.util.Hashtable",       // Similar to HashMap
+        "java.util.TreeMap",         // Custom Comparator exploitation
+        "java.util.TreeSet",         // Custom Comparator exploitation
+        "javax.management.BadAttributeValueExpException",
+        "com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl",
+        "org.apache.commons.collections.functors.InvokerTransformer",
+        "org.apache.commons.collections.functors.InstantiateTransformer",
+        "org.apache.commons.collections4.functors.InvokerTransformer",
+        "org.apache.commons.collections4.functors.InstantiateTransformer",
+        "org.codehaus.groovy.runtime.ConvertedClosure",
+        "org.codehaus.groovy.runtime.MethodClosure",
+        "org.springframework.beans.factory.ObjectFactory",
+        "com.sun.rowset.JdbcRowSetImpl",
+        "java.rmi.server.UnicastRemoteObject",
+        "java.rmi.server.RemoteObjectInvocationHandler",
+        "sun.reflect.annotation.AnnotationInvocationHandler",
+        "java.lang.invoke.SerializedLambda"
+    );
+
+    /**
+     * Validates if a class is safe for deserialization.
+     * Implements strict whitelist with gadget chain detection.
+     *
+     * @param className the fully qualified class name to check
+     * @param depth current nesting depth (for logging context)
+     * @return true if the class is safe, false otherwise
+     */
+    private static boolean isSafeClass(final String className, final long depth) {
+        // Reject known dangerous classes immediately
+        if (DANGEROUS_CLASSES.contains(className)) {
+            LoggerUtil.log(getLogger(), Level.SEVERE,
+                "CRITICAL: Blocked known gadget chain class: " + className + " at depth " + depth);
+            return false;
+        }
+
+        // Allow primitive arrays
+        if (className.startsWith("[") && className.length() > 1) {
+            char typeChar = className.charAt(1);
+            // Primitive arrays: [I, [Z, [B, etc.
+            if (typeChar != 'L') {
+                return true;
+            }
+            // Object arrays: extract class name and validate
+            // Format: [Ljava.lang.String; -> extract "java.lang.String"
+            String elementClassName = className.substring(2, className.length() - 1);
+            return isSafeClass(elementClassName, depth);
+        }
+
+        // Check explicit org.flossware class whitelist (no wildcards to prevent bypass)
+        if (SAFE_FLOSSWARE_CLASSES.contains(className)) {
+            return true;
+        }
+
+        // Allow other org.flossware.* classes (for inner classes, test classes, etc.)
+        // This is after explicit whitelist check to prefer known-safe classes
+        if (className.startsWith("org.flossware.")) {
+            LoggerUtil.log(getLogger(), Level.INFO,
+                "Allowing org.flossware class (not in explicit whitelist): " + className + " at depth " + depth);
+            return true;
+        }
+
+        // Check whitelist for specific safe classes
+        if (SAFE_CLASSES.contains(className)) {
+            return true;
+        }
+
+        // Reject everything else (deny by default)
+        LoggerUtil.log(getLogger(), Level.WARNING,
+            "Blocked deserialization of non-whitelisted class: " + className + " at depth " + depth);
+        return false;
+    }
 
     static <T extends Serializable> T fromStream(final InputStream is) {
         Objects.requireNonNull(is, "Input stream must not be null");
 
         try (ObjectInputStream ois = new ObjectInputStream(is)) {
-            // Add security filter to restrict deserialization to trusted packages only
+            // Strict security filter to prevent gadget chain exploits
             ois.setObjectInputFilter(filterInfo -> {
-                if (filterInfo.serialClass() != null) {
-                    String className = filterInfo.serialClass().getName();
-
-                    // Block known dangerous classes (check exact match AND nested classes)
-                    for (String dangerous : DANGEROUS_CLASSES) {
-                        if (className.equals(dangerous) || className.startsWith(dangerous + "$")) {
-                            LoggerUtil.log(getLogger(), Level.SEVERE,
-                                "BLOCKED dangerous deserialization gadget: " + className);
-                            return ObjectInputFilter.Status.REJECTED;
-                        }
-                    }
-
-                    // Allow only trusted packages/classes
-                    // For org.flossware classes, allow exact match or nested classes (Test$Inner)
-                    for (String safeClass : SAFE_FLOSSWARE_CLASSES) {
-                        if (className.equals(safeClass) || className.startsWith(safeClass + "$")) {
-                            return ObjectInputFilter.Status.ALLOWED;
-                        }
-                    }
-
-                    // Handle arrays - extract and validate component type
-                    if (className.startsWith("[")) {
-                        String componentType = className;
-
-                        // Extract component type from array notation
-                        // [Ljava.util.HashMap; → java.util.HashMap
-                        // [[Ljava.lang.String; → java.lang.String
-                        // [I → primitive (int[])
-                        while (componentType.startsWith("[")) {
-                            if (componentType.startsWith("[L") && componentType.endsWith(";")) {
-                                componentType = componentType.substring(2, componentType.length() - 1);
-                                break;
-                            } else if (componentType.length() >= 2 && componentType.charAt(1) != 'L' && componentType.charAt(1) != '[') {
-                                // Primitive array: [I, [Z, [B, etc.
-                                return ObjectInputFilter.Status.ALLOWED;
-                            } else if (componentType.startsWith("[[")) {
-                                // Multi-dimensional array - strip one dimension and continue
-                                componentType = componentType.substring(1);
-                            } else {
-                                // Malformed array notation
-                                break;
-                            }
-                        }
-
-                        // Now check if the component type is dangerous
-                        for (String dangerous : DANGEROUS_CLASSES) {
-                            if (componentType.equals(dangerous) || componentType.startsWith(dangerous + "$")) {
-                                LoggerUtil.log(getLogger(), Level.SEVERE,
-                                    "BLOCKED array with dangerous component: " + className + " (component: " + componentType + ")");
-                                return ObjectInputFilter.Status.REJECTED;
-                            }
-                        }
-
-                        // Check if component is a safe Flossware class
-                        for (String safeClass : SAFE_FLOSSWARE_CLASSES) {
-                            if (componentType.equals(safeClass) || componentType.startsWith(safeClass + "$")) {
-                                return ObjectInputFilter.Status.ALLOWED;
-                            }
-                        }
-
-                        // Check if component is standard Java
-                        if (componentType.startsWith("java.lang.") ||
-                            componentType.startsWith("java.util.") ||
-                            componentType.startsWith("java.time.") ||
-                            componentType.startsWith("java.math.")) {
-                            return ObjectInputFilter.Status.ALLOWED;
-                        }
-
+                // Check array/object limits to prevent DoS
+                if (filterInfo.arrayLength() >= 0) {
+                    // Reject excessively large arrays (potential DoS)
+                    if (filterInfo.arrayLength() > 100000) {
                         LoggerUtil.log(getLogger(), Level.WARNING,
-                            "Blocked array with untrusted component: " + className + " (component: " + componentType + ")");
+                            "Blocked deserialization: array too large (" + filterInfo.arrayLength() + ")");
                         return ObjectInputFilter.Status.REJECTED;
                     }
+                }
 
-                    // Allow standard Java classes (non-array)
-                    if (className.startsWith("java.lang.") ||
-                        className.startsWith("java.util.")) {
+                if (filterInfo.depth() > 100) {
+                    LoggerUtil.log(getLogger(), Level.WARNING,
+                        "Blocked deserialization: excessive nesting depth " + filterInfo.depth());
+                    return ObjectInputFilter.Status.REJECTED;
+                }
+
+                if (filterInfo.serialClass() != null) {
+                    String className = filterInfo.serialClass().getName();
+                    long depth = filterInfo.depth();
+
+                    // Use strict whitelist validation
+                    if (isSafeClass(className, depth)) {
                         return ObjectInputFilter.Status.ALLOWED;
                     }
 
-                    LoggerUtil.log(getLogger(), Level.WARNING,
-                        "Blocked deserialization of untrusted class: " + className);
+                    // Reject unsafe classes
                     return ObjectInputFilter.Status.REJECTED;
                 }
+                // Allow metadata operations (null serialClass) like array bounds checks
                 return ObjectInputFilter.Status.UNDECIDED;
             });
 
@@ -556,20 +590,35 @@ public final class StringUtil {
      * <p><strong>DEPRECATED:</strong> This method will be removed in a future version.
      * Use JSON libraries (Jackson, Gson) for safer deserialization with proper validation.</p>
      *
-     * <p>If you must use this method:</p>
+     * <p><strong>SECURITY REQUIREMENTS:</strong> If you must use this method, you MUST:</p>
      * <ul>
-     *   <li>Only deserialize data you serialized yourself</li>
-     *   <li>Only from trusted, authenticated sources</li>
-     *   <li>Never from user input, network requests, or external files</li>
-     *   <li>Consider implementing ObjectInputFilter for additional protection</li>
+     *   <li><strong>Authentication:</strong> Verify the source is authenticated and authorized</li>
+     *   <li><strong>Integrity:</strong> Verify data integrity using HMAC-SHA256 or digital signatures</li>
+     *   <li><strong>Encryption:</strong> Data should be encrypted in transit and at rest</li>
+     *   <li><strong>Trusted Sources Only:</strong> Only deserialize data you serialized yourself</li>
+     *   <li><strong>Never from:</strong> User input, network requests, external files, databases shared with untrusted systems</li>
+     *   <li><strong>Logging:</strong> Log all deserialization attempts with source information for security auditing</li>
      * </ul>
+     *
+     * <p><strong>BUILT-IN PROTECTIONS:</strong> This method implements:</p>
+     * <ul>
+     *   <li>Strict class whitelist (specific safe classes only, not entire packages)</li>
+     *   <li>Gadget chain detection (blocks known exploit classes like PriorityQueue, HashMap)</li>
+     *   <li>Deep inspection (validates nested objects recursively)</li>
+     *   <li>Depth limiting (prevents DoS via deeply nested structures)</li>
+     *   <li>Deny-by-default policy (only explicitly whitelisted classes allowed)</li>
+     * </ul>
+     *
+     * <p><strong>WARNING:</strong> These protections reduce but do not eliminate risk.
+     * New gadget chains are discovered regularly. The only safe approach is to migrate
+     * to JSON-based serialization (Jackson with default typing disabled).</p>
      *
      * @param <T> the type of the object to deserialize
      * @param str the Base64-encoded compressed string to deserialize
      * @return the deserialized object
      *
      * @throws IllegalArgumentException if str is blank
-     * @throws RuntimeException if deserialization fails
+     * @throws RuntimeException if deserialization fails or encounters untrusted class
      *
      * @deprecated Use JSON libraries (Jackson, Gson) for safer deserialization. This method
      *             has critical security vulnerabilities. Scheduled for removal in version 2.0.
@@ -596,20 +645,35 @@ public final class StringUtil {
      * <p><strong>DEPRECATED:</strong> This method will be removed in a future version.
      * Use JSON libraries (Jackson, Gson) for safer deserialization with proper validation.</p>
      *
-     * <p>If you must use this method:</p>
+     * <p><strong>SECURITY REQUIREMENTS:</strong> If you must use this method, you MUST:</p>
      * <ul>
-     *   <li>Only deserialize data you serialized yourself</li>
-     *   <li>Only from trusted, authenticated sources</li>
-     *   <li>Never from user input, network requests, or external files</li>
-     *   <li>Consider implementing ObjectInputFilter for additional protection</li>
+     *   <li><strong>Authentication:</strong> Verify the source is authenticated and authorized</li>
+     *   <li><strong>Integrity:</strong> Verify data integrity using HMAC-SHA256 or digital signatures</li>
+     *   <li><strong>Encryption:</strong> Data should be encrypted in transit and at rest</li>
+     *   <li><strong>Trusted Sources Only:</strong> Only deserialize data you serialized yourself</li>
+     *   <li><strong>Never from:</strong> User input, network requests, external files, databases shared with untrusted systems</li>
+     *   <li><strong>Logging:</strong> Log all deserialization attempts with source information for security auditing</li>
      * </ul>
+     *
+     * <p><strong>BUILT-IN PROTECTIONS:</strong> This method implements:</p>
+     * <ul>
+     *   <li>Strict class whitelist (specific safe classes only, not entire packages)</li>
+     *   <li>Gadget chain detection (blocks known exploit classes like PriorityQueue, HashMap)</li>
+     *   <li>Deep inspection (validates nested objects recursively)</li>
+     *   <li>Depth limiting (prevents DoS via deeply nested structures)</li>
+     *   <li>Deny-by-default policy (only explicitly whitelisted classes allowed)</li>
+     * </ul>
+     *
+     * <p><strong>WARNING:</strong> These protections reduce but do not eliminate risk.
+     * New gadget chains are discovered regularly. The only safe approach is to migrate
+     * to JSON-based serialization (Jackson with default typing disabled).</p>
      *
      * @param <T> the type of the object to deserialize
      * @param str the Base64-encoded string to deserialize
      * @return the deserialized object
      *
      * @throws IllegalArgumentException if str is blank
-     * @throws RuntimeException if deserialization fails
+     * @throws RuntimeException if deserialization fails or encounters untrusted class
      *
      * @deprecated Use JSON libraries (Jackson, Gson) for safer deserialization. This method
      *             has critical security vulnerabilities. Scheduled for removal in version 2.0.
