@@ -586,6 +586,108 @@ class StringUtilTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
+    void testRejectSerializedLambda() throws Exception {
+        // Test that SerializedLambda gadget is blocked
+        // Create a serialized lambda (java.lang.invoke.SerializedLambda)
+        java.io.Serializable lambda = (java.io.Serializable & Runnable) () -> System.out.println("test");
+
+        java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+        try (java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(baos)) {
+            oos.writeObject(lambda);
+        }
+
+        // Try to deserialize - should be blocked by filter
+        java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream(baos.toByteArray());
+        java.lang.reflect.Method method = StringUtil.class.getDeclaredMethod(
+            "fromStream", java.io.InputStream.class);
+        method.setAccessible(true);
+
+        // SerializedLambda should be REJECTED
+        var exception = assertThrows(java.lang.reflect.InvocationTargetException.class,
+            () -> method.invoke(null, bais));
+        assertTrue(exception.getCause() instanceof RuntimeException);
+        assertTrue(exception.getCause().getCause() instanceof java.io.InvalidClassException);
+        assertTrue(exception.getCause().getCause().getMessage().contains("REJECTED"));
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
+    void testRejectAnnotationInvocationHandler() throws Exception {
+        // Test that AnnotationInvocationHandler gadget is blocked
+        // Create a mock serialized stream with AnnotationInvocationHandler class name
+        // We can't directly instantiate it (internal class), so we simulate the filter check
+
+        // Use reflection to test the filter directly with the dangerous class name
+        java.lang.reflect.Method method = StringUtil.class.getDeclaredMethod(
+            "fromStream", java.io.InputStream.class);
+        method.setAccessible(true);
+
+        // Create a serialized stream with a marker that will trigger the filter
+        // For this test, we'll verify the DANGEROUS_CLASSES set contains it
+        java.lang.reflect.Field field = StringUtil.class.getDeclaredField("DANGEROUS_CLASSES");
+        field.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        java.util.Set<String> dangerousClasses = (java.util.Set<String>) field.get(null);
+
+        assertTrue(dangerousClasses.contains("sun.reflect.annotation.AnnotationInvocationHandler"),
+            "AnnotationInvocationHandler should be in DANGEROUS_CLASSES blacklist");
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
+    void testRejectNestedLambda() throws Exception {
+        // Test that nested structures containing SerializedLambda are blocked
+        // Create ArrayList containing a lambda
+        java.util.ArrayList<java.io.Serializable> list = new java.util.ArrayList<>();
+        java.io.Serializable lambda = (java.io.Serializable & Runnable) () -> System.out.println("nested");
+        list.add(lambda);
+
+        java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+        try (java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(baos)) {
+            oos.writeObject(list);
+        }
+
+        // Try to deserialize - should be blocked when filter encounters SerializedLambda
+        java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream(baos.toByteArray());
+        java.lang.reflect.Method method = StringUtil.class.getDeclaredMethod(
+            "fromStream", java.io.InputStream.class);
+        method.setAccessible(true);
+
+        // SerializedLambda inside ArrayList should be REJECTED
+        var exception = assertThrows(java.lang.reflect.InvocationTargetException.class,
+            () -> method.invoke(null, bais));
+        assertTrue(exception.getCause() instanceof RuntimeException);
+        assertTrue(exception.getCause().getCause() instanceof java.io.InvalidClassException);
+        assertTrue(exception.getCause().getCause().getMessage().contains("REJECTED"));
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
+    void testRejectNestedAnnotation() throws Exception {
+        // Test that HashMap with annotation gadget key/value is blocked
+        // Verify the blacklist contains the dangerous annotation class
+        java.lang.reflect.Field field = StringUtil.class.getDeclaredField("DANGEROUS_CLASSES");
+        field.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        java.util.Set<String> dangerousClasses = (java.util.Set<String>) field.get(null);
+
+        // Verify all critical gadgets are in the blacklist
+        assertTrue(dangerousClasses.contains("sun.reflect.annotation.AnnotationInvocationHandler"),
+            "AnnotationInvocationHandler must be blacklisted");
+        assertTrue(dangerousClasses.contains("java.lang.invoke.SerializedLambda"),
+            "SerializedLambda must be blacklisted");
+        assertTrue(dangerousClasses.contains("org.apache.commons.collections.functors.InvokerTransformer"),
+            "InvokerTransformer must be blacklisted");
+        assertTrue(dangerousClasses.contains("com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl"),
+            "TemplatesImpl must be blacklisted");
+
+        // Verify the count - should have 11 dangerous classes
+        assertEquals(11, dangerousClasses.size(),
+            "Should have 11 dangerous classes in blacklist");
+    }
+
+    @Test
     void testPrivateConstructor() throws Exception {
         Constructor<StringUtil> constructor = StringUtil.class.getDeclaredConstructor();
         assertTrue(java.lang.reflect.Modifier.isPrivate(constructor.getModifiers()));

@@ -382,6 +382,52 @@ public final class StringUtil {
         return Base64.getEncoder().encodeToString(baos.toByteArray());
     }
 
+    /**
+     * Known dangerous classes that must be blocked during deserialization.
+     * These are common gadget chains used in deserialization attacks.
+     */
+    private static final java.util.Set<String> DANGEROUS_CLASSES = java.util.Set.of(
+        "org.apache.commons.collections.functors.InvokerTransformer",
+        "org.apache.commons.collections.functors.InstantiateTransformer",
+        "org.apache.commons.collections4.functors.InvokerTransformer",
+        "org.apache.commons.collections4.functors.InstantiateTransformer",
+        "org.codehaus.groovy.runtime.ConvertedClosure",
+        "org.codehaus.groovy.runtime.MethodClosure",
+        "org.springframework.beans.factory.ObjectFactory",
+        "com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl",
+        "java.rmi.server.UnicastRemoteObject",
+        "java.lang.invoke.SerializedLambda",
+        "sun.reflect.annotation.AnnotationInvocationHandler"
+    );
+
+    /**
+     * Safe org.flossware classes explicitly enumerated.
+     * This replaces the wildcard "org.flossware.*" for better security.
+     * Note: StringUtilTest is included for unit testing purposes only.
+     */
+    private static final java.util.Set<String> SAFE_FLOSSWARE_CLASSES = java.util.Set.of(
+        "org.flossware.commons.AbstractBase",
+        "org.flossware.commons.AbstractStringifiable",
+        "org.flossware.commons.io.CommonsIOException",
+        "org.flossware.commons.io.FileException",
+        "org.flossware.commons.Stringifiable",
+        "org.flossware.commons.util.ArrayUtil",
+        "org.flossware.commons.util.ClassUtil",
+        "org.flossware.commons.util.FileUtil",
+        "org.flossware.commons.util.IOUtils",
+        "org.flossware.commons.util.LoggerUtil",
+        "org.flossware.commons.util.MethodUtil",
+        "org.flossware.commons.util.ObjectUtil",
+        "org.flossware.commons.util.PropertyUtil",
+        "org.flossware.commons.util.SoapException",
+        "org.flossware.commons.util.SoapUtil",
+        "org.flossware.commons.util.StringUtil",
+        "org.flossware.commons.util.StringUtilTest",
+        "org.flossware.commons.util.UrlException",
+        "org.flossware.commons.util.UrlUtil",
+        "org.flossware.commons.soap.SoapRecord"
+    );
+
     static <T extends Serializable> T fromStream(final InputStream is) {
         Objects.requireNonNull(is, "Input stream must not be null");
 
@@ -390,13 +436,31 @@ public final class StringUtil {
             ois.setObjectInputFilter(filterInfo -> {
                 if (filterInfo.serialClass() != null) {
                     String className = filterInfo.serialClass().getName();
-                    // Allow only trusted packages
-                    if (className.startsWith("org.flossware.") ||
-                        className.startsWith("java.lang.") ||
+
+                    // Block known dangerous classes (check exact match AND nested classes)
+                    for (String dangerous : DANGEROUS_CLASSES) {
+                        if (className.equals(dangerous) || className.startsWith(dangerous + "$")) {
+                            LoggerUtil.log(getLogger(), Level.SEVERE,
+                                "BLOCKED dangerous deserialization gadget: " + className);
+                            return ObjectInputFilter.Status.REJECTED;
+                        }
+                    }
+
+                    // Allow only trusted packages/classes
+                    // For org.flossware classes, allow exact match or nested classes (Test$Inner)
+                    for (String safeClass : SAFE_FLOSSWARE_CLASSES) {
+                        if (className.equals(safeClass) || className.startsWith(safeClass + "$")) {
+                            return ObjectInputFilter.Status.ALLOWED;
+                        }
+                    }
+
+                    // Allow standard Java classes
+                    if (className.startsWith("java.lang.") ||
                         className.startsWith("java.util.") ||
                         className.startsWith("[L")) {  // Array types
                         return ObjectInputFilter.Status.ALLOWED;
                     }
+
                     LoggerUtil.log(getLogger(), Level.WARNING,
                         "Blocked deserialization of untrusted class: " + className);
                     return ObjectInputFilter.Status.REJECTED;
