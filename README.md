@@ -5,10 +5,9 @@ Foundation utilities for the [Solenopsis](https://github.com/solenopsis) Salesfo
 [![Build Status](https://github.com/FlossWare/commons-java/workflows/CD-CI/badge.svg)](https://github.com/FlossWare/commons-java/actions)
 [![codecov](https://codecov.io/gh/FlossWare/commons-java/branch/main/graph/badge.svg)](https://codecov.io/gh/FlossWare/commons-java)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Security Policy](https://img.shields.io/badge/security-policy-blue)](https://github.com/FlossWare/commons-java/blob/main/SECURITY.md)
 [![Maven Central](https://img.shields.io/badge/maven--central-packagecloud-orange)](https://packagecloud.io/flossware/java)
 [![Java Version](https://img.shields.io/badge/Java-17%2B-blue)](https://openjdk.org/projects/jdk/17/)
-[![Coverage](https://img.shields.io/badge/coverage-93%25-brightgreen)](https://github.com/FlossWare/commons-java/actions)
+[![Coverage](https://img.shields.io/badge/coverage-96%25-brightgreen)](https://github.com/FlossWare/commons-java/actions)
 [![Quality](https://img.shields.io/badge/quality-A%2B-brightgreen)](https://github.com/FlossWare/commons-java/actions)
 
 ## Purpose
@@ -19,21 +18,21 @@ This library provides low-level utilities used by the Solenopsis framework for S
 
 ## Features
 
-### SOAP Utilities (`org.flossware.commons-java.util.SoapUtil`)
+### SOAP Utilities (`org.flossware.commons.util.SoapUtil`)
 Core utilities for Apache CXF SOAP clients:
 - Configure SOAP service headers and endpoints
 - Compute QNames from `@WebServiceClient` annotations  
 - Set custom headers for Salesforce API calls
 - Manage SOAP factory instances
 
-### String Utilities (`org.flossware.commons-java.util.StringUtil`)
+### String Utilities (`org.flossware.commons.util.StringUtil`)
 - String concatenation with separators
 - URL encoding
 - Unique ID generation with UUID
 - Validation (`requireNonBlank`)
 - Serialization/deserialization (internal use only)
 
-### File Utilities (`org.flossware.commons-java.util.FileUtil`)
+### File Utilities (`org.flossware.commons.util.FileUtil`)
 - Safe file I/O with validation
 - File existence checking
 - FileInputStream creation with proper error handling
@@ -68,7 +67,7 @@ Core utilities for Apache CXF SOAP clients:
 ### Configure Salesforce SOAP Endpoint
 
 ```java
-import org.flossware.commons-java.util.SoapUtil;
+import org.flossware.commons.util.SoapUtil;
 
 // Create a port and set Salesforce endpoint
 MetadataPortType port = portFactory.createPort();
@@ -78,7 +77,7 @@ SoapUtil.setUrl(port, "https://na1.salesforce.com/services/Soap/m/58.0");
 ### Set SOAP Headers for Salesforce Session
 
 ```java
-import org.flossware.commons-java.util.SoapUtil;
+import org.flossware.commons.util.SoapUtil;
 import javax.xml.namespace.QName;
 
 Service service = new MetadataService();
@@ -90,7 +89,7 @@ SoapUtil.setHeader(service, sessionHeaderQName, sessionHeaderValue);
 ### Compute QName from Service Class
 
 ```java
-import org.flossware.commons-java.util.SoapUtil;
+import org.flossware.commons.util.SoapUtil;
 
 QName qname = SoapUtil.computeQName(MetadataService.class);
 // Returns QName based on @WebServiceClient annotation
@@ -99,7 +98,7 @@ QName qname = SoapUtil.computeQName(MetadataService.class);
 ### String Validation
 
 ```java
-import org.flossware.commons-java.util.StringUtil;
+import org.flossware.commons.util.StringUtil;
 
 // Validate non-blank strings
 String apiUrl = StringUtil.requireNonBlank(url, "Salesforce URL cannot be blank");
@@ -111,13 +110,19 @@ String requestId = StringUtil.generateUniqueString("sfdc-request-");
 ### File Operations
 
 ```java
-import org.flossware.commons-java.util.FileUtil;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.io.InputStream;
 
-// Ensure file exists before processing
-File wsdlFile = FileUtil.ensureFileExists("src/main/resources/wsdl/metadata.wsdl");
+// Modern approach using java.nio.file.Files
+Path wsdlPath = Paths.get("src/main/resources/wsdl/metadata.wsdl");
+if (!Files.exists(wsdlPath)) {
+    throw new IllegalArgumentException("WSDL file not found: " + wsdlPath);
+}
 
-// Safe file input stream creation
-FileInputStream fis = FileUtil.getFileInputStream(deploymentPackage);
+// Create input stream
+InputStream inputStream = Files.newInputStream(wsdlPath);
 ```
 
 ## Requirements
@@ -141,14 +146,14 @@ mvn clean install -DskipTests
 
 ## Test Coverage
 
-The library maintains **excellent test coverage** with **307 tests** (287 unit + 20 integration):
+The library maintains **excellent test coverage** with **321 tests**:
 
 **Coverage Metrics:**
-- 🎯 **93% instruction coverage** (1,453/1,562 instructions)
-- ✅ **86% branch coverage** (83/96 branches)
-- 🎯 **93% method coverage** (126/135 methods)
-- 🎯 **93% line coverage** (351/376 lines)
-- 🎯 **100% class coverage** (19/19 classes)
+- 🎯 **96% instruction coverage** (2,034/2,110 instructions)
+- ✅ **84% branch coverage** (132/158 branches)
+- 🎯 **100% method coverage** (135/135 methods)
+- 🎯 **96% line coverage** (437/453 lines)
+- 🎯 **100% class coverage**
 
 **Test Suite Includes:**
 - Input validation edge cases (null, empty, whitespace)
@@ -165,10 +170,10 @@ The library maintains **excellent test coverage** with **307 tests** (287 unit +
   - UNDECIDED path: null serialClass during metadata processing
 - Complex object graph deserialization (ArrayList, nested structures)
 
-All 265 tests pass with 0 failures. JaCoCo coverage reports are generated with each build.
+All 321 tests pass with 0 failures. JaCoCo coverage reports are generated with each build.
 
-**Remaining Branch Coverage (3 of 96 branches, 96%):**
-- Minor edge cases in conditional logic - represents truly exceptional coverage
+**Remaining Branch Coverage (26 of 158 branches, 84%):**
+- Minor edge cases in conditional logic
 
 ## Architecture
 
@@ -190,7 +195,7 @@ This library sits at the foundation of the Solenopsis stack:
 
 ## Security Considerations
 
-**For security vulnerability reporting, see [SECURITY.md](SECURITY.md).**
+**For security vulnerability reporting, please use [GitHub Issues](https://github.com/FlossWare/commons-java/issues).**
 
 ### Java Serialization
 The serialization methods in `StringUtil` are **for internal use only**:
@@ -222,11 +227,25 @@ String json = mapper.writeValueAsString(myObject);
 MyClass obj = mapper.readValue(json, MyClass.class);
 ```
 
-### FileUtil Methods (Check JavaDoc for deprecation status)
+### FileUtil Methods (Deprecated since v1.22)
 - `getFileInputStream(File)` - Use `Files.newInputStream(Path)` instead
 - `getFileInputStream(String)` - Use `Files.newInputStream(Path)` instead  
 - `ensureFileExists(File)` - Use `Files.exists(Path)` with proper exception handling
 - `ensureFileExists(String)` - Use `Files.exists(Path)` with proper exception handling
+
+**Migration Example:**
+```java
+// Old (deprecated)
+File file = FileUtil.ensureFileExists("data.txt");
+FileInputStream fis = FileUtil.getFileInputStream(file);
+
+// New (recommended)
+Path path = Paths.get("data.txt");
+if (!Files.exists(path)) {
+    throw new IllegalArgumentException("File not found: " + path);
+}
+InputStream is = Files.newInputStream(path);
+```
 
 ### StringUtil Validation Methods
 - `ensureString(String)` - Use `requireNonBlank(String)` instead
@@ -236,7 +255,7 @@ MyClass obj = mapper.readValue(json, MyClass.class);
 - v1.x: Current stable branch (security fixes and critical bugs only)
 - v2.0: Planned removal of all deprecated methods
 
-See [CHANGELOG.md](CHANGELOG.md) for detailed migration guide.
+See release notes in [GitHub Releases](https://github.com/FlossWare/commons-java/releases) for version history.
 
 ## Contributing
 
@@ -251,6 +270,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines including:
 2. Run `mvn verify` to ensure all tests pass
 3. Make changes following our coding standards
 4. Submit PR with tests and documentation
+5. Maintain 96% coverage minimum
 
 ## License
 
@@ -266,4 +286,4 @@ GNU General Public License, Version 3 - See [LICENSE](LICENSE) file
 
 ## Version History
 
-See [CHANGELOG.md](CHANGELOG.md) for detailed version history.
+See [GitHub Releases](https://github.com/FlossWare/commons-java/releases) for detailed version history.
