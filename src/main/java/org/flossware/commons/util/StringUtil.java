@@ -531,13 +531,11 @@ public final class StringUtil {
             // Strict security filter to prevent gadget chain exploits
             ois.setObjectInputFilter(filterInfo -> {
                 // Check array/object limits to prevent DoS
-                if (filterInfo.arrayLength() >= 0) {
-                    // Reject excessively large arrays (potential DoS)
-                    if (filterInfo.arrayLength() > 100000) {
-                        LoggerUtil.log(getLogger(), Level.WARNING,
-                            "Blocked deserialization: array too large (" + filterInfo.arrayLength() + ")");
-                        return ObjectInputFilter.Status.REJECTED;
-                    }
+                // Reject excessively large arrays (potential DoS)
+                if (filterInfo.arrayLength() >= 0 && filterInfo.arrayLength() > 100000) {
+                    LoggerUtil.log(getLogger(), Level.WARNING,
+                        "Blocked deserialization: array too large (" + filterInfo.arrayLength() + ")");
+                    return ObjectInputFilter.Status.REJECTED;
                 }
 
                 if (filterInfo.depth() > 100) {
