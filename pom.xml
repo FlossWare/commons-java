@@ -302,8 +302,9 @@
       <plugin>
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
-        <version>10.0.4</version>
+        <version>10.0.2</version>
         <configuration>
+          <autoUpdate>false</autoUpdate>
           <failBuildOnCVSS>7</failBuildOnCVSS>
           <suppressionFile>dependency-check-suppressions.xml</suppressionFile>
           <!-- Disable OSS Index analyzer to avoid credential errors -->
@@ -470,7 +471,7 @@
       <plugin>
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
-        <version>10.0.4</version>
+        <version>10.0.2</version>
         <reportSets>
           <reportSet>
             <reports>
