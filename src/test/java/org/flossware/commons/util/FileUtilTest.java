@@ -89,6 +89,88 @@ class FileUtilTest {
             FileUtil.getFileInputStream(""));
     }
 
+    // ========== Deprecated Method Security Tests ==========
+
+    @Test
+    void testDeprecatedGetFileInputStreamRejectsTraversal() throws IOException {
+        // Create a subdirectory structure
+        Path subDir = tempDir.resolve("subdir");
+        Files.createDirectory(subDir);
+
+        // Create a file in parent directory that we'll try to access via traversal
+        Path parentFile = tempDir.resolve("parent_secret.txt");
+        Files.writeString(parentFile, "secret content");
+
+        // Create a reference point in subdir
+        Path childFile = subDir.resolve("child.txt");
+        Files.writeString(childFile, "child content");
+
+        // Attempt path traversal to access parent file from subdirectory context
+        // This creates a path that escapes the subdirectory
+        File traversalFile = subDir.resolve("../parent_secret.txt").toFile();
+
+        // Should reject path traversal (file escapes its parent directory)
+        FileException exception = assertThrows(FileException.class, () ->
+            FileUtil.getFileInputStream(traversalFile));
+
+        assertTrue(exception.getMessage().contains("Path traversal"),
+            "Expected path traversal rejection but got: " + exception.getMessage());
+    }
+
+    @Test
+    void testDeprecatedGetFileInputStreamNormalPath() throws IOException {
+        // Create a test file
+        Path testFile = tempDir.resolve("normal.txt");
+        Files.writeString(testFile, "normal content");
+
+        // Normal path should work
+        try (FileInputStream fis = FileUtil.getFileInputStream(testFile.toFile())) {
+            assertNotNull(fis);
+            assertTrue(fis.available() > 0);
+        }
+    }
+
+    @Test
+    void testDeprecatedGetFileInputStreamRejectsComplexTraversal() throws IOException {
+        // Create nested directories
+        Path level1 = tempDir.resolve("level1");
+        Path level2 = level1.resolve("level2");
+        Files.createDirectories(level2);
+
+        // Create file in level1 that we'll try to access from level2
+        Path targetFile = level1.resolve("secret.txt");
+        Files.writeString(targetFile, "secret content");
+
+        // Create reference file in level2
+        Path childFile = level2.resolve("child.txt");
+        Files.writeString(childFile, "child content");
+
+        // Attempt traversal to access level1 file from level2
+        File traversalFile = level2.resolve("../secret.txt").toFile();
+
+        // Should reject path traversal
+        FileException exception = assertThrows(FileException.class, () ->
+            FileUtil.getFileInputStream(traversalFile));
+
+        assertTrue(exception.getMessage().contains("Path traversal"),
+            "Expected path traversal rejection but got: " + exception.getMessage());
+    }
+
+    @Test
+    void testDeprecatedGetFileInputStreamWithSubdirectoryAccess() throws IOException {
+        // Create a subdirectory with a test file
+        Path subDir = tempDir.resolve("subdir");
+        Files.createDirectory(subDir);
+        Path testFile = subDir.resolve("allowed.txt");
+        Files.writeString(testFile, "allowed content");
+
+        // Normal subdirectory access should work
+        try (FileInputStream fis = FileUtil.getFileInputStream(testFile.toFile())) {
+            assertNotNull(fis);
+            assertTrue(fis.available() > 0);
+        }
+    }
+
     @Test
     void testEnsureFileExists_withValidFile() throws IOException {
         Path testFile = tempDir.resolve("exists.txt");

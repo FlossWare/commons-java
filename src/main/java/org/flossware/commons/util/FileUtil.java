@@ -315,14 +315,29 @@ public final class FileUtil {
      *
      * @param file the file for whom we desire a file input stream
      * @return a file input stream
-     * @throws IllegalArgumentException if file is null
+     * @throws IllegalArgumentException if file is null or path traversal detected
      * @throws FileException if there is any problem creating the file input stream
      * @deprecated Use {@link #newInputStream(Path)} instead for modern NIO.2 API
+     * @apiNote SECURITY WARNING: This method has limited path traversal protection
+     *          and does not prevent TOCTOU or symlink attacks. Migrate to Path-based
+     *          APIs for comprehensive security (CWE-22, CWE-367).
      */
     @Deprecated(since = "1.22", forRemoval = true)
     public static FileInputStream getFileInputStream(final File file) {
+        Objects.requireNonNull(file, "File must not be null");
+
+        // SECURITY: Validate path traversal patterns even in deprecated methods
+        // Check for suspicious patterns before normalization
+        final Path path = file.toPath();
         try {
-            return new FileInputStream(Objects.requireNonNull(file, "File must not be null"));
+            validateNoTraversalPatterns(path);
+        } catch (final IllegalArgumentException e) {
+            LoggerUtil.log(getLogger(), Level.WARNING, e, "Path traversal pattern detected for file [{0}]", file);
+            throw new FileException("Path traversal pattern detected: " + file, e);
+        }
+
+        try {
+            return new FileInputStream(file);
         } catch (final FileNotFoundException fileNotFoundException) {
             LoggerUtil.log(getLogger(), Level.WARNING, fileNotFoundException, "File [{0}] not found", file);
             throw new FileException(fileNotFoundException);
