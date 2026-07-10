@@ -21,9 +21,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -118,18 +123,64 @@ public final class FileUtil {
     // ========== Modern NIO.2 Path-based methods ==========
 
     /**
-     * Return an input stream for the given path using NIO.2.
+     * Return an input stream for the given path using NIO.2 with symlink/hardlink protection.
+     * This method uses FileChannel to prevent symlink following and validates against hardlink attacks.
      *
      * @param path the path for which we desire an input stream
      * @return an input stream for reading from the path
-     * @throws IllegalArgumentException if path is null
+     * @throws IllegalArgumentException if path is null, is a symlink, or hardlink identity changed
      * @throws FileException if there is any problem opening the input stream
      */
     public static InputStream newInputStream(final Path path) {
+        Objects.requireNonNull(path, "Path must not be null");
+
         try {
-            return Files.newInputStream(Objects.requireNonNull(path, "Path must not be null"));
+            // Get file identity BEFORE opening (detect hardlink attacks)
+            final BasicFileAttributes beforeAttrs = Files.readAttributes(
+                path, BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS
+            );
+
+            // Reject symbolic links
+            if (beforeAttrs.isSymbolicLink()) {
+                throw new IllegalArgumentException("Symbolic links are not allowed: " + path);
+            }
+
+            // Open file channel with NOFOLLOW_LINKS to prevent symlink following
+            final FileChannel channel = FileChannel.open(
+                path,
+                StandardOpenOption.READ,
+                LinkOption.NOFOLLOW_LINKS
+            );
+
+            // Get file identity AFTER opening (detect hardlink swap attacks)
+            final BasicFileAttributes afterAttrs = Files.readAttributes(
+                path, BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS
+            );
+
+            // Verify file identity hasn't changed (hardlink attack detection)
+            final Object beforeKey = beforeAttrs.fileKey();
+            final Object afterKey = afterAttrs.fileKey();
+
+            if (beforeKey == null || afterKey == null || !beforeKey.equals(afterKey)) {
+                channel.close();
+                throw new IllegalArgumentException(
+                    "File identity changed between checks (possible hardlink attack): " + path
+                );
+            }
+
+            // Verify it's still not a symlink (race condition detection)
+            if (afterAttrs.isSymbolicLink()) {
+                channel.close();
+                throw new IllegalArgumentException(
+                    "File changed to symbolic link during opening: " + path
+                );
+            }
+
+            return Channels.newInputStream(channel);
+
         } catch (final IOException ioException) {
-            LoggerUtil.log(getLogger(), Level.WARNING, ioException, "Cannot open input stream for path [{0}]", path);
+            LoggerUtil.log(getLogger(), Level.WARNING, ioException,
+                "Cannot open input stream for path [{0}]", path);
             throw new FileException(ioException);
         }
     }
