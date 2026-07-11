@@ -12,6 +12,8 @@ concurrency:
 permissions:
   contents: write
   packages: write
+  checks: write
+  pages: write
 
 jobs:
   build:
@@ -120,6 +122,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./target/site/apidocs
           destination_dir: javadoc
+          force_orphan: true
 
       - name: Deploy to packagecloud.io
         run: "mvn -DskipTests deploy"
