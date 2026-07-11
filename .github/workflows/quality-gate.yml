@@ -56,8 +56,8 @@ jobs:
         id: jacoco
         run: |
           if [ -f target/site/jacoco/index.html ]; then
-            INSTRUCTION_COVERAGE=$(grep -oP 'Total.*?<td class="ctr2">(\d+)%' target/site/jacoco/index.html | grep -oP '\d+%' | head -1 || echo "0%")
-            BRANCH_COVERAGE=$(grep -oP 'Total.*?<td class="ctr2">(\d+)%' target/site/jacoco/index.html | grep -oP '\d+%' | tail -1 || echo "0%")
+            INSTRUCTION_COVERAGE=$(grep -oP 'Total.*?<td class="ctr2">(\d+)%' target/site/jacoco/index.html | grep -oP '\d+%' | head -1 || true)
+            BRANCH_COVERAGE=$(grep -oP 'Total.*?<td class="ctr2">(\d+)%' target/site/jacoco/index.html | grep -oP '\d+%' | tail -1 || true)
             echo "instruction_coverage=${INSTRUCTION_COVERAGE}" >> $GITHUB_OUTPUT
             echo "branch_coverage=${BRANCH_COVERAGE}" >> $GITHUB_OUTPUT
             echo "Coverage: Instruction=${INSTRUCTION_COVERAGE}, Branch=${BRANCH_COVERAGE}" >&2
@@ -71,7 +71,7 @@ jobs:
         id: spotbugs
         run: |
           if [ -f target/spotbugsXml.xml ]; then
-            BUG_COUNT=$(grep -c '<BugInstance' target/spotbugsXml.xml || echo "0")
+            BUG_COUNT=$(grep -c '<BugInstance' target/spotbugsXml.xml || true)
             echo "bug_count=${BUG_COUNT}" >> $GITHUB_OUTPUT
             echo "SpotBugs found: ${BUG_COUNT} bugs" >&2
           else
@@ -83,7 +83,7 @@ jobs:
         id: pmd
         run: |
           if [ -f target/pmd.xml ]; then
-            VIOLATION_COUNT=$(grep -c '<violation' target/pmd.xml || echo "0")
+            VIOLATION_COUNT=$(grep -c '<violation' target/pmd.xml || true)
             echo "violation_count=${VIOLATION_COUNT}" >> $GITHUB_OUTPUT
             echo "PMD violations: ${VIOLATION_COUNT}" >&2
           else
@@ -95,7 +95,7 @@ jobs:
         id: checkstyle
         run: |
           if [ -f target/checkstyle-result.xml ]; then
-            ERROR_COUNT=$(grep -c 'severity="error"' target/checkstyle-result.xml || echo "0")
+            ERROR_COUNT=$(grep -c 'severity="error"' target/checkstyle-result.xml || true)
             echo "error_count=${ERROR_COUNT}" >> $GITHUB_OUTPUT
             echo "Checkstyle errors: ${ERROR_COUNT}" >&2
           else
@@ -107,9 +107,9 @@ jobs:
         id: owasp
         run: |
           if [ -f target/dependency-check-report.xml ]; then
-            VULNERABILITY_COUNT=$(grep -c '<vulnerability' target/dependency-check-report.xml || echo "0")
-            HIGH_VULNS=$(grep -c 'severity="HIGH"' target/dependency-check-report.xml || echo "0")
-            CRITICAL_VULNS=$(grep -c 'severity="CRITICAL"' target/dependency-check-report.xml || echo "0")
+            VULNERABILITY_COUNT=$(grep -c '<vulnerability' target/dependency-check-report.xml || true)
+            HIGH_VULNS=$(grep -c 'severity="HIGH"' target/dependency-check-report.xml || true)
+            CRITICAL_VULNS=$(grep -c 'severity="CRITICAL"' target/dependency-check-report.xml || true)
             echo "vulnerability_count=${VULNERABILITY_COUNT}" >> $GITHUB_OUTPUT
             echo "high_vulnerabilities=${HIGH_VULNS}" >> $GITHUB_OUTPUT
             echo "critical_vulnerabilities=${CRITICAL_VULNS}" >> $GITHUB_OUTPUT
