@@ -17,13 +17,16 @@
 package org.flossware.commons.util;
 
 import java.util.Objects;
+import java.util.logging.Logger;
 
 /**
  * Utility class for class functionality.
  *
  * @author Scot P. Floess
+ * @since 1.0
  */
 public final class ClassUtil {
+    private static final Logger LOGGER = Logger.getLogger(ClassUtil.class.getName());
 
     /**
      * Compute the package for klass.
@@ -32,6 +35,8 @@ public final class ClassUtil {
      *
      * @return the package name for klass, or empty string if the class is in the default package,
      *         is a primitive type, or is an array type with component type in the default package.
+     *
+     * @since 1.0
      */
     public static String getPackageName(final Class<?> klass) {
         return Objects.requireNonNull(klass, "Class must not be null").getPackageName();
@@ -44,6 +49,8 @@ public final class ClassUtil {
      * @param object the object for whom we desire a class.
      *
      * @return the class for object.
+     *
+     * @since 1.0
      */
     @SuppressWarnings("unchecked")
     public static <T> Class<T> getClass(final Object object) {

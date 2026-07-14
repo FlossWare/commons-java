@@ -38,6 +38,7 @@ import org.flossware.commons.io.FileException;
  * A file utility class supporting both legacy java.io.File and modern java.nio.file.Path APIs.
  *
  * @author Scot P. Floess
+ * @since 1.0
  */
 public final class FileUtil {
     /**
@@ -74,6 +75,8 @@ public final class FileUtil {
      * @throws IllegalArgumentException if path is null, baseDirectory is null,
      *                                  or path attempts to escape baseDirectory
      * @throws FileException if there is an I/O error resolving paths
+     *
+     * @since 1.0
      */
     public static Path validatePathTraversal(final Path path, final Path baseDirectory) {
         Objects.requireNonNull(path, "Path must not be null");
@@ -125,6 +128,8 @@ public final class FileUtil {
      *
      * @param path the path to validate
      * @throws IllegalArgumentException if path contains traversal patterns
+     *
+     * @since 1.0
      */
     public static void validateNoTraversalPatterns(final Path path) {
         Objects.requireNonNull(path, "Path must not be null");
@@ -151,6 +156,8 @@ public final class FileUtil {
      * @return an input stream for reading from the path
      * @throws IllegalArgumentException if path is null, is a symlink, or hardlink identity changed
      * @throws FileException if there is any problem opening the input stream
+     *
+     * @since 1.0
      */
     public static InputStream newInputStream(final Path path) {
         Objects.requireNonNull(path, "Path must not be null");
@@ -215,6 +222,8 @@ public final class FileUtil {
      * @throws IllegalArgumentException if path is null, baseDirectory is null,
      *                                  or path attempts to escape baseDirectory
      * @throws FileException if there is any problem opening the input stream
+     *
+     * @since 1.0
      */
     public static InputStream newInputStream(final Path path, final Path baseDirectory) {
         final Path validatedPath = validatePathTraversal(path, baseDirectory);
@@ -228,6 +237,8 @@ public final class FileUtil {
      * @return an input stream for reading from the path
      * @throws IllegalArgumentException if pathString is null or empty
      * @throws FileException if there is any problem opening the input stream
+     *
+     * @since 1.0
      */
     public static InputStream newInputStream(final String pathString) {
         return newInputStream(Paths.get(StringUtil.requireNonBlank(pathString, "Path string must not be null or empty")));
@@ -239,6 +250,8 @@ public final class FileUtil {
      * @param path the path to verify exists
      * @return the path if it exists
      * @throws IllegalArgumentException if path is null or does not exist
+     *
+     * @since 1.0
      */
     public static Path requireExists(final Path path) {
         Objects.requireNonNull(path, "Path must not be null");
@@ -256,6 +269,8 @@ public final class FileUtil {
      * @param pathString the path string to verify exists
      * @return the Path if it exists
      * @throws IllegalArgumentException if pathString is null, empty, or does not exist
+     *
+     * @since 1.0
      */
     public static Path requireExists(final String pathString) {
         return requireExists(Paths.get(StringUtil.requireNonBlank(pathString, "Path string must not be null or empty")));
@@ -267,6 +282,8 @@ public final class FileUtil {
      * @param path the path to verify is a regular file
      * @return the path if it is a regular file
      * @throws IllegalArgumentException if path is null, does not exist, or is not a regular file
+     *
+     * @since 1.0
      */
     public static Path requireRegularFile(final Path path) {
         requireExists(path);
@@ -284,6 +301,8 @@ public final class FileUtil {
      * @param path the path to verify is a directory
      * @return the path if it is a directory
      * @throws IllegalArgumentException if path is null, does not exist, or is not a directory
+     *
+     * @since 1.0
      */
     public static Path requireDirectory(final Path path) {
         requireExists(path);
@@ -301,6 +320,8 @@ public final class FileUtil {
      * @param path the path to verify is readable
      * @return the path if it is readable
      * @throws IllegalArgumentException if path is null, does not exist, or is not readable
+     *
+     * @since 1.0
      */
     public static Path requireReadable(final Path path) {
         requireExists(path);
@@ -318,6 +339,8 @@ public final class FileUtil {
      * @param path the path to verify is writable
      * @return the path if it is writable
      * @throws IllegalArgumentException if path is null, does not exist, or is not writable
+     *
+     * @since 1.0
      */
     public static Path requireWritable(final Path path) {
         requireExists(path);
@@ -341,6 +364,8 @@ public final class FileUtil {
      * @return a file input stream
      * @throws IllegalArgumentException if file is null or path traversal detected
      * @throws FileException if there is any problem creating the file input stream
+     *
+     * @since 1.0
      * @deprecated Use {@link #newInputStream(Path)} instead for modern NIO.2 API
      */
     @Deprecated(since = "1.22", forRemoval = true)
@@ -372,6 +397,8 @@ public final class FileUtil {
      * @return a file input stream
      * @throws IllegalArgumentException if fileName is null or empty
      * @throws FileException if there is any problem creating the file input stream
+     *
+     * @since 1.0
      * @deprecated Use {@link #newInputStream(String)} instead for modern NIO.2 API
      */
     @Deprecated(since = "1.22", forRemoval = true)
@@ -385,6 +412,8 @@ public final class FileUtil {
      * @param file the file to determine if it exists
      * @return file if it exists
      * @throws IllegalArgumentException if file does not exist
+     *
+     * @since 1.0
      * @deprecated Use {@link #requireExists(Path)} instead for modern NIO.2 API
      */
     @Deprecated(since = "1.22", forRemoval = true)
@@ -404,6 +433,8 @@ public final class FileUtil {
      * @param file the file to determine if it exists
      * @return file if it exists
      * @throws IllegalArgumentException if file does not exist
+     *
+     * @since 1.0
      * @deprecated Use {@link #requireExists(String)} instead for modern NIO.2 API
      */
     @Deprecated(since = "1.22", forRemoval = true)

@@ -32,6 +32,7 @@ import org.flossware.commons.io.CommonsIOException;
  * Properties utility class.
  *
  * @author Scot P. Floess
+ * @since 1.0
  */
 public final class PropertyUtil {
     /**
@@ -77,6 +78,8 @@ public final class PropertyUtil {
      * @param closeStream whether to close the stream after reading
      * @return Properties object loaded from the stream
      * @throws CommonsIOException if reading fails
+     *
+     * @since 1.0
      */
     public static Properties fromInputStream(final InputStream inputStream, final boolean closeStream) {
         return populateFromInputStream(new Properties(), inputStream, closeStream);
@@ -88,6 +91,8 @@ public final class PropertyUtil {
      * @param inputStream the input stream to read from
      * @return Properties object loaded from the stream
      * @throws CommonsIOException if reading fails
+     *
+     * @since 1.0
      */
     public static Properties fromInputStream(final InputStream inputStream) {
         return fromInputStream(inputStream, false);
@@ -100,6 +105,8 @@ public final class PropertyUtil {
      * @return Properties object loaded from the resource
      * @throws IllegalArgumentException if resource parameter is null
      * @throws CommonsIOException if resource cannot be found or read
+     *
+     * @since 1.0
      */
     public static Properties fromResource(final String resource) {
         Objects.requireNonNull(resource, "Resource path must not be null");
@@ -119,6 +126,8 @@ public final class PropertyUtil {
      * @param closeReader whether to close the reader after reading
      * @return Properties object loaded from the reader
      * @throws CommonsIOException if reading fails
+     *
+     * @since 1.0
      */
     public static Properties fromReader(final Reader reader, final boolean closeReader) {
         return populateFromReader(new Properties(), reader, closeReader);
@@ -130,6 +139,8 @@ public final class PropertyUtil {
      * @param reader the reader to read from
      * @return Properties object loaded from the reader
      * @throws CommonsIOException if reading fails
+     *
+     * @since 1.0
      */
     public static Properties fromReader(final Reader reader) {
         return fromReader(reader, false);
@@ -143,6 +154,8 @@ public final class PropertyUtil {
      * @param file the file to load properties from
      * @return Properties object loaded from the file
      * @throws FileException if the file cannot be read or path traversal is detected
+     *
+     * @since 1.0
      */
     public static Properties fromFile(final File file) {
         Objects.requireNonNull(file, "File must not be null");
@@ -179,6 +192,8 @@ public final class PropertyUtil {
      * @param filename the path to the properties file
      * @return Properties object loaded from the file
      * @throws FileException if the file cannot be read or path traversal is detected
+     *
+     * @since 1.0
      */
     public static Properties fromFile(final String filename) {
         StringUtil.requireNonBlank(filename, "Filename must not be null or empty");

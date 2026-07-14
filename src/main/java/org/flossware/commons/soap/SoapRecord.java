@@ -29,6 +29,7 @@ import java.util.Objects;
  * @param service the SOAP service instance (must not be null)
  * @param portType the port class type (must not be null)
  * @author Scot P. Floess
+ * @since 1.0
  */
 public record SoapRecord<T>(Service service, Class<T> portType) {
     /**
@@ -36,6 +37,8 @@ public record SoapRecord<T>(Service service, Class<T> portType) {
      *
      * @param service the SOAP service instance (must not be null)
      * @param portType the port class type (must not be null)
+     *
+     * @since 1.0
      */
     public SoapRecord {
         Objects.requireNonNull(service, "Service must not be null");

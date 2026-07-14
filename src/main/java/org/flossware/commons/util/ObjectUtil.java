@@ -18,18 +18,23 @@
 package org.flossware.commons.util;
 
 import java.util.Objects;
+import java.util.logging.Logger;
 
 /**
  *
  * Utility class in the spirit of java.util.Objects.
  *
  * @author Scot P. Floess
+ * @since 1.0
  *
  */
 public final class ObjectUtil {
+    private static final Logger LOGGER = Logger.getLogger(ObjectUtil.class.getName());
 
     /**
      * Default error message when a parameter is bad.
+     *
+     * @since 1.0
      */
     public static final String DEFAULT_ERROR_MSG = "Invalid value";
 
@@ -47,6 +52,8 @@ public final class ObjectUtil {
      * @param object the object for whom we desire a package.
      *
      * @return the package for object.
+     *
+     * @since 1.0
      */
     public static String getPackage(final Object object) {
         return ClassUtil.getPackageName(Objects.requireNonNull(object, "Object must not be null").getClass());

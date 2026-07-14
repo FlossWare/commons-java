@@ -21,21 +21,28 @@ package org.flossware.commons;
  * API to convert an object to a StringBuilder and makes it pretty.
  *
  * @author Scot P. Floess
+ * @since 1.0
  *
  */
 public interface Stringifiable {
     /**
      * System property name for line separator.
+     *
+     * @since 1.0
      */
     String LINE_SEPARATOR_PROPERTY = "line.separator";
 
     /**
      * The line separator string for this system.
+     *
+     * @since 1.0
      */
     String LINE_SEPARATOR_STRING = System.getProperty(LINE_SEPARATOR_PROPERTY);
 
     /**
      * A default prefix to use.
+     *
+     * @since 1.0
      */
     String DEFAULT_PREFIX = "    ";
 
@@ -47,6 +54,8 @@ public interface Stringifiable {
      * @param prefix        is the prefix to be first appended prior to self's string representation.
      *
      * @return a string builder that can be reused.
+     *
+     * @since 1.0
      */
     StringBuilder toStringBuilder(StringBuilder stringBuilder, String prefix);
 
@@ -56,6 +65,8 @@ public interface Stringifiable {
      * @param stringBuilder will have the string representation of self appended.
      *
      * @return a string builder that can be reused.
+     *
+     * @since 1.0
      */
     StringBuilder toStringBuilder(StringBuilder stringBuilder);
 
@@ -65,6 +76,8 @@ public interface Stringifiable {
      * @param prefix is the prefix to emit when return the string representation of self.
      *
      * @return the string representation of self.
+     *
+     * @since 1.0
      */
     StringBuilder toStringBuilder(String prefix);
 }

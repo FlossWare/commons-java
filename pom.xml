@@ -50,7 +50,7 @@
     <maven-jar-plugin>3.5.0</maven-jar-plugin>
     <maven-install-plugin>3.1.4</maven-install-plugin>
     <maven-deploy-plugin>3.1.4</maven-deploy-plugin>
-    <maven-site-plugin>3.12.1</maven-site-plugin>
+    <maven-site-plugin>4.0.0-M16</maven-site-plugin>
     <maven-project-info-reports-plugin>3.9.0</maven-project-info-reports-plugin>
     <maven-javadoc-plugin>3.12.0</maven-javadoc-plugin>
     <maven.compiler.source>17</maven.compiler.source>
@@ -61,6 +61,7 @@
     <org.apache.cxf_cxf-core>4.2.1</org.apache.cxf_cxf-core>
     <org.junit.jupiter_junit-jupiter-api>6.1.0</org.junit.jupiter_junit-jupiter-api>
     <org.mockito_mockito-core>5.23.0</org.mockito_mockito-core>
+    <org.openjdk.jmh>1.37</org.openjdk.jmh>
     <message>Automated Version Bump ${project.version} [ci skip]</message>
     <sonar.organization>flossware</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
@@ -124,6 +125,7 @@
         <configuration>
           <excludes>
             <exclude>**/*IT.java</exclude>
+            <exclude>**/*Benchmark.java</exclude>
           </excludes>
         </configuration>
       </plugin>
@@ -270,6 +272,9 @@
         <configuration>
           <printFailingErrors>true</printFailingErrors>
           <failOnViolation>true</failOnViolation>
+          <rulesets>
+            <ruleset>pmd-rules.xml</ruleset>
+          </rulesets>
           <minimumTokens>100</minimumTokens>
         </configuration>
         <executions>
@@ -286,7 +291,7 @@
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>3.6.0</version>
         <configuration>
-          <configLocation>google_checks.xml</configLocation>
+          <configLocation>checkstyle.xml</configLocation>
           <consoleOutput>true</consoleOutput>
           <failOnViolation>true</failOnViolation>
           <violationSeverity>error</violationSeverity>
@@ -456,6 +461,9 @@
         <artifactId>maven-pmd-plugin</artifactId>
         <version>3.25.0</version>
         <configuration>
+          <rulesets>
+            <ruleset>pmd-rules.xml</ruleset>
+          </rulesets>
           <minimumTokens>100</minimumTokens>
         </configuration>
       </plugin>
@@ -465,7 +473,7 @@
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>3.6.0</version>
         <configuration>
-          <configLocation>google_checks.xml</configLocation>
+          <configLocation>checkstyle.xml</configLocation>
         </configuration>
       </plugin>
       <!-- OWASP Dependency Check Security Report -->
@@ -609,7 +617,46 @@
       <version>${org.mockito_mockito-core}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.openjdk.jmh</groupId>
+      <artifactId>jmh-core</artifactId>
+      <version>${org.openjdk.jmh}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.openjdk.jmh</groupId>
+      <artifactId>jmh-generator-annprocess</artifactId>
+      <version>${org.openjdk.jmh}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
+  <profiles>
+    <profile>
+      <id>benchmarks</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.5.0</version>
+            <executions>
+              <execution>
+                <id>run-benchmarks</id>
+                <phase>test</phase>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <mainClass>org.flossware.commons.benchmark.BenchmarkRunner</mainClass>
+              <classpathScope>test</classpathScope>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
   <distributionManagement>
     <repository>
       <id>packagecloud-flossware</id>

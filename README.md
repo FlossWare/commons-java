@@ -5,7 +5,7 @@ Foundation utilities for the [Solenopsis](https://github.com/solenopsis) Salesfo
 [![Build Status](https://github.com/FlossWare/commons-java/workflows/CD-CI/badge.svg)](https://github.com/FlossWare/commons-java/actions)
 [![codecov](https://codecov.io/gh/FlossWare/commons-java/branch/main/graph/badge.svg)](https://codecov.io/gh/FlossWare/commons-java)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Maven Central](https://img.shields.io/badge/maven--central-packagecloud-orange)](https://packagecloud.io/flossware/java)
+[![packagecloud](https://img.shields.io/badge/packagecloud-flossware%2Fjava-blue?logo=packagecloud)](https://packagecloud.io/flossware/java)
 [![Java Version](https://img.shields.io/badge/Java-17%2B-blue)](https://openjdk.org/projects/jdk/17/)
 [![Coverage](https://img.shields.io/badge/coverage-96%25-brightgreen)](https://github.com/FlossWare/commons-java/actions)
 [![Quality](https://img.shields.io/badge/quality-A%2B-brightgreen)](https://github.com/FlossWare/commons-java/actions)
@@ -45,6 +45,8 @@ Core utilities for Apache CXF SOAP clients:
 - **UrlUtil** - URL parsing and manipulation
 
 ## Installation
+
+This library is currently published via [packagecloud.io](https://packagecloud.io/flossware/java). Maven Central publishing is planned (see [#177](https://github.com/FlossWare/commons-java/issues/177)).
 
 ### Maven
 ```xml

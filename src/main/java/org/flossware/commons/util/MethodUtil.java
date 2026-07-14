@@ -24,14 +24,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
  * Same vein as <code>java.util.Collections</code>
  *
  * @author Scot P. Floess
+ * @since 1.0
  */
 public final class MethodUtil {
+    private static final Logger LOGGER = Logger.getLogger(MethodUtil.class.getName());
     private MethodUtil() {
         throw new AssertionError("Utility class - do not instantiate");
     }
@@ -45,6 +48,8 @@ public final class MethodUtil {
      * @param klass the class to search for annotated methods
      * @param annotationClass the annotation class to search for
      * @return a list of public methods that have the specified annotation
+     *
+     * @since 1.0
      */
     public static List<Method> findMethodsForAnnotationClass(final Class<?> klass, final Class<? extends Annotation> annotationClass) {
         Objects.requireNonNull(klass, "Class must not be null");
@@ -61,6 +66,8 @@ public final class MethodUtil {
      * @param klass the class to search for annotated methods
      * @param annotation the annotation instance to search for
      * @return a list of public methods that have the specified annotation
+     *
+     * @since 1.0
      */
     public static List<Method> findMethodsForAnnotation(final Class<?> klass, final Annotation annotation) {
         Objects.requireNonNull(klass, "Class must not be null");
@@ -78,6 +85,8 @@ public final class MethodUtil {
      * @param klass the class to search for annotated methods
      * @param annotationClass the annotation class to search for
      * @return Optional containing the first annotation found on a public method, or empty if not found
+     *
+     * @since 1.0
      */
     public static <T extends Annotation> Optional<T> findAnnotationOnMethods(final Class<?> klass, final Class<T> annotationClass) {
         Objects.requireNonNull(klass, "Class must not be null");
@@ -103,6 +112,8 @@ public final class MethodUtil {
      * @param klass the class to search for annotated methods
      * @param annotation the annotation instance to search for
      * @return Optional containing the first matching annotation found on a public method, or empty if not found
+     *
+     * @since 1.0
      */
     @SuppressWarnings("unchecked") // Safe: Cast from Optional<? extends Annotation> to Optional<T> where T is the annotation type
     public static <T extends Annotation> Optional<T> findAnnotationOnMethods(final Class<?> klass, final T annotation) {

@@ -24,6 +24,7 @@ import org.flossware.commons.util.LoggerUtil;
  * An abstract base class that can be used to conveniently extends to get common functionality (for example a logger).
  *
  * @author Scot P. Floess
+ * @since 1.0
  */
 public abstract class AbstractBase {
     /**

@@ -25,6 +25,7 @@ import java.util.logging.Logger;
  * IO utility class.
  *
  * @author Scot P. Floess
+ * @since 1.0
  */
 public final class IOUtils {
     /**
@@ -53,6 +54,8 @@ public final class IOUtils {
      * Attempts to close a closeable. If any trouble arises closing, an error is logged.
      *
      * @param closeable the thing to close.
+     *
+     * @since 1.0
      */
     public static void close(final Closeable closeable) {
         if (null == closeable) {
@@ -72,6 +75,8 @@ public final class IOUtils {
      * the original exception.
      *
      * @param closeable the thing to close.
+     *
+     * @since 1.0
      */
     public static void closeQuietly(final Closeable closeable) {
         if (null == closeable) {

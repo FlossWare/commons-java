@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<ruleset name="FlossWare Commons PMD Rules"
+    xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0
+                        https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+
+    <description>
+        Custom PMD ruleset for FlossWare Commons Java project.
+        Includes best practices, error-prone, design, code style,
+        multithreading, and performance rules with project-specific
+        exclusions tailored for a utility/commons library.
+    </description>
+
+    <!-- Best Practices -->
+    <rule ref="category/java/bestpractices.xml">
+        <!-- Allow abstract classes without abstract methods (common base class pattern used in this project) -->
+        <exclude name="AbstractClassWithoutAbstractMethod"/>
+        <!-- Permit JUnit5 assertions without messages when intent is clear -->
+        <exclude name="JUnitAssertionsShouldIncludeMessage"/>
+        <!-- Allow JUnit5 test methods without public modifier -->
+        <exclude name="JUnitTestsShouldIncludeAssert"/>
+        <!-- Project uses java.util.logging with its own LoggerUtil wrapper -->
+        <exclude name="GuardLogStatement"/>
+        <!-- UseVarargs suggestions conflict with existing public API -->
+        <exclude name="UseVarargs"/>
+        <!-- Try-with-resources refactoring would change existing public API behavior -->
+        <exclude name="UseTryWithResources"/>
+        <!-- Package coupling is expected in a commons library -->
+        <exclude name="LoosePackageCoupling"/>
+    </rule>
+
+    <!-- Error Prone -->
+    <rule ref="category/java/errorprone.xml">
+        <!-- Allow empty catch blocks when variable is named 'expected' or 'ignore' -->
+        <exclude name="EmptyCatchBlock"/>
+        <!-- Avoid false positives on bean member accessors -->
+        <exclude name="BeanMembersShouldSerialize"/>
+        <!-- Duplicate string literals are common in utility classes with related constants -->
+        <exclude name="AvoidDuplicateLiterals"/>
+        <!-- Utility methods commonly use literals in conditions for guard clauses -->
+        <exclude name="AvoidLiteralsInIfCondition"/>
+        <!-- ClassLoader usage is intentional in utility/reflection methods -->
+        <exclude name="UseProperClassLoader"/>
+    </rule>
+    <!-- Re-include EmptyCatchBlock with custom config -->
+    <rule ref="category/java/errorprone.xml/EmptyCatchBlock">
+        <properties>
+            <property name="allowCommentedBlocks" value="true"/>
+            <property name="allowExceptionNameRegex" value="^(expected|ignore(d)?)$"/>
+        </properties>
+    </rule>
+
+    <!-- Design -->
+    <rule ref="category/java/design.xml">
+        <!-- This project uses deep inheritance for its base class pattern -->
+        <exclude name="ExcessiveClassLength"/>
+        <!-- Allow utility classes with longer method counts for comprehensive APIs -->
+        <exclude name="TooManyMethods"/>
+        <!-- Relax coupling constraints for utility/commons libraries -->
+        <exclude name="LawOfDemeter"/>
+        <!-- Allow broader exception types in utility methods -->
+        <exclude name="SignatureDeclareThrowsException"/>
+        <!-- Varargs methods may have higher NPath complexity -->
+        <exclude name="NPathComplexity"/>
+        <!-- Utility classes are designed to be comprehensive (GodClass false positive) -->
+        <exclude name="GodClass"/>
+        <!-- Commons library methods may need to throw broad exception types -->
+        <exclude name="AvoidThrowingRawExceptionTypes"/>
+        <!-- Package coupling is expected in commons/utility projects -->
+        <exclude name="LoosePackageCoupling"/>
+    </rule>
+    <!-- Re-include CyclomaticComplexity with a more permissive threshold -->
+    <rule ref="category/java/design.xml/CyclomaticComplexity">
+        <properties>
+            <property name="methodReportLevel" value="15"/>
+            <property name="classReportLevel" value="80"/>
+        </properties>
+    </rule>
+    <!-- Re-include CognitiveComplexity with a more permissive threshold -->
+    <rule ref="category/java/design.xml/CognitiveComplexity">
+        <properties>
+            <property name="reportLevel" value="20"/>
+        </properties>
+    </rule>
+
+    <!-- Code Style -->
+    <rule ref="category/java/codestyle.xml">
+        <!-- Allow longer variable names for descriptive naming -->
+        <exclude name="LongVariable"/>
+        <!-- Allow shorter variable names for lambdas and loop vars -->
+        <exclude name="ShortVariable"/>
+        <!-- Allow shorter method names -->
+        <exclude name="ShortMethodName"/>
+        <!-- Allow shorter class names -->
+        <exclude name="ShortClassName"/>
+        <!-- This project uses explicit 'this' for clarity -->
+        <exclude name="LocalVariableCouldBeFinal"/>
+        <!-- Allow method argument reassignment in builders/fluent APIs -->
+        <exclude name="MethodArgumentCouldBeFinal"/>
+        <!-- Conflicts with project's import ordering -->
+        <exclude name="UnnecessaryImport"/>
+        <!-- Project uses on-demand static imports in tests -->
+        <exclude name="TooManyStaticImports"/>
+        <!-- Permit calling super() explicitly for clarity -->
+        <exclude name="CallSuperInConstructor"/>
+        <!-- Allow use of default package access -->
+        <exclude name="CommentDefaultAccessModifier"/>
+        <!-- Allow fields at the top of the class before constructors -->
+        <exclude name="FieldDeclarationsShouldBeAtStartOfClass"/>
+        <!-- Package-private access is used intentionally -->
+        <exclude name="DefaultPackage"/>
+        <!-- Permit 'Unnecessary' modifiers in interfaces for clarity -->
+        <exclude name="UnnecessaryModifier"/>
+        <!-- AtLeastOneConstructor not required - default constructors are fine -->
+        <exclude name="AtLeastOneConstructor"/>
+        <!-- OnlyOneReturn is too restrictive for guard-clause patterns -->
+        <exclude name="OnlyOneReturn"/>
+        <!-- Method naming conventions in this project may not match return type linguistics -->
+        <exclude name="LinguisticNaming"/>
+        <!-- Underscores in numeric literals are optional for readability -->
+        <exclude name="UseUnderscoresInNumericLiterals"/>
+        <!-- Utility classes may merge identical catch branches for distinct error handling -->
+        <exclude name="IdenticalCatchBranches"/>
+    </rule>
+
+    <!-- Multithreading -->
+    <rule ref="category/java/multithreading.xml">
+        <!-- Allow non-thread-safe singletons in utility contexts -->
+        <exclude name="UseConcurrentHashMap"/>
+    </rule>
+
+    <!-- Performance -->
+    <rule ref="category/java/performance.xml">
+        <!-- FileInputStream/FileOutputStream usage is intentional in IO utilities -->
+        <exclude name="AvoidFileStream"/>
+    </rule>
+
+</ruleset>

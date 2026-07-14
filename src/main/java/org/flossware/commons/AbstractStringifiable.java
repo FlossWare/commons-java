@@ -24,6 +24,7 @@ import org.flossware.commons.util.StringUtil;
  * Default abstract base class of stringifiables.
  *
  * @author Scot P. Floess
+ * @since 1.0
  *
  */
 public abstract class AbstractStringifiable extends AbstractBase implements Stringifiable {
@@ -46,6 +47,8 @@ public abstract class AbstractStringifiable extends AbstractBase implements Stri
 
     /**
      * {@inheritDoc}
+     *
+     * @since 1.0
      */
     @Override
     public StringBuilder toStringBuilder(final StringBuilder stringBuilder) {
@@ -54,6 +57,8 @@ public abstract class AbstractStringifiable extends AbstractBase implements Stri
 
     /**
      * {@inheritDoc}
+     *
+     * @since 1.0
      */
     @Override
     public StringBuilder toStringBuilder(final String prefix) {
@@ -64,6 +69,8 @@ public abstract class AbstractStringifiable extends AbstractBase implements Stri
      * {@inheritDoc}
      *
      * @return the string representation of self.
+     *
+     * @since 1.0
      */
     @Override
     public String toString() {

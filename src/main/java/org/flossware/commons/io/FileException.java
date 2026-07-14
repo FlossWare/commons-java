@@ -32,6 +32,7 @@ public class FileException extends CommonsIOException {
     /**
      * Default constructor.
      *
+     * @since 1.0
      * @deprecated since 1.32 - no production usage, provide message or cause instead
      */
     @Deprecated(since = "1.32", forRemoval = true)

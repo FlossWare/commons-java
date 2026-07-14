@@ -1,0 +1,183 @@
+name: Changelog
+
+on:
+  release:
+    types: [created]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to generate changelog for (defaults to latest tag)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Generate Changelog
+        id: changelog
+        run: |
+          # Determine the current tag
+          if [ "${{ github.event_name }}" = "release" ]; then
+            CURRENT_TAG="${{ github.event.release.tag_name }}"
+          elif [ -n "${{ inputs.tag }}" ]; then
+            CURRENT_TAG="${{ inputs.tag }}"
+          else
+            CURRENT_TAG="$(git describe --tags --abbrev=0 2>/dev/null || echo '')"
+          fi
+
+          if [ -z "$CURRENT_TAG" ]; then
+            echo "::error::No tags found in repository"
+            exit 1
+          fi
+
+          echo "current_tag=$CURRENT_TAG" >> "$GITHUB_OUTPUT"
+
+          # Find the previous tag
+          PREVIOUS_TAG="$(git describe --tags --abbrev=0 "${CURRENT_TAG}^" 2>/dev/null || echo '')"
+
+          if [ -n "$PREVIOUS_TAG" ]; then
+            RANGE="${PREVIOUS_TAG}..${CURRENT_TAG}"
+            echo "Generating changelog for $PREVIOUS_TAG -> $CURRENT_TAG"
+          else
+            RANGE="$CURRENT_TAG"
+            echo "Generating changelog for all commits up to $CURRENT_TAG (no previous tag)"
+          fi
+
+          # Collect commits by type using conventional commit prefixes
+          FEATURES=""
+          FIXES=""
+          SECURITY=""
+          DOCS=""
+          CHORES=""
+          OTHER=""
+
+          while IFS= read -r line; do
+            [ -z "$line" ] && continue
+
+            # Extract the hash and message
+            HASH="${line%% *}"
+            SHORT_HASH="${HASH:0:7}"
+            MSG="${line#* }"
+
+            # Skip version bump commits
+            if echo "$MSG" | grep -qiE '^\[ci skip\]|^Automated Version Bump|^Merge '; then
+              continue
+            fi
+
+            # Categorize by conventional commit prefix
+            case "$MSG" in
+              feat:*|feat\(*) FEATURES="${FEATURES}- ${MSG} (\`${SHORT_HASH}\`)"$'\n' ;;
+              fix:*|fix\(*)   FIXES="${FIXES}- ${MSG} (\`${SHORT_HASH}\`)"$'\n' ;;
+              security:*|security\(*) SECURITY="${SECURITY}- ${MSG} (\`${SHORT_HASH}\`)"$'\n' ;;
+              docs:*|docs\(*) DOCS="${DOCS}- ${MSG} (\`${SHORT_HASH}\`)"$'\n' ;;
+              chore:*|chore\(*|ci:*|ci\(*|build:*|build\(*|style:*|style\(*|refactor:*|refactor\(*|perf:*|perf\(*|test:*|test\(*)
+                CHORES="${CHORES}- ${MSG} (\`${SHORT_HASH}\`)"$'\n' ;;
+              *)
+                OTHER="${OTHER}- ${MSG} (\`${SHORT_HASH}\`)"$'\n' ;;
+            esac
+          done <<< "$(git log --pretty=format:'%H %s' "$RANGE" 2>/dev/null)"
+
+          # Build the changelog body
+          CHANGELOG=""
+
+          if [ -n "$FEATURES" ]; then
+            CHANGELOG="${CHANGELOG}### Features"$'\n\n'"${FEATURES}"$'\n'
+          fi
+          if [ -n "$FIXES" ]; then
+            CHANGELOG="${CHANGELOG}### Bug Fixes"$'\n\n'"${FIXES}"$'\n'
+          fi
+          if [ -n "$SECURITY" ]; then
+            CHANGELOG="${CHANGELOG}### Security"$'\n\n'"${SECURITY}"$'\n'
+          fi
+          if [ -n "$DOCS" ]; then
+            CHANGELOG="${CHANGELOG}### Documentation"$'\n\n'"${DOCS}"$'\n'
+          fi
+          if [ -n "$CHORES" ]; then
+            CHANGELOG="${CHANGELOG}### Maintenance"$'\n\n'"${CHORES}"$'\n'
+          fi
+          if [ -n "$OTHER" ]; then
+            CHANGELOG="${CHANGELOG}### Other Changes"$'\n\n'"${OTHER}"$'\n'
+          fi
+
+          if [ -z "$CHANGELOG" ]; then
+            CHANGELOG="No conventional commits found in this release."$'\n'
+          fi
+
+          # Write the full release section
+          RELEASE_DATE="$(date -u +%Y-%m-%d)"
+          {
+            echo "## [${CURRENT_TAG}] - ${RELEASE_DATE}"
+            echo ""
+            echo "$CHANGELOG"
+          } > /tmp/changelog-section.md
+
+          echo "Changelog section:"
+          cat /tmp/changelog-section.md
+
+      - name: Update CHANGELOG.md
+        run: |
+          CURRENT_TAG="${{ steps.changelog.outputs.current_tag }}"
+
+          if [ -f CHANGELOG.md ]; then
+            # Prepend the new section after the header line
+            if head -1 CHANGELOG.md | grep -q '^# '; then
+              {
+                head -1 CHANGELOG.md
+                echo ""
+                cat /tmp/changelog-section.md
+                tail -n +2 CHANGELOG.md
+              } > /tmp/changelog-full.md
+            else
+              {
+                cat /tmp/changelog-section.md
+                echo ""
+                cat CHANGELOG.md
+              } > /tmp/changelog-full.md
+            fi
+            mv /tmp/changelog-full.md CHANGELOG.md
+          else
+            {
+              echo "# Changelog"
+              echo ""
+              echo "All notable changes to this project will be documented in this file."
+              echo "This changelog is automatically generated from conventional commits."
+              echo ""
+              cat /tmp/changelog-section.md
+            } > CHANGELOG.md
+          fi
+
+          echo "Final CHANGELOG.md:"
+          cat CHANGELOG.md
+
+      - name: Commit CHANGELOG.md
+        run: |
+          CURRENT_TAG="${{ steps.changelog.outputs.current_tag }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add CHANGELOG.md
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "docs: Update CHANGELOG.md for ${CURRENT_TAG} [ci skip]"
+            git push
+          fi
+
+      - name: Update Release Notes
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BODY="$(cat /tmp/changelog-section.md | tail -n +3)"
+          gh release edit "${{ github.event.release.tag_name }}" --notes "$BODY"

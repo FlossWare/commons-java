@@ -67,6 +67,7 @@ import java.util.logging.Logger;
  * </code>
  *
  * @author Scot P. Floess
+ * @since 1.0
  */
 public final class LoggerUtil {
     /**
@@ -77,6 +78,8 @@ public final class LoggerUtil {
      * @param throwable the throwable to log with <code>str</code>.
      * @param str       the format string.
      * @param objs      a format arguments that are converted to an object array for logging.
+     *
+     * @since 1.0
      */
     public static void log(final Logger logger, final Level level, final Throwable throwable, final String str, final Object... objs) {
         logger.log(level, throwable, () -> {
@@ -94,6 +97,8 @@ public final class LoggerUtil {
      * @param level     the level of the log.
      * @param throwable the throwable to log with <code>str</code>.
      * @param str       the format string.
+     *
+     * @since 1.0
      */
     public static void log(final Logger logger, final Level level, final Throwable throwable, final String str) {
         logger.log(level, str, throwable);
@@ -106,6 +111,8 @@ public final class LoggerUtil {
      * @param level  the level of the log.
      * @param str    the format string.
      * @param objs   a format arguments that are converted to an object array for logging.
+     *
+     * @since 1.0
      */
     public static void log(final Logger logger, final Level level, final String str, final Object... objs) {
         logger.log(level, str, objs);
@@ -122,6 +129,8 @@ public final class LoggerUtil {
      * @param retVal the value to return.
      *
      * @return the object logged.
+     *
+     * @since 1.0
      */
     public static <V> V logAndReturn(final Logger logger, final Level level, final String str, final V retVal) {
         logger.log(level, str, retVal);
@@ -142,6 +151,8 @@ public final class LoggerUtil {
      *
      * @return the value found at index <code>index</code> in the format arguments <code>objs</code>.
      * @throws IllegalArgumentException if index is negative or >= objs.length
+     *
+     * @since 1.0
      */
     @SuppressWarnings("unchecked") // Safe: Returning element from varargs array that is type-checked at call site
     public static <V> V logAndReturnByIndex(final Logger logger, final Level level, final String str, int index, final Object... objs) {
@@ -171,6 +182,8 @@ public final class LoggerUtil {
      * @param objs   a format arguments that are converted to an object array for logging.
      *
      * @return the value found at 0th index in the format arguments <code>objs</code>.
+     *
+     * @since 1.0
      */
     public static <V> V logAndReturn(final Logger logger, final Level level, final String str, final Object... objs) {
         return logAndReturnByIndex(logger, level, str, 0, objs);

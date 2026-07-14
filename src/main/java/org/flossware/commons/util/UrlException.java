@@ -23,6 +23,7 @@ package org.flossware.commons.util;
  * Used for URL parsing, creation, and manipulation errors.
  *
  * @author Scot P. Floess
+ * @since 1.0
  */
 public class UrlException extends RuntimeException {
 
@@ -31,6 +32,7 @@ public class UrlException extends RuntimeException {
     /**
      * Default constructor.
      *
+     * @since 1.0
      * @deprecated since 1.32 - no production usage, provide message or cause instead
      */
     @Deprecated(since = "1.32", forRemoval = true)
@@ -41,6 +43,8 @@ public class UrlException extends RuntimeException {
      * Sets the message.
      *
      * @param message detail message.
+     *
+     * @since 1.0
      */
     public UrlException(final String message) {
         super(message);
@@ -50,6 +54,8 @@ public class UrlException extends RuntimeException {
      * Sets the cause of why self is being raised.
      *
      * @param cause the cause of why self is being raised.
+     *
+     * @since 1.0
      */
     public UrlException(final Throwable cause) {
         super(cause);
@@ -60,6 +66,8 @@ public class UrlException extends RuntimeException {
      *
      * @param message detail message.
      * @param cause   the cause of why self is being raised.
+     *
+     * @since 1.0
      */
     public UrlException(final String message, final Throwable cause) {
         super(message, cause);

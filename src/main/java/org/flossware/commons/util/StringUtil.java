@@ -28,11 +28,14 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import org.apache.commons.lang3.StringUtils;
@@ -41,6 +44,7 @@ import org.apache.commons.lang3.StringUtils;
  * Same vein as <code>java.util.Objects</code>
  *
  * @author Scot P. Floess
+ * @since 1.0
  */
 public final class StringUtil {
     /**
@@ -57,11 +61,13 @@ public final class StringUtil {
 
     /**
      * Default error message for blank string validation.
+      * @since 1.0
      */
     public static final String STRING_CANNOT_BE_BLANK = "String cannot be blank!";
 
     /**
      * Default separator.
+      * @since 1.0
      */
     public static final String DEFAULT_SEPARATOR = "";
 
@@ -72,6 +78,7 @@ public final class StringUtil {
      * @param message the error message to use if validation fails
      * @return the validated string
      * @throws IllegalArgumentException if the string is blank
+      * @since 1.0
      */
     public static String requireNonBlank(final String string, final String message) {
         if (StringUtils.isBlank(string)) {
@@ -90,6 +97,7 @@ public final class StringUtil {
      * @param string the string to validate
      * @return the validated string
      * @throws IllegalArgumentException if the string is blank
+      * @since 1.0
      */
     public static String requireNonBlank(final String string) {
         return requireNonBlank(string, STRING_CANNOT_BE_BLANK);
@@ -101,6 +109,7 @@ public final class StringUtil {
      *
      * @param str the string to URL encode
      * @return the URL-encoded string
+      * @since 1.0
      */
     public static String asUrlEncoded(final String str) {
         return URLEncoder.encode(str, StandardCharsets.UTF_8);
@@ -143,7 +152,8 @@ public final class StringUtil {
 
     /**
      * Return true if a separator can be appended or false if not. To append,
-     * the index must be less than or equal to the array's length - 2.
+     * the index must be before the last element and the element must not
+     * already end with the separator.
      *
      * @param separator the separator string to check against
      * @param index the place within the array we are processing
@@ -152,21 +162,11 @@ public final class StringUtil {
      * @return true if we can append a separator or false if not
      */
     private static boolean isSeparatorAppendable(final String separator, final int index, final Object... objs) {
-        if (objs == null || index < 0 || index >= objs.length) {
+        if (objs == null || index < 0 || index >= objs.length || objs[index] == null) {
             return false;
         }
 
-        if (objs[index] == null) {
-            return false;
-        }
-
-        boolean isNotLastElement = index <= (objs.length - 2);
-        boolean doesNotEndWithSeparator = !objs[index].toString().endsWith(separator);
-        boolean canAppend = isNotLastElement && doesNotEndWithSeparator;
-
-        LoggerUtil.log(getLogger(), Level.FINEST, "Is the separator appendable [{0}] for index [{1}]", canAppend, index);
-
-        return canAppend;
+        return index < objs.length - 1 && !objs[index].toString().endsWith(separator);
     }
 
     /**
@@ -181,18 +181,18 @@ public final class StringUtil {
      *
      * @return the string builder with concatendated data.
      * @throws NullPointerException if separator is null
+      * @since 1.0
      */
     public static StringBuilder concatWithSeparator(final StringBuilder stringBuilder, final boolean isSeparatorAtEnd, final String separator, Object... objs) {
         Objects.requireNonNull(separator, "Separator must not be null");
         ArrayUtil.ensureArray(objs, "Objects must not be null");
 
-        for (int index = 0; index < objs.length; index++) {
-            stringBuilder.append(objs[index]);
-
-            if (isSeparatorAppendable(separator, index, objs)) {
+        IntStream.range(0, objs.length).forEach(i -> {
+            stringBuilder.append(objs[i]);
+            if (isSeparatorAppendable(separator, i, objs)) {
                 stringBuilder.append(separator);
             }
-        }
+        });
 
         if (isSeparatorAtEnd) {
             stringBuilder.append(separator);
@@ -212,6 +212,7 @@ public final class StringUtil {
      * @param objs the objects to concatenate.
      *
      * @return the string representation of the concatenation.
+      * @since 1.0
      */
     public static String concatWithSeparator(final boolean isSeparatorAtEnd, final String separator, Object... objs) {
         return concatWithSeparator(new StringBuilder(), isSeparatorAtEnd, separator, objs).toString();
@@ -226,6 +227,7 @@ public final class StringUtil {
      * @param objs the objects to concatenate.
      *
      * @return the string representation of the concatenation.
+      * @since 1.0
      */
     public static StringBuilder concatWithSeparator(final StringBuilder stringBuilder, final String separator, Object... objs) {
         return concatWithSeparator(stringBuilder, false, separator, objs);
@@ -238,6 +240,7 @@ public final class StringUtil {
      * @param objs the objects to concatenate.
      *
      * @return the string representation of the concatenation.
+      * @since 1.0
      */
     public static String concatWithSeparator(final String separator, Object... objs) {
         return concatWithSeparator(false, separator, objs);
@@ -251,9 +254,12 @@ public final class StringUtil {
      * @param objs the objects to concatenate.
      *
      * @return the string representation of the concatenation.
+      * @since 1.0
      */
     public static StringBuilder concat(final StringBuilder stringBuilder, Object... objs) {
-        return concatWithSeparator(stringBuilder, DEFAULT_SEPARATOR, objs);
+        ArrayUtil.ensureArray(objs, "Objects must not be null");
+        Arrays.stream(objs).forEach(stringBuilder::append);
+        return stringBuilder;
     }
 
     /**
@@ -262,9 +268,13 @@ public final class StringUtil {
      * @param objs the objects to concatenate.
      *
      * @return the string representation of the concatenation.
+      * @since 1.0
      */
     public static String concat(Object... objs) {
-        return concatWithSeparator(DEFAULT_SEPARATOR, objs);
+        ArrayUtil.ensureArray(objs, "Objects must not be null");
+        return Arrays.stream(objs)
+            .map(String::valueOf)
+            .collect(Collectors.joining());
     }
 
     /**
@@ -274,6 +284,7 @@ public final class StringUtil {
      * @param contains is the string to see if <code>str</code> is contained.
      *
      * @return true if <code>str</code> contains <code>contains</code>.
+      * @since 1.0
      */
     public static boolean isContained(final String str, final String contains) {
         final boolean retVal = (null != str) && str.contains(contains);
@@ -696,6 +707,7 @@ public final class StringUtil {
      * @param suffix the suffix.
      *
      * @return a unique string containing prefix as prefix and suffix as suffix.
+      * @since 1.0
      */
     public static String generateUniqueString(final String prefix, final String suffix) {
         return prefix + UUID.randomUUID().toString() + suffix;
@@ -707,6 +719,7 @@ public final class StringUtil {
      * @param prefix the prefix.
      *
      * @return a unique string containing prefix as prefix.
+      * @since 1.0
      */
     public static String generateUniqueString(final String prefix) {
         return generateUniqueString(prefix, "");
@@ -716,6 +729,7 @@ public final class StringUtil {
      * Generate a unique string.
      *
      * @return a unique string.
+      * @since 1.0
      */
     public static String generateUniqueString() {
         return generateUniqueString("");

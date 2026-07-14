@@ -17,15 +17,20 @@
 package org.flossware.commons.util;
 
 import java.util.Objects;
+import java.util.logging.Logger;
 
 /**
  * Array utility class.
  *
  * @author Scot P. Floess
+ * @since 1.0
  */
 public final class ArrayUtil {
+    private static final Logger LOGGER = Logger.getLogger(ArrayUtil.class.getName());
     /**
      * Default minimum size for an array.
+     *
+     * @since 1.0
      */
     public static final int DEFAULT_MIN_ARRAY_LENGTH = 1;
 
@@ -41,6 +46,8 @@ public final class ArrayUtil {
      * @return values if not null, contains at least one element and each element is not null.
      *
      * @throws IllegalArgumentException if values has any nulls or does not have at least 1 element.
+     *
+     * @since 1.0
      */
     public static <V> V[] ensureArray(final V[] values, final int minLength, final String errorMsg) {
         Objects.requireNonNull(values, errorMsg);
@@ -67,6 +74,8 @@ public final class ArrayUtil {
      * @return values if not null, contains at least one element and each element is not null.
      *
      * @throws IllegalArgumentException if values has any nulls or does not have at least 1 element.
+     *
+     * @since 1.0
      */
     public static <V> V[] ensureArray(final V[] values, final int minLength) {
         return ensureArray(values, minLength, ObjectUtil.DEFAULT_ERROR_MSG);
@@ -83,6 +92,8 @@ public final class ArrayUtil {
      * @return values if not null, contains at least one element and each element is not null.
      *
      * @throws IllegalArgumentException if values has any nulls or does not have at least 1 element.
+     *
+     * @since 1.0
      */
     public static <V> V[] ensureArray(final V[] values, final String errorMsg) {
         return ensureArray(values, DEFAULT_MIN_ARRAY_LENGTH, errorMsg);
@@ -98,6 +109,8 @@ public final class ArrayUtil {
      * @return values if not null, contains at least one element and each element is not null.
      *
      * @throws IllegalArgumentException if values has any nulls or does not have at least 1 element.
+     *
+     * @since 1.0
      */
     public static <V> V[] ensureArray(final V[] values) {
         return ensureArray(values, ObjectUtil.DEFAULT_ERROR_MSG);

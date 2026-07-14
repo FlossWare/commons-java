@@ -33,6 +33,7 @@ import org.apache.cxf.headers.Header;
  * Provides methods for configuring SOAP endpoints, headers, and QName computation.
  *
  * @author Scot P. Floess
+ * @since 1.0
  */
 public final class SoapUtil {
     private SoapUtil() {
@@ -45,6 +46,8 @@ public final class SoapUtil {
      *
      * @return a new SOAPFactory instance
      * @throws SoapException if the SOAP factory could not be instantiated
+     *
+     * @since 1.0
      */
     public static SOAPFactory getSoapFactory() {
         try {
@@ -55,52 +58,70 @@ public final class SoapUtil {
     }
 
     /**
-     * Sets a header on the SOAP service.
+     * Sets a header on the SOAP service or port proxy.
      *
-     * @param service the SOAP service
+     * @param <T> the service or port proxy type
+     * @param service the SOAP service or port proxy
      * @param name the header name
      * @param headerValue the header value
+     * @return the service for fluent chaining
      *
      * @throws NullPointerException if service or name is null
+     *
+     * @since 1.0
      */
-    public static void setHeader(final Service service, final String name, final Object headerValue) {
+    public static <T> T setHeader(final T service, final String name, final Object headerValue) {
         Objects.requireNonNull(service, "Service must not be null");
         Objects.requireNonNull(name, "Header name must not be null");
         Objects.requireNonNull(headerValue, "Header value must not be null");
 
         ClientProxy.getClient(service).getRequestContext().put(name, headerValue);
+
+        return service;
     }
 
     /**
-     * Sets a header with QName on the SOAP service.
+     * Sets a header with QName on the SOAP service or port proxy.
      *
-     * @param service the SOAP service
+     * @param <T> the service or port proxy type
+     * @param service the SOAP service or port proxy
      * @param qname the qualified name for the header
      * @param headerValue the header value
+     * @return the service for fluent chaining
      *
      * @throws NullPointerException if service, qname, or headerValue is null
+     *
+     * @since 1.0
      */
-    public static void setHeader(final Service service, final QName qname, final Object headerValue) {
+    public static <T> T setHeader(final T service, final QName qname, final Object headerValue) {
         Objects.requireNonNull(service, "Service must not be null");
         Objects.requireNonNull(qname, "QName must not be null");
         Objects.requireNonNull(headerValue, "Header value must not be null");
 
         setHeader(service, Header.HEADER_LIST, new Header(qname, headerValue));
+
+        return service;
     }
 
     /**
-     * Sets multiple headers on the SOAP service.
+     * Sets multiple headers on the SOAP service or port proxy.
      *
-     * @param service the SOAP service
+     * @param <T> the service or port proxy type
+     * @param service the SOAP service or port proxy
      * @param headers the headers to set
+     * @return the service for fluent chaining
      *
      * @throws NullPointerException if service or headers is null
+     *
+     * @since 1.0
      */
-    public static void setHeaders(final Service service, final Header... headers) {
+    public static <T> T setHeaders(final T service, final Header... headers) {
         Objects.requireNonNull(service, "Service must not be null");
         Objects.requireNonNull(headers, "Headers must not be null");
 
         setHeader(service, Header.HEADER_LIST, Arrays.asList(headers));
+
+        return service;
     }
 
     /**
@@ -113,6 +134,8 @@ public final class SoapUtil {
      *
      * @throws NullPointerException if port or url is null
      * @throws IllegalArgumentException if url is blank
+     *
+     * @since 1.0
      */
     public static <T> T setUrl(final T port, final String url) {
         Objects.requireNonNull(port, "Port must not be null");
@@ -130,6 +153,8 @@ public final class SoapUtil {
      * @return the computed QName
      *
      * @throws NullPointerException if webServiceClient is null
+     *
+     * @since 1.0
      */
     public static QName computeQName(final WebServiceClient webServiceClient) {
         Objects.requireNonNull(webServiceClient, "WebServiceClient annotation must not be null");
@@ -145,6 +170,8 @@ public final class SoapUtil {
      *
      * @throws NullPointerException if klass is null
      * @throws IllegalArgumentException if the class is not annotated with @WebServiceClient
+     *
+     * @since 1.0
      */
     public static QName computeQName(final Class<? extends Service> klass) {
         Objects.requireNonNull(klass, "Service class must not be null");
@@ -165,6 +192,8 @@ public final class SoapUtil {
      *
      * @throws NullPointerException if service is null
      * @throws IllegalArgumentException if the service class is not annotated with @WebServiceClient
+     *
+     * @since 1.0
      */
     public static QName computeQName(final Service service) {
         Objects.requireNonNull(service, "Service must not be null");

@@ -20,17 +20,22 @@ package org.flossware.commons.util;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 /**
  * Utility class for URL parsing, creation, and manipulation.
  * Provides methods for extracting protocol and host information from URLs.
  *
  * @author Scot P. Floess
+ * @since 1.0
  */
 public final class UrlUtil {
+    private static final Logger LOGGER = Logger.getLogger(UrlUtil.class.getName());
 
     /**
      * Protocol separator.
+     *
+     * @since 1.0
      */
     public static final String PROTOCOL_SEPARATOR = "://";
 
@@ -50,6 +55,8 @@ public final class UrlUtil {
      *
      * @throws NullPointerException if rawUrl is null
      * @throws IllegalArgumentException if computing the URL fails.
+     *
+     * @since 1.0
      */
     public static URL createUrl(final String rawUrl) {
         Objects.requireNonNull(rawUrl, "URL must not be null");
@@ -67,6 +74,8 @@ public final class UrlUtil {
      * @param url the URL to extract from
      * @return string in format "protocol://host"
      * @throws NullPointerException if url is null
+     *
+     * @since 1.0
      */
     public static String asProtocolAndHost(final URL url) {
         Objects.requireNonNull(url, "URL must not be null");
@@ -83,6 +92,8 @@ public final class UrlUtil {
      *
      * @throws NullPointerException if rawUrl is null
      * @throws IllegalArgumentException if computing the URL fails.
+     *
+     * @since 1.0
      */
     public static String computeHostUrlAsString(final String rawUrl) {
         Objects.requireNonNull(rawUrl, "URL must not be null");
@@ -98,6 +109,8 @@ public final class UrlUtil {
      * @return a URL representation of only protocol and host.
      * @throws NullPointerException if rawUrl is null
      * @throws UrlException if the URL protocol does not support standard host extraction (e.g., jar:, file:)
+     *
+     * @since 1.0
      */
     public static URL computeHostUrl(final String rawUrl) {
         Objects.requireNonNull(rawUrl, "URL must not be null");
