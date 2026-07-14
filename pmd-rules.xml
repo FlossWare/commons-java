@@ -22,6 +22,8 @@
         <exclude name="JUnitTestsShouldIncludeAssert"/>
         <!-- Project uses java.util.logging with its own LoggerUtil wrapper -->
         <exclude name="GuardLogStatement"/>
+        <!-- Logger fields are added for consistency even before active use -->
+        <exclude name="UnusedPrivateField"/>
         <!-- UseVarargs suggestions conflict with existing public API -->
         <exclude name="UseVarargs"/>
         <!-- Try-with-resources refactoring would change existing public API behavior -->
