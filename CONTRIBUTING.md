@@ -1,6 +1,6 @@
-# Contributing to jcommons
+# Contributing to commons-java
 
-Thank you for your interest in contributing to jcommons! This document provides guidelines and instructions for contributing to this project.
+Thank you for your interest in contributing to commons-java! This document provides guidelines and instructions for contributing to this project.
 
 ## Table of Contents
 
@@ -26,7 +26,7 @@ When creating a new issue, **please use the appropriate issue template**:
 - **[Bug Report](.github/ISSUE_TEMPLATE/bug_report.yml)** - Report unexpected behavior or errors
 - **[Feature Request](.github/ISSUE_TEMPLATE/feature_request.yml)** - Suggest new features or enhancements
 - **[v2.0 Migration Feedback](.github/ISSUE_TEMPLATE/migration_feedback.yml)** - Feedback on deprecated method migrations
-- **[Security Vulnerability](.github/ISSUE_TEMPLATE/security_vulnerability.md)** - **DO NOT USE** - Report security issues privately via [Security Advisories](https://github.com/FlossWare/jcommons/security/advisories)
+- **[Security Vulnerability](.github/ISSUE_TEMPLATE/security_vulnerability.md)** - **DO NOT USE** - Report security issues privately via [Security Advisories](https://github.com/FlossWare/commons-java/security/advisories)
 
 **Note**: Blank issues are disabled. All issues must use a template.
 
@@ -36,7 +36,7 @@ An issue is **actionable** only when it satisfies:
 
 #### ✅ Version Verification
 - Specify version: `main` branch vs latest stable (v1.31)
-- Reproducible on specified version
+- Reproducible on specified version (current: v1.35)
 
 #### ✅ Environment Baseline
 - Java 17+ confirmed
@@ -44,7 +44,7 @@ An issue is **actionable** only when it satisfies:
 - Relevant dependency versions listed
 
 #### ✅ Scope Alignment
-- Grounded in `org.flossware.jcommons` source code
+- Grounded in `org.flossware.commons` source code
 - Related to Solenopsis framework interaction (if applicable)
 - Not an external dependency issue
 
@@ -72,12 +72,12 @@ Once all requirements are met, the issue will be labeled `actionable`.
 1. **Fork the repository** on GitHub
 2. **Clone your fork** locally:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/jcommons.git
-   cd jcommons
+   git clone https://github.com/YOUR_USERNAME/commons-java.git
+   cd commons-java
    ```
 3. **Add upstream remote**:
    ```bash
-   git remote add upstream https://github.com/FlossWare/jcommons.git
+   git remote add upstream https://github.com/FlossWare/commons-java.git
    ```
 4. **Create a feature branch**:
    ```bash
@@ -116,7 +116,7 @@ The build runs multiple quality checks automatically:
 - **JaCoCo** - Code coverage (minimum: 93% instruction, 86% branch, 93% line)
 - **SpotBugs** - Static analysis for bugs
 - **PMD** - Code quality analysis
-- **Checkstyle** - Code style validation (Google Java Style)
+- **Checkstyle** - Code style validation (custom `checkstyle.xml` based on Google Java Style)
 - **Maven Enforcer** - Dependency and version validation
 - **OWASP Dependency Check** - Security vulnerability scanning
 
@@ -258,7 +258,7 @@ private static final String DEFAULT_SEPARATOR = "";
 private static final Logger LOGGER = Logger.getLogger(...);
 
 // Packages: lowercase
-package org.flossware.jcommons.util;
+package org.flossware.commons.util;
 ```
 
 ### Error Messages
@@ -316,7 +316,7 @@ LOGGER.log(Level.INFO, "Processing file: " + fileName);
 
 - **Minimum coverage**: 93% instruction, 86% branch, 93% line (enforced by JaCoCo)
 - **Goal**: 100% coverage for new code
-- **Current status**: 100% instruction, 96% branch, 100% method, 100% line, 100% class
+- **Current status**: 96% instruction, 84% branch, 100% method, 96% line, 100% class
 
 ### Test Structure
 
@@ -377,7 +377,7 @@ class StringUtilTest {
 3. **Ensure all tests pass**:
    ```bash
    mvn test
-   # Should show: Tests run: 277, Failures: 0, Errors: 0, Skipped: 0
+   # Should show: Tests run: 321, Failures: 0, Errors: 0, Skipped: 0
    ```
 
 4. **Check code coverage**:
@@ -413,8 +413,8 @@ class StringUtilTest {
    - Updated Z documentation
    
    ## Testing
-   - All 277 tests pass
-   - Coverage: 100% instruction, 96% branch
+   - All 321 tests pass
+   - Coverage: 96% instruction, 84% branch
    - Added 5 new tests for feature X
    
    ## Checklist
@@ -452,7 +452,7 @@ See [CHANGELOG.md](CHANGELOG.md) for deprecation schedule.
 
 ## Questions?
 
-- **Issues**: https://github.com/FlossWare/jcommons/issues
+- **Issues**: https://github.com/FlossWare/commons-java/issues
 - **Discussions**: Use GitHub Discussions for questions
 - **Security**: See [SECURITY.md](SECURITY.md) for vulnerability reporting
 
@@ -462,4 +462,4 @@ By contributing, you agree that your contributions will be licensed under the [G
 
 ---
 
-Thank you for contributing to jcommons! 🎉
+Thank you for contributing to commons-java! 🎉

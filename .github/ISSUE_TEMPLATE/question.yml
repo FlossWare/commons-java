@@ -1,11 +1,11 @@
 name: Question
-description: Ask a question about jcommons
+description: Ask a question about commons-java
 labels: ["question"]
 body:
   - type: markdown
     attributes:
       value: |
-        Have a question about using jcommons? We're here to help!
+        Have a question about using commons-java? We're here to help!
 
   - type: textarea
     id: question

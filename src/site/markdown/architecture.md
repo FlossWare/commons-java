@@ -2,7 +2,7 @@
 
 ## Project Structure
 
-jcommons sits at the foundation of the Solenopsis stack:
+commons-java sits at the foundation of the Solenopsis stack:
 
 ```
 ┌─────────────────────────┐
@@ -14,19 +14,19 @@ jcommons sits at the foundation of the Solenopsis stack:
 └───────────┬─────────────┘
             │ depends on
 ┌───────────▼─────────────┐
-│  jcommons               │  ← Foundation utilities (this)
+│  commons-java               │  ← Foundation utilities (this)
 └─────────────────────────┘
 ```
 
 ## Package Organization
 
-### org.flossware.jcommons
+### org.flossware.commons
 
 Base package containing:
 - **Stringifiable** interface - For objects that can be converted to strings
 - **AbstractStringifiable** - Base implementation with customizable formatting
 
-### org.flossware.jcommons.util
+### org.flossware.commons.util
 
 Core utility classes:
 
@@ -74,8 +74,8 @@ Supporting utilities for validation, reflection, and URL handling.
 
 1. **validate** - License header validation
 2. **compile** - Java 17 compilation
-3. **test** - Unit tests (287 tests)
-4. **verify** - Integration tests (20 tests), static analysis
+3. **test** - Unit tests (321 tests)
+4. **verify** - Integration tests, static analysis
 5. **package** - JAR creation (main, sources, javadoc)
 6. **install** - Local Maven repository
 7. **deploy** - packagecloud.io deployment (CI only)
@@ -87,7 +87,7 @@ All must pass for successful build:
 - ✅ **JaCoCo Coverage** - 93% instruction, 86% branch, 93% line
 - ✅ **SpotBugs** - Zero bugs (effort=Max, threshold=Low)
 - ✅ **PMD** - Zero violations
-- ✅ **Checkstyle** - Google Java Style Guide
+- ✅ **Checkstyle** - Custom rules based on Google Java Style
 - ✅ **OWASP Dependency Check** - No CVEs above CVSS 7.0
 - ✅ **License Headers** - GPL v3.0 in all source files
 
@@ -133,7 +133,7 @@ ObjectInputFilter restricts deserialization to trusted packages:
 ## Dependency Chain
 
 ```
-jcommons
+commons-java
 ├── Apache CXF 4.2.1
 │   ├── Jakarta XML WS API 4.0.3
 │   ├── Jakarta XML SOAP API 3.0.2
@@ -142,7 +142,7 @@ jcommons
 └── SLF4J 2.0.x (provided)
 ```
 
-**Critical**: Solenopsis Session module uses jcommons for session caching (serialization), so security updates in jcommons cascade to all Solenopsis users.
+**Critical**: Solenopsis Session module uses commons-java for session caching (serialization), so security updates in commons-java cascade to all Solenopsis users.
 
 ## Deprecation Policy
 
@@ -151,4 +151,4 @@ Methods deprecated since v1.22 scheduled for removal in v2.0:
 - FileUtil File-based methods (migrate to NIO.2)
 - StringUtil.ensureString() (use requireNonBlank())
 
-See [CHANGELOG.md](https://github.com/FlossWare/jcommons/blob/main/CHANGELOG.md) for migration guides.
+See [CHANGELOG.md](https://github.com/FlossWare/commons-java/blob/main/CHANGELOG.md) for migration guides.

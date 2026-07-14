@@ -10,7 +10,7 @@ body:
   - type: input
     id: version
     attributes:
-      label: jcommons Version
+      label: commons-java Version
       description: Which version are you using?
       placeholder: e.g., 1.31
     validations:
@@ -82,7 +82,7 @@ body:
         Minimal failing test case to reproduce the issue.
         Link to branch/PR with reproduction test.
 
-        **Note**: jcommons maintains 93% line coverage standard.
+        **Note**: commons-java maintains 93% line coverage standard.
         Issues without test cases may be labeled needs-reproduction.
       placeholder: |
         @Test
@@ -91,7 +91,7 @@ body:
             assertEquals("foobar", result); // Fails
         }
 
-        Branch: https://github.com/your-fork/jcommons/tree/bug-fix-123
+        Branch: https://github.com/your-fork/commons-java/tree/bug-fix-123
     validations:
       required: false
 

@@ -37,7 +37,7 @@ body:
         - Session management?
         - General utility handling?
 
-        **Context**: jcommons is the foundation for the Solenopsis framework.
+        **Context**: commons-java is the foundation for the Solenopsis framework.
       placeholder: |
         This feature would help with Solenopsis SOAP client generation by...
         OR

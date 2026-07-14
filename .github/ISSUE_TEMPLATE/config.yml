@@ -4,5 +4,5 @@ contact_links:
     url: https://github.com/solenopsis
     about: Questions about the Solenopsis Salesforce framework
   - name: Security Vulnerability
-    url: https://github.com/FlossWare/jcommons/security/advisories
+    url: https://github.com/FlossWare/commons-java/security/advisories
     about: Report a security vulnerability (do not use public issues)

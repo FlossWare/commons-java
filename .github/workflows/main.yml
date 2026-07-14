@@ -90,7 +90,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./target/site/jacoco/jacoco.xml
           flags: unittests
-          name: codecov-flossware-jcommons
+          name: codecov-flossware-commons-java
           fail_ci_if_error: false
 
       - name: Cache OWASP Dependency Check Database

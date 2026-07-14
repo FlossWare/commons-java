@@ -16,7 +16,7 @@
  */
 
 /**
- * I/O exception classes for the jcommons library.
+ * I/O exception classes for the commons-java library.
  *
  * <p>This package provides specialized runtime exceptions for I/O operations:
  *

@@ -337,10 +337,10 @@
         </dependencies>
         <configuration>
           <targetClasses>
-            <param>org.flossware.jcommons.*</param>
+            <param>org.flossware.commons.*</param>
           </targetClasses>
           <targetTests>
-            <param>org.flossware.jcommons.*</param>
+            <param>org.flossware.commons.*</param>
           </targetTests>
           <mutationThreshold>80</mutationThreshold>
           <coverageThreshold>100</coverageThreshold>

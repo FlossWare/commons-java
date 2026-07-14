@@ -8,9 +8,9 @@ body:
       value: |
         ## v2.0 Migration Feedback
 
-        **Context**: jcommons has deprecated methods scheduled for removal in v2.0.
+        **Context**: commons-java has deprecated methods scheduled for removal in v2.0.
 
-        See [CHANGELOG.md](https://github.com/FlossWare/jcommons/blob/main/CHANGELOG.md) for migration guides.
+        See [CHANGELOG.md](https://github.com/FlossWare/commons-java/blob/main/CHANGELOG.md) for migration guides.
 
         This template helps us understand migration challenges and improve our v2.0 transition plan.
 
@@ -62,7 +62,7 @@ body:
         - Solenopsis SOAP (API client generation)
         - Solenopsis Session (authentication/session caching)
         - Both SOAP and Session
-        - Not using Solenopsis (direct jcommons usage)
+        - Not using Solenopsis (direct commons-java usage)
         - Other
     validations:
       required: true
@@ -73,7 +73,7 @@ body:
       label: Timeline & Migration Concerns
       description: |
         - What is your migration timeline?
-        - When do you plan to upgrade to jcommons v2.0?
+        - When do you plan to upgrade to commons-java v2.0?
         - Are there blocking concerns preventing migration?
       placeholder: |
         We plan to migrate by Q3 2026...

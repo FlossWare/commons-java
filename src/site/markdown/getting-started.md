@@ -2,12 +2,12 @@
 
 ## Installation
 
-Add jcommons to your Maven project:
+Add commons-java to your Maven project:
 
 ```xml
 <dependency>
     <groupId>org.flossware</groupId>
-    <artifactId>jcommons</artifactId>
+    <artifactId>commons-java</artifactId>
     <version>LATEST</version>
 </dependency>
 
@@ -19,14 +19,14 @@ Add jcommons to your Maven project:
 </repositories>
 ```
 
-Check [GitHub Releases](https://github.com/FlossWare/jcommons/releases) for the latest version.
+Check [GitHub Releases](https://github.com/FlossWare/commons-java/releases) for the latest version.
 
 ## Usage Examples
 
 ### Configure Salesforce SOAP Endpoint
 
 ```java
-import org.flossware.jcommons.util.SoapUtil;
+import org.flossware.commons.util.SoapUtil;
 
 // Create a port and set Salesforce endpoint
 MetadataPortType port = portFactory.createPort();
@@ -36,7 +36,7 @@ SoapUtil.setUrl(port, "https://na1.salesforce.com/services/Soap/m/58.0");
 ### Set SOAP Headers for Salesforce Session
 
 ```java
-import org.flossware.jcommons.util.SoapUtil;
+import org.flossware.commons.util.SoapUtil;
 import javax.xml.namespace.QName;
 
 Service service = new MetadataService();
@@ -48,7 +48,7 @@ SoapUtil.setHeader(service, sessionHeaderQName, sessionHeaderValue);
 ### Compute QName from Service Class
 
 ```java
-import org.flossware.jcommons.util.SoapUtil;
+import org.flossware.commons.util.SoapUtil;
 
 QName qname = SoapUtil.computeQName(MetadataService.class);
 // Returns QName based on @WebServiceClient annotation
@@ -57,7 +57,7 @@ QName qname = SoapUtil.computeQName(MetadataService.class);
 ### String Validation
 
 ```java
-import org.flossware.jcommons.util.StringUtil;
+import org.flossware.commons.util.StringUtil;
 
 // Validate non-blank strings
 String apiUrl = StringUtil.requireNonBlank(url, "Salesforce URL cannot be blank");
@@ -69,7 +69,7 @@ String requestId = StringUtil.generateUniqueString("sfdc-request-");
 ### File Operations
 
 ```java
-import org.flossware.jcommons.util.FileUtil;
+import org.flossware.commons.util.FileUtil;
 
 // Ensure file exists before processing
 File wsdlFile = FileUtil.ensureFileExists("src/main/resources/wsdl/metadata.wsdl");
@@ -82,8 +82,8 @@ FileInputStream fis = FileUtil.getFileInputStream(deploymentPackage);
 
 ```bash
 # Clone the repository
-git clone https://github.com/FlossWare/jcommons.git
-cd jcommons
+git clone https://github.com/FlossWare/commons-java.git
+cd commons-java
 
 # Build and run tests
 ./mvnw clean verify
@@ -100,5 +100,5 @@ cd jcommons
 
 - Read the [JavaDoc](apidocs/index.html) for detailed API documentation
 - Check the [Architecture](architecture.html) page to understand the project structure
-- Review [CONTRIBUTING.md](https://github.com/FlossWare/jcommons/blob/main/CONTRIBUTING.md) if you want to contribute
+- Review [CONTRIBUTING.md](https://github.com/FlossWare/commons-java/blob/main/CONTRIBUTING.md) if you want to contribute
 - View [Quality Reports](jacoco/index.html) for coverage and static analysis

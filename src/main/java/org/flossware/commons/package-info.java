@@ -16,7 +16,7 @@
  */
 
 /**
- * Core interfaces and base classes for the jcommons library.
+ * Core interfaces and base classes for the commons-java library.
  *
  * <p>This package provides fundamental abstractions used throughout the library:
  *

@@ -486,7 +486,7 @@ class StringUtilTest {
     @SuppressWarnings("deprecation")
     void testFromStream_objectInputFilter_withCustomObject() throws Exception {
         // Test ObjectInputFilter with a custom serializable object from this test class
-        // This class is in org.flossware.jcommons.util package, so it should be ALLOWED
+        // This class is in org.flossware.commons.util package, so it should be ALLOWED
 
         CustomSerializable obj = new CustomSerializable("test data");
 
@@ -571,7 +571,7 @@ class StringUtilTest {
         assertEquals("item-0-1", result.get(0).get(0));
     }
 
-    // Static nested class for testing - in org.flossware.jcommons.util package (trusted)
+    // Static nested class for testing - in org.flossware.commons.util package (trusted)
     private static class CustomSerializable implements java.io.Serializable {
         private static final long serialVersionUID = 1L;
         private final String data;
