@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.flossware</groupId>
   <artifactId>commons-java</artifactId>
-  <version>1.0</version>
+  <version>1.32</version>
   <name>FlossWare Commons</name>
   <description>This project is a collection of shareable Java related functionality.</description>
   <url>https://github.com/FlossWare/commons-java</url>
