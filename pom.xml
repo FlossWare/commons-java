@@ -68,7 +68,7 @@
   </properties>
   <scm>
     <connection>scm:git:https://github.com/FlossWare/commons-java.git</connection>
-    <developerConnection>scm:git:git@github.com:FlossWare/commons-java.git</developerConnection>
+    <developerConnection>scm:git:https://github.com/FlossWare/commons-java.git</developerConnection>
     <url>https://github.com/FlossWare/commons-java</url>
     <tag>HEAD</tag>
   </scm>
