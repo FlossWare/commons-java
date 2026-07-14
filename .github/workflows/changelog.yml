@@ -27,12 +27,16 @@ jobs:
 
       - name: Generate Changelog
         id: changelog
+        env:
+          INPUT_TAG: ${{ inputs.tag }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          EVENT_NAME: ${{ github.event_name }}
         run: |
           # Determine the current tag
-          if [ "${{ github.event_name }}" = "release" ]; then
-            CURRENT_TAG="${{ github.event.release.tag_name }}"
-          elif [ -n "${{ inputs.tag }}" ]; then
-            CURRENT_TAG="${{ inputs.tag }}"
+          if [ "$EVENT_NAME" = "release" ]; then
+            CURRENT_TAG="$RELEASE_TAG"
+          elif [ -n "$INPUT_TAG" ]; then
+            CURRENT_TAG="$INPUT_TAG"
           else
             CURRENT_TAG="$(git describe --tags --abbrev=0 2>/dev/null || echo '')"
           fi
@@ -178,6 +182,7 @@ jobs:
         if: github.event_name == 'release'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
         run: |
           BODY="$(cat /tmp/changelog-section.md | tail -n +3)"
-          gh release edit "${{ github.event.release.tag_name }}" --notes "$BODY"
+          gh release edit "$RELEASE_TAG" --notes "$BODY"
