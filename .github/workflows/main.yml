@@ -113,14 +113,16 @@ jobs:
           retention-days: 30
 
       - name: Generate JavaDoc
-        run: "mvn javadoc:javadoc"
+        run: |
+          rm -f target/maven-javadoc-plugin-stale-data.txt
+          mvn javadoc:javadoc
 
       - name: Deploy JavaDoc to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         if: github.ref == 'refs/heads/main'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./target/site/apidocs
+          publish_dir: ./target/reports/apidocs
           destination_dir: javadoc
           force_orphan: true
 
