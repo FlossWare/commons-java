@@ -1,0 +1,5 @@
+module:org.flossware.commons
+org.flossware.commons
+org.flossware.commons.io
+org.flossware.commons.soap
+org.flossware.commons.util
