@@ -44,11 +44,11 @@ Core utilities for Apache CXF SOAP clients:
 
 ## Quality Metrics
 
-The library maintains **excellent test coverage** with **307 tests** (287 unit + 20 integration):
+The library maintains **excellent test coverage** with **341 tests** (321 unit + 20 integration):
 
-- 🎯 **93% instruction coverage**
-- ✅ **86% branch coverage**
-- 🎯 **93% method coverage**
+- 🎯 **96% instruction coverage**
+- ✅ **84% branch coverage**
+- 🎯 **100% method coverage**
 - 🎯 **100% class coverage**
 
 See the [JaCoCo Coverage Report](jacoco/index.html) for details.

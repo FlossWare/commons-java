@@ -44,6 +44,5 @@ Edit `quality-gate.yml` to:
 
 ### Resources
 
-- [Maven Quality Requirements](../build-tools/MAVEN-QUALITY-REQUIREMENTS.md)
-- [Test Coverage Guide](../build-tools/TEST-COVERAGE.md)
-- [FlossWare Build Tools](https://github.com/FlossWare/build-tools)
+- [Contributing Guide](../CONTRIBUTING.md)
+- [SonarCloud Setup](SONARCLOUD_SETUP.md)
